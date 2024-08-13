@@ -47,30 +47,33 @@
                     <i class="icon ion-social-facebook" style="background: var(--bs-blue);color: var(--bs-white);"></i>
                     </button>
                 </form>-->
-                <form style="height: 512px;" method="POST" id="loginForm">
+                <form method="POST" id="loginForm" style="height: 512px;"><!--style="height: 512px;-->
                     <div>
-                      <div class= "form-group" class="mb-3">
+                      <div class= "form-group" class="mb-3"><!--class="mb-3"-->
+
                         <label for="loginUsername"><h4>Username</h4></label>
                         <input type="text" class="form-control" id="loginUsername" placeholder="" required>
                       </div>
                     </div>
                     <div >
-                      <div class="form-group">
-                        <label for="loginPassword"><h4>Password</h4></label>
+                      <div class="form-group" style="margin-top: 15px;"> <!--style="margin-top: 15px;"-->
+                        <label for="loginPassword" ><h4>Password</h4></label>
                         <input type="password" class="form-control" id="loginPassword" placeholder="" required>
                       </div>
                     </div>
                     <div >
                       <div class="grid">
                         <div>
-                          <button type="submit" class="mt-3">Login</button>
-                        </div>
+                          <button type="submit" class="btn-primary" style="border-radius: 20px; margin-top:30px; width: 425px; height: 50px;"><!--class="btn-primary" style="border-radius: 20px; margin-top:30px; width: 425px; height: 50px;"-->
+                            Login</button> 
+
+                        </div class="mt-3"><!--mt-3-->
                         <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox">
                           <label class="form-check-label" for="checkbox">Remember me</label>
                         </div>
                       </div>
-                        <div>
-                          <a href="#">Reset Password</a>
+                        <div class="mt-3"><!--class="mt-3"-->
+                          <a href="#">Reset Password</a> <!--LINK TO RESET PASSWORD PAGE-->
                         </div>
                       </div>
                     </div>
@@ -79,7 +82,6 @@
                     </div>
                   </form>
 
-                  
             </div>
         </section>
     </main>
@@ -142,7 +144,7 @@
               }),
               contentType: 'application/json',
               success: function(response) {
-                if (response.message === 'Login successful') {
+                if (response.message === 'Login successfully') {
                   $('#loginMessage').html('<div class="alert alert-success">' + response.message + '</div>');
                   window.location.href = response.redirectUrl;
                 } else {
@@ -168,6 +170,8 @@
                 password: password
               }),
               success: function(response) {
+                
+                window.location.href = "https://google.com";
                 alert(response.message);
                 $('#createAccForm')[0].reset();
               },

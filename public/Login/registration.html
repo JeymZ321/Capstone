@@ -40,25 +40,33 @@
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="width: 400px;">You've agree to Term's &amp; Conditions</label></div><button class="btn btn-primary" type="submit" style="margin-top: 20px;">Sign Up</button>
                 </form>-->
                 
-      <form id="createAccForm">
-        <div>
-          <div>
-            <label for="createUsername"><h4>Username</h4></label>
-            <input type="text" id="createUsername" placeholder="" required>
-          </div>
-        </div>
-        <div >
-          <div >
-            <label for="createPassword"><h4>Password</h4></label>
-            <input type="password" id="createPassword" placeholder="" required>
-          </div>
-        </div>
-        <div >
-          <div>
-            <button type="button" id="createAccountButton">Create</button>
-          </div>
-        </div>
-    </form>
+                <form  method="POST" id="createAccForm" style="height: 512px;"><!--style="height: 512px;"-->
+                  <div>
+                      <div class= "form-group" class="mb-3" ><!--class="mb-3"-->
+                          <label for="createUsername"><h4>Username</h4></label>
+                          <input type="text" class="form-control" id="createUsername" placeholder="" required>
+                      </div>
+                  </div>
+                  <div>
+                      <div>
+                          <label for="createPassword"><h4>Password</h4></label>
+                          <input type="password" class="form-control" id="createPassword" placeholder="" required>
+                      </div>
+                  </div>
+                  <div>
+                      <div>
+                          <label for="createEmail"><h4>Email</h4></label>
+                          <input type="email" class="form-control" id="createEmail" placeholder="" required>
+                      </div>
+                  </div>
+                  <div>
+                      <div>
+                          <button type="button" id="createAccountButton" class="btn btn-primary" style="border-radius: 20px; margin-top:20px; width: 425px; height: 50px;"> <!--class="btn btn-primary" style="border-radius: 20px; margin-top:20px; width: 425px; height: 50px;"-->
+                            Create</button>
+                      </div>
+                  </div>
+              </form>
+              
 
             </div>
         </section>
@@ -107,29 +115,30 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-        
-          $('#createAccountButton').click(function() {
-            const username = $('#createUsername').val();
-            const password = $('#createPassword').val();
-        
-            $.ajax({
-              url: '/create-account',
-              type: 'POST',
-              contentType: 'application/json',
-              data: JSON.stringify({
+    $('#createAccountButton').click(function() {
+        const username = $('#createUsername').val();
+        const password = $('#createPassword').val();
+        const email = $('#createEmail').val();
+
+        $.ajax({
+            url: '/create-account',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
                 username: username,
-                password: password
-              }),
-              success: function(response) {
+                password: password,
+                email: email
+            }),
+            success: function(response) {
                 alert(response.message);
                 $('#createAccForm')[0].reset();
-              },
-              error: function(error) {
+            },
+            error: function(error) {
                 alert('Error creating account');
-              }
-            });
-          });
+            }
         });
+    });
+});
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
