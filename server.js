@@ -37,7 +37,7 @@ const uri = "mongodb://localhost:27017/UsersDB";
 
 //DIRECTORY TO THE FRONTEND PAGE
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); //Temporary landing page
   });
 
   
