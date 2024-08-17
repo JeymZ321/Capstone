@@ -15,6 +15,7 @@ const port = 3000
 const app = express()
 
 /* MIDDLEWARE*/
+
 /* Json object that client throws */
 
 app.use(express.json())

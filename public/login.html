@@ -4,99 +4,191 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Login - Logo</title>
+    <title>Login - Brand</title>
+    <meta name="description" content="This is the Login page">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="assets/css/Social-Icons.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
 </head>
 
-<body class="bg-gradient-primary">
-    <div class="container">
-    
-        <div class="row justify-content-center">
-            <div class="col-md-9 col-lg-12 col-xl-10">
-                <div class="card shadow-lg o-hidden border-0 my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-flex">
-                                <div class="flex-grow-1 bg-login-image" style="background: url(&quot;assets/img/reynaldo.jpg&quot;) no-repeat;background-size: contain;"></div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h4 class="text-dark mb-4" style="font-weight: bold;">Welcome Admin!</h4>
-                                    </div>
-                                    <form id="loginform" class="user">
-                                        <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
-                                        <div class="mb-3">
-                                            <div class="custom-control custom-checkbox small">
-                                                <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col">
-                                            <a  style="padding: 29px;margin-left: 145px;">
-                                                <button class="btn btn-primary" type="button" style="margin-bottom: 9px;border-radius: 9px;width: 100px;margin-left: -15px;">
-                                                    Login
-                                                </button>
-                                            </a>
-                                            <div id="#loginMessage"></div>
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button"><i class="fab fa-google"></i>&nbsp; Login with Google</a>
-                                        <a class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Login with Facebook</a>
-                                        <hr>
-                                    </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
-                                    <div class="text-center"><a class="small" href="register.html">Create an Account!</a></div>
-                                </div>
-                            </div>
-                        </div>
+<body>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background:#051129;">
+        <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button><img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" data-bss-hover-animate="pulse" href="login.html" style="background: var(--bs-white);border-radius: 20px;width: 100.6px;text-align: center;">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bss-hover-animate="pulse" href="registration.html" style="background: var(--bs-white);border-radius: 20px;width: 100.5px;text-align: center;filter: blur(0px);">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page login-page">
+        <section class="clean-block clean-form dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info" style="margin: 50px;">Log In</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                </div>
+                
+                <!--<form style="height: 512px;" id="login" method="POST">
+                    <div class="mb-3"><label class="form-label" for="email">Email</label>
+                      <input class="form-control item" type="email" id="email"></div>
+                    <div class="mb-3"><label class="form-label" for="password">Password</label>
+                      <input class="form-control" type="password" id="password"></div>
+                    <div class="mb-3">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
                     </div>
+                    <a style="margin-left: 140px;">Forgot Password?</a>
+                    <button class="btn btn-primary" id="login" type="submit" style="border-radius: 20px;width: 400px;margin-left: 15px;margin-top: 60px;">Login with Facebook&nbsp;&nbsp;
+                    <i class="icon ion-social-facebook" style="background: var(--bs-blue);color: var(--bs-white);"></i>
+                    </button>
+                </form>-->
+                <form method="POST" id="loginForm" style="height: 512px;"><!--style="height: 512px;-->
+                    <div>
+                      <div class= "form-group" class="mb-3"><!--class="mb-3"-->
+
+                        <label for="loginUsername"><h4>Username</h4></label>
+                        <input type="text" class="form-control" style="border-radius: 10px;" id="loginUsername" placeholder="" required>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="form-group" style="margin-top: 15px;"> <!--style="margin-top: 15px;"-->
+                        <label for="loginPassword" ><h4>Password</h4></label>
+                        <input type="password" class="form-control" style="border-radius: 10px;" id="loginPassword" placeholder="" required>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="grid">
+                        <div>
+                          <button type="submit" class="btn btn-primary" style="border-radius: 20px; margin-top:30px; width: 425px; height: 50px;"><!--class="btn-primary" style="border-radius: 20px; margin-top:30px; width: 425px; height: 50px;"-->
+                            Login</button> 
+                        </div>
+
+
+                        <div class="mt-3"><!--mt-3-->
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox">
+                          <label class="form-check-label" for="checkbox">Remember me</label>
+                        </div>
+                      </div>
+                        <div class="mt-3"><!--class="mt-3"-->
+                          <a href="#" style="text-decoration: none;">Reset Password</a> <!--LINK TO RESET PASSWORD PAGE-->
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div id="loginMessage"></div>
+                    </div>
+                  </form>
+                </div>
+        </section>
+    </main>
+    <footer class="page-footer dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-
+        <div class="footer-copyright">
+            <p>© 2024 Copyright Text</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function() {
-      $('#loginform').submit(function(event) {
-        event.preventDefault();
+        $(document).ready(function() {
+          $('#loginForm').submit(function(event) {
+            event.preventDefault();
+            
+            var username = $('#loginUsername').val();
+            var password = $('#loginPassword').val();
         
-        var email = $('#exampleInputEmail').val();
-        var password = $('#exampleInputPassword').val();
-    
-        $.ajax({
-          type: 'POST',
-          url: '/loginroute', // Ensure this is the correct port where your Express server is running
-          data: JSON.stringify({
-            email: email,
-            password: password
-          }),
-          contentType: 'application/json',
-          success: function(response) {
-            if (response.message === 'Login successful') {
-              $('#loginMessage').html('<div class="alert alert-success">' + response.message + '</div>');
-              // Redirect based on account type
-              window.location.href = response.redirectUrl;
-            } else {
-              $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
-            }
-          },
-          error: function(xhr, status, error) {
-            $('#loginMessage').html('<div class="alert alert-danger">An error occurred: ' + xhr.responseText + '</div>');
-          }
+            $.ajax({
+              type: 'POST',
+              url: '/loginroute',
+              data: JSON.stringify({
+                username: username,
+                password: password
+              }),
+              contentType: 'application/json',
+              success: function(response) {
+                if (response.message === 'Login successfully') {
+                  $('#loginMessage').html('<div class="alert alert-success">' + response.message + '</div>');
+                  window.location.href = response.redirectUrl;
+                } else {
+                  $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                }
+              },
+              error: function(xhr, status, error) {
+                $('#loginMessage').html('<div class="alert alert-danger">An error occurred: ' + xhr.responseText + '</div>');
+              }
+            });
+          });
+        
+          $('#createAccountButton').click(function() {
+            const username = $('#createUsername').val();
+            const password = $('#createPassword').val();
+        
+            $.ajax({
+              url: '/create-account',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                username: username,
+                password: password
+              }),
+              success: function(response) {
+                
+                window.location.href = "https://google.com";
+                alert(response.message);
+                $('#createAccForm')[0].reset();
+              },
+              error: function(error) {
+                alert('Error creating account');
+              }
+            });
+          });
         });
-      });
-    });    
-    </script>
+      </script>
+
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
 

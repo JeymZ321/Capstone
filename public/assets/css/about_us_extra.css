@@ -1,0 +1,124 @@
+/* Base styles for the parent container */
+
+.parent_aboutus {
+  background-image: url("../../assets/img/circlesandtriangle.png");
+  background-size: cover;
+}
+
+/* Styles for each container */
+
+.container_aboutus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 10px auto;
+  height: 100vh;
+}
+
+.text_aboutus hr {
+  border: 0;
+  height: 4px;
+  background-color: #ffffff;
+  width: 25%;
+  margin: 10px 0 20px 0;
+}
+
+.container_aboutus.reverse {
+  flex-direction: row-reverse;
+}
+
+/* Parallax section */
+
+.parallax_aboutus {
+  flex: 1;
+  background-image: url('../../assets/img/tech/carcar.png');
+  min-height: 500px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Text section */
+
+.text_aboutus {
+  flex: 1;
+  padding: 50px;
+  background-color: rgb(0,0,0);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.text_aboutus h2 {
+  font-size: 1.7em;
+  margin-bottom: 10px;
+  color: rgb(255,88,88);
+  font-weight: bold;
+}
+
+.text_aboutus p {
+  color: white;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media screen and (max-width: 768px) {
+  .container_aboutus {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container_aboutus.reverse {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text_aboutus hr {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .parallax_aboutus {
+    min-height: 300px;
+    background-attachment: scroll;
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text_aboutus {
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: none;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text_aboutus h2 {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text_aboutus p {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .text_aboutus h2 {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .text_aboutus p {
+    font-size: 0.9em;
+  }
+}
+
