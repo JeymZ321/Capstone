@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Users = require('./models/user');
+//const Users = require('./models/user');
 const crypto = require('crypto');
 const appointment = require('./models/Appointment');
 const customer = require('./models/Customer');
@@ -52,14 +52,14 @@ const uri = "mongodb://localhost:27017/UsersDB";
         let encryptedPassword = cipher.update(password, 'utf8', 'hex');
         encryptedPassword += cipher.final('hex');
 
-        const newUser = new Users({
+        const newcustomer = new customer({
             username,
             password: encryptedPassword,
             email,  // Add the email field here
             iv: iv.toString('hex'),
             key: encryptionKey.toString('hex')
         });
-        await newUser.save();
+        await newcustomer.save();
         res.status(200).json({ message: 'Account created successfully' });
     } catch (error) {
         console.log('Account creation failed', error);
@@ -72,14 +72,14 @@ const uri = "mongodb://localhost:27017/UsersDB";
   app.post('/loginroute', async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await Users.findOne({ username });
-      if (!user) {
+      const Customer = await customer.findOne({ username });
+      if (!Customer) {
         return res.status(400).json({ message: 'Invalid username or password' });
       }
-      const iv = Buffer.from(user.iv, 'hex');
-      const key = Buffer.from(user.key, 'hex');
+      const iv = Buffer.from(Customer.iv, 'hex');
+      const key = Buffer.from(Customer.key, 'hex');
       const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-      let decryptedPassword = decipher.update(user.password, 'hex', 'utf8');
+      let decryptedPassword = decipher.update(Customer.password, 'hex', 'utf8');
       decryptedPassword += decipher.final('utf8');
 
       if (decryptedPassword === password) {

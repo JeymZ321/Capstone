@@ -17,7 +17,10 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
-        <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button><img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
+        <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <a href="index.html">
+            <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
+            </a>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" data-bss-hover-animate="pulse" href="login.html" style="background: var(--bs-white);border-radius: 20px;width: 100.6px;text-align: center;">Login</a></li>
@@ -33,13 +36,7 @@
                     <h2 class="text-info" style="margin: 50px;">Registration</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
                 </div>
-                <!--<form style="height: 500px;">
-                    <div class="mb-3"><label class="form-label" for="name">Name</label><input class="form-control item" type="text" id="name"></div>
-                    <div class="mb-3"><label class="form-label" for="password">Password</label><input class="form-control item" type="password" id="password"></div>
-                    <div class="mb-3"><label class="form-label" for="email">Email</label><input class="form-control item" type="email" id="email"></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="width: 400px;">You've agree to Term's &amp; Conditions</label></div><button class="btn btn-primary" type="submit" style="margin-top: 20px;">Sign Up</button>
-                </form>-->
-                
+                <!--form-->
                 <form  method="POST" id="createAccForm" style="height: 512px;"><!--style="height: 512px;"-->
                   <div>
                       <div class= "form-group" class="mb-3" ><!--class="mb-3"-->
@@ -62,7 +59,8 @@
                   <div>
                       <div>
                           <button type="button" id="createAccountButton" class="btn btn-primary" style="border-radius: 20px; margin-top:20px; width: 425px; height: 50px;"> <!--class="btn btn-primary" style="border-radius: 20px; margin-top:20px; width: 425px; height: 50px;"-->
-                            Create</button>
+                            Create
+                        </button>
                       </div>
                   </div>
               </form>

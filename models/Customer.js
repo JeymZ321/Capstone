@@ -1,4 +1,19 @@
 const mongoose = require('mongoose');
+const CustomerSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true, unique: true },  // Ensure email is unique
+    iv: { type: String, required: true },
+    key: { type: String, required: true }
+});
+
+const Customer = mongoose.model('customer', CustomerSchema);
+module.exports = Customer;
+
+
+
+
+/*const mongoose = require('mongoose');
 
 const customerSchema = new mongoose.Schema({
 
@@ -50,4 +65,4 @@ const customerSchema = new mongoose.Schema({
 
 const customer = mongoose.model('Customer', customerSchema);
 
-module.exports = customer;
+module.exports = customer;*/
