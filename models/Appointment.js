@@ -17,7 +17,7 @@ const appointmentSchema = new Schema({
         required: true,
         trim: true
     
-    },
+    }, 
     
     Status: {
     

@@ -34,7 +34,7 @@ const uri = "mongodb://localhost:27017/UsersDB";
 }).catch(err => {
   console.error('Error connecting to MongoDB', err);
 });
-
+       
 
 //DIRECTORY TO THE FRONTEND PAGE
   app.get('/', (req, res) => {
@@ -83,7 +83,7 @@ const uri = "mongodb://localhost:27017/UsersDB";
       decryptedPassword += decipher.final('utf8');
 
       if (decryptedPassword === password) {
-        const redirectUrl ='https:fb.com';
+        const redirectUrl ='index.html';
         res.status(200).json({ message: 'Login successfully', redirectUrl: redirectUrl });
       } else {
         res.status(400).json({ message: 'Invalid username or password' });
