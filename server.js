@@ -83,7 +83,7 @@ const uri = "mongodb://localhost:27017/UsersDB";
       decryptedPassword += decipher.final('utf8');
 
       if (decryptedPassword === password) {
-        const redirectUrl ='index.html';
+        const redirectUrl ='homepage.html';
         res.status(200).json({ message: 'Login successfully', redirectUrl: redirectUrl });
       } else {
         res.status(400).json({ message: 'Invalid username or password' });
