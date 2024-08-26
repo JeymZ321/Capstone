@@ -21,8 +21,6 @@ const app = express()
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true}))
-
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 const uri = "mongodb://localhost:27017/UsersDB";
@@ -83,7 +81,7 @@ const uri = "mongodb://localhost:27017/UsersDB";
       decryptedPassword += decipher.final('utf8');
 
       if (decryptedPassword === password) {
-        const redirectUrl ='homepage.html';
+        const redirectUrl ='homepage.html'; //HOMEPAGE FOR USERS
         res.status(200).json({ message: 'Login successfully', redirectUrl: redirectUrl });
       } else {
         res.status(400).json({ message: 'Invalid username or password' });

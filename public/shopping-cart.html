@@ -18,16 +18,20 @@
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
-        <div class="container"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"><a class="navbar-brand logo" href="index.html"></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container">
+            <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html">
+            <a class="navbar-brand logo" href="index.html"></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
-                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35;background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35px; background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
                 </ul>
-            </div><img class="img-fluid" src="assets/img/shopcart.png" width="40px" style="margin: 0px;padding: 0px;" href="shopping-cart.html">
+            </div>
+            <img class="img-fluid" src="assets/img/shopcart.png" width="40px" style="margin: 0px;padding: 0px;" href="shopping-cart.html">
         </div>
     </nav>
     <main class="page shopping-cart-page">
@@ -40,7 +44,8 @@
                 <div class="content">
                     <div class="row g-0">
                         <div class="col-md-12 col-lg-8">
-                            <div class="items">
+                            <div class="items" id="cart-items">
+                                <!-- Product 1 -->
                                 <div class="product">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-md-3">
@@ -53,10 +58,16 @@
                                                 <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
                                     </div>
                                 </div>
+                                <!-- Product 2 -->
                                 <div class="product">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-md-3">
@@ -69,10 +80,16 @@
                                                 <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
                                     </div>
                                 </div>
+                                <!-- Product 3 -->
                                 <div class="product">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-md-3">
@@ -85,19 +102,26 @@
                                                 <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="form-label d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
                                     </div>
                                 </div>
+                                <!-- Repeat similar structure for other products -->
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <div class="summary">
                                 <h3>Summary</h3>
-                                <h4><span class="text">Subtotal</span><span class="price">$360</span></h4>
+                                <h4><span class="text">Subtotal</span><span class="price" id="subtotal">$0</span></h4>
                                 <h4><span class="text">Discount</span><span class="price">$0</span></h4>
                                 <h4><span class="text">Shipping</span><span class="price">$0</span></h4>
-                                <h4><span class="text">Total</span><span class="price">$360</span></h4><button class="btn btn-primary btn-lg d-block w-100" type="button">Checkout</button>
+                                <h4><span class="text">Total</span><span class="price" id="total">$0</span></h4>
+                                <button class="btn btn-primary btn-lg d-block w-100" type="button">Get Appointment</button>
                             </div>
                         </div>
                     </div>
@@ -145,6 +169,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
-</body>
+    <script>
+        let total = 0;
 
+        function addToCart(button) {
+            const product = button.closest('.product');
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            total += price;
+
+            // Update subtotal and total in the summary
+            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function cancelItem(button) {
+            const product = button.closest('.product');
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            total -= price;
+
+            // Update subtotal and total in the summary 
+            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
+        }
+    </script>
+</body>
 </html>
