@@ -1,0 +1,100 @@
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>Appointment Form</title>
+        <meta name="description" content="This is the Login page">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+        <link rel="stylesheet" href="./Appointment/appointment.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+            <div class="container">
+                <button class="navbar-toggler" data-bs-toggle="collapse">
+                    <span class="visually-hidden">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="index.html">
+                    <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
+                </a> 
+            </div>
+        </nav>
+        
+        <main>
+            <div class="form-container">
+                <form class="appointment-form">
+                    <h2>Appointment Form</h2>
+                    <div class="section">
+                        <h3>Customer Information</h3>
+                        <label>Full Name: <input type="text" name="name" id="Fullname" required></label>
+                        <label>Address: <input type="text" name="address" id="Address" required></label>
+                        <label>Contact #: <input type="text" name="contact" id="Contact" required></label>
+                        <label>Email: <input type="email" name="email" id="Email" required></label>
+                    </div>
+                    </form>
+                    <div class="section">
+                        <h3>Vehicle Information</h3>
+                        <label>Brand: <input type="text" name="brand"></label>
+                        <label>Color: <input type="text" name="color"></label>
+                        <label>Year Model: <input type="text" name="year_model"></label>
+                        <label>Plate #: <input type="text" name="plate"></label>
+                    </div>
+                    <div class="section">
+                        <h3>Estimated Price Breakdown:</h3>
+                        <p>Service Estimation: Php ####</p>
+                        <p>Towing Fee: Php ####</p>
+                        <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
+                        <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
+                        <input class="form-check-input" type="checkbox" name="terms" required> 
+                    </div>
+                    <div class="section">
+                        <h3>Car Body Panels Checklist (optional)</h3>
+                        <input class="form-check-input" type="checkbox" name="panel1" id="panel1">
+                        <label class="form-check-inline" for="panel1">Panel1</label>
+                        
+                        <input class="form-check-input" type="checkbox" name="panel2" id="panel2">
+                        <label class="form-check-inline" for="panel2">Panel2</label>
+                        
+                        <input class="form-check-input" type="checkbox" name="panel3" id="panel3">
+                        <label class="form-check-inline" for="panel3">Panel3</label>
+                        
+                        <input class="form-check-input" type="checkbox" name="panel4" id="panel4">
+                        <label class="form-check-inline" for="panel4">Panel4</label>
+                    </div>
+                    <div class="section">
+                        <h3>Car Functionality:</h3>
+                        <label class="form-check-inline">Car is functional and can run</label>
+                        <input type="checkbox" name="functionality" value="functional">
+                        
+                        <label class="form-check-inline">Car is not functional (+Php ### for Towing)</label>
+                        <input type="checkbox" name="functionality" value="non-functional">
+                    </div>
+                    <a class="btn btn-primary" role="button" href="calendar.html">Get Slots</a>
+                </form>
+            </div>
+        </main>
+
+        <!-- Terms and Conditions Modal -->
+        <div id="terms-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">×</span>
+                <h2>Terms and Conditions</h2>
+                <p>These terms and conditions outline the rules and regulations for the use of Reynaldo's Car Care Center's services.</p>
+                <p>By booking an appointment, you agree to these terms and conditions. Please read them carefully.</p>
+                <p><strong>Service Estimation:</strong> The estimated price for services is subject to change based on the actual inspection of the vehicle.</p>
+                <p><strong>Reservation Fee:</strong> The reservation fee is non-refundable and is required to confirm your appointment.</p>
+                <p><strong>Towing Service:</strong> If the car is non-functional, an additional fee will be charged for towing services.</p>
+                <p><strong>Privacy Policy:</strong> Your personal information will be handled with care and will not be shared with third parties without your consent.</p>
+                <p>For more details, please contact us.</p>
+            </div>
+        </div>
+        
+        <script src="./Appointment/appointment.js"></script>
+
+    </body>
+
+    </html>

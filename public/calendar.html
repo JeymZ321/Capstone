@@ -1,14 +1,25 @@
-<!--Problem: The available slots is not reset if the customer is picking scheduled in other day. -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Scheduler</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="./Calendar/style.css">
 </head>
 <body>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+      <button class="navbar-toggler" data-bs-toggle="collapse">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href="appointment.html">
+            <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px; margin-left: 61%;">
+        </a> 
+    </div>
+    </nav>
+    
     <div class="container">
         <h1>Appointment Scheduler</h1>
 
@@ -20,7 +31,7 @@
 
 
         <button id="show-slots-btn">Show Available Slots</button>
-        <button type="submit" id="submit-slots-btn">Submit</button>   
+        <button class="btn" id="confirm-btn" onclick="window.location.href='payment.html'">Proceed to Payment</button>  
 
         <!-- Popup Window for Slots -->
         <div id="slots-popup" class="popup">
@@ -33,12 +44,6 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
-    <script src="script.js"></script>
+    <script src="./Calendar/script.js"></script>
 </body>
 </html>

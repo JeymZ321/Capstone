@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Catalog - Brand</title>
+    <title>Shopping Cart - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
@@ -18,251 +18,109 @@
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
-        <div class="container"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"><a class="navbar-brand logo" href="index.html"></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container">
+            <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html">
+            <a class="navbar-brand logo" href="index.html"></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
-                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35;background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35px; background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
                 </ul>
             </div>
-            <a href="shopping-cart.html">
-                <img class="img-fluid" src="assets/img/shopcart.png" width="40px" style="margin: 0px;padding: 0px;">
-            </a>
         </div>
     </nav>
-    <main class="page catalog-page">
-        <section class="clean-block clean-catalog dark" style="color: rgb(0,0,0);">
+    <main class="page shopping-cart-page">
+        <section class="clean-block clean-cart dark">
             <div class="container">
                 <div class="block-heading">
-                    <h2 style="font-weight: bold;color: rgb(112,18,18);">Services</h2>
-                    <p>Lists all the services catered by Reynaldo's Car Care Center. This features all services with price estimations!&nbsp; (aalamin pa ni ecel mga services)</p>
+                    <h2 style="color: rgb(112,18,18);font-weight: bold;">Shopping Cart</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
                 </div>
                 <div class="content">
-                    <div class="row">
-                        <div class="col-md-3" style="background: #0a1044;">
-                            <div class="d-none d-md-block">
-                                <div class="filters">
-                                    <div class="filter-item">
-                                        <h3 style="color: rgb(255,255,255);">Categories</h3>
-                                        <div class="form-check" style="color: rgb(255,255,255);">
-                                            <input class="form-check-input" type="checkbox" id="formCheck-1">
-                                            <label class="form-check-label" for="formCheck-1">Aircon</label>
+                    <div class="row g-0">
+                        <div class="col-md-12 col-lg-8">
+                            <div class="items" id="cart-items">
+                                <!-- Product 1 -->
+                                <div class="product">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
                                         </div>
-                                        <div class="form-check" style="color: rgb(255,255,255);">
-                                            <input class="form-check-input" type="checkbox" id="formCheck-2">
-                                            <label class="form-check-label" for="formCheck-2">Tires</label>
+                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
+                                            <div class="product-specs">
+                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
                                         </div>
-                                        <div class="form-check" style="color: rgb(255,255,255);">
-                                            <input class="form-check-input" type="checkbox" id="formCheck-3">
-                                            <label class="form-check-label" for="formCheck-3">Mechanical</label>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
                                         </div>
-                                        <div class="form-check" style="color: rgb(255,255,255);">
-                                            <input class="form-check-input" type="checkbox" id="formCheck-4">
-                                            <label class="form-check-label" for="formCheck-4">Paint</label>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
                                         </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-md-none"><a class="btn btn-link d-md-none filter-collapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="filters" href="#filters" role="button">Filters<i class="icon-arrow-down filter-caret"></i></a>
-                                <div class="collapse" id="filters">
-                                    <div class="filters">
-                                        <div class="filter-item">
-                                            <h3 style="color: rgb(255,255,255);">Categories</h3>
-                                            <div class="form-check" style="color: rgb(255,255,255);"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Aircon</label></div>
-                                            <div class="form-check" style="color: rgb(255,255,255);"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">Tires</label></div>
-                                            <div class="form-check" style="color: rgb(255,255,255);"><input class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-3">Mechanical</label></div>
-                                            <div class="form-check" style="color: rgb(255,255,255);"><input class="form-check-input" type="checkbox" id="formCheck-4"><label class="form-check-label" for="formCheck-4">Paint</label></div>
+                                <!-- Product 2 -->
+                                <div class="product">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
                                         </div>
+                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
+                                            <div class="product-specs">
+                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
                                     </div>
                                 </div>
+                                <!-- Product 3 -->
+                                <div class="product">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
+                                        </div>
+                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
+                                            <div class="product-specs">
+                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
+                                    </div>
+                                </div>
+                                <!-- Repeat similar structure for other products -->
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <div class="products">
-                                <div class="row g-0">
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/CAR%20BODY%20PAINT%20(1).png"></a></div>
-                                            <div class="product-name"><a href="#">Car Body Paint</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg"><img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="clean-product-item">
-                                            <div class="image"><a href="#"><img class="img-fluid d-block mx-auto" src="assets/img/tech/image2.jpg"></a><a href="#"></a></div>
-                                            <div class="product-name"><a href="#">Lorem ipsum dolor sit amet</a></div>
-                                            <div class="about">
-                                                <div class="rating">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star.svg">
-                                                    <img src="assets/img/star-half-empty.svg">
-                                                    <img src="assets/img/star-empty.svg">
-                                                </div>
-                                                <div class="price">
-                                                    <h3>$100</h3>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <nav style="background: #ffffff;">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                                    </ul>
-                                </nav>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <h4><span class="text">Subtotal</span><span class="price" id="subtotal">$0</span></h4>
+                                <h4><span class="text">Discount</span><span class="price">$0</span></h4>
+                                <h4><span class="text">Shipping</span><span class="price">$0</span></h4>
+                                <h4><span class="text">Total</span><span class="price" id="total">$0</span></h4>
+                                <button class="btn btn-primary btn-lg d-block w-100" type="button">Get Appointment</button>
                             </div>
                         </div>
                     </div>
@@ -310,6 +168,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
-</body>
+    <script>
+        let total = 0;
 
+        function addToCart(button) {
+            const product = button.closest('.product');
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            total += price;
+
+            // Update subtotal and total in the summary
+            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function cancelItem(button) {
+            const product = button.closest('.product');
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            total -= price;
+
+            // Update subtotal and total in the summary 
+            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
+        }
+    </script>
+</body>
 </html>
