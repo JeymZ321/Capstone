@@ -31,7 +31,12 @@
 
 
         <button id="show-slots-btn">Show Available Slots</button>
-        <button class="btn" id="confirm-btn" onclick="window.location.href='payment.html'">Proceed to Payment</button>  
+        <button type="submit" id="submit-slots-btn">Submit</button> 
+        
+        <!-- Success message -->
+        <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
+            Your appointment has been submitted successfully!
+        </div>
 
         <!-- Popup Window for Slots -->
         <div id="slots-popup" class="popup">
@@ -44,6 +49,11 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
     <script src="./Calendar/script.js"></script>
 </body>
 </html>

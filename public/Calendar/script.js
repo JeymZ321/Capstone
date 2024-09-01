@@ -143,6 +143,23 @@ $(document).ready(function() {
         }
     });
 
+    $(document).ready(function() {
+        // Submit button functionality
+        $('#submit-slots-btn').on('click', function() {
+            // Display the success message
+            $('#success-message').fadeIn();
+
+             // Clear datepicker and timepicker inputs
+             $('#datepicker').val('');
+             $('#timepicker').val('');
+            
+            // Optionally, hide the success message after a few seconds
+            setTimeout(function() {
+                $('#success-message').fadeOut();
+            }, 3000); // Hide after 3 seconds
+        });
+    });
+
     // Initialize the page with default slots and availability
     createSlots();
     updateAvailableSlots();
