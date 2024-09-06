@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const appointmentSchema = new Schema({
 
-    CustomerId: {type: Number, required: true, trim: true},
-    ScheduledId: { type: Number, required: true, trim: true },
-    Status: { type: String, required: true, trim: true },
-    SelectedServices: { type: String, required: true, trim: true },
-    AdditionalInfo: { type: String, required: true, trim: true },
-    
+const appointmentSchema = new mongoose.Schema({
+    Fullname: { type: String, required: true, trim: true },
+    Address: { type: String, required: true, trim: true },
+    Contact: { type: String, required: true, trim: true },
+    Email: { type: String, required: true, trim: true },
+    datepicker: { type: Date, required: false },  // Properly set as Date type
+    timepicker: { type: String, required: false, trim: true },
+    slots: { type: [String], required: true }  // Storing slots as an array of strings
 }, {
-    timestamps: true
-});     
+    timestamps: true  // Automatically adds createdAt and updatedAt timestamps
+});
 
-
-const appointment = mongoose.model('Appointment', appointmentSchema);
-
-module.exports = appointment;
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+module.exports = Appointment;

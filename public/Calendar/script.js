@@ -68,7 +68,11 @@ $(document).ready(function() {
         startTime: '08:00',
         dynamic: false,
         dropdown: true,
-        scrollbar: true
+        scrollbar: true,
+
+        onselect: function(timeText) {
+            currentSelectedTime = timeText;
+        }
     });
 
     // Handle slot selection/deselection
@@ -119,7 +123,7 @@ $(document).ready(function() {
     // Confirm and lock slots for the current date
     $("#confirm-btn").click(function() {
         $("#slots-popup").fadeOut();
-        alert("Your slots for " + currentSelectedDate + " have been confirmed!");
+        //alert("Your slots for " + currentSelectedDate + " have been confirmed!");
 
         // Mark the selected slots as confirmed and disable further changes
         if (!confirmedSlots[currentSelectedDate]) {
@@ -148,6 +152,7 @@ $(document).ready(function() {
         $('#submit-slots-btn').on('click', function() {
             // Display the success message
             $('#success-message').fadeIn();
+            alert("Your slots for " + currentSelectedDate + " have been confirmed!");
 
              // Clear datepicker and timepicker inputs
              $('#datepicker').val('');

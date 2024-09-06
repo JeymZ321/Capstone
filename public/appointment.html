@@ -1,100 +1,234 @@
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>Appointment Form</title>
-        <meta name="description" content="This is the Login page">
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-        <link rel="stylesheet" href="./Appointment/appointment.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Appointment Form</title>
+    <meta name="description" content="This is the Login page">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="./Appointment/appointment.css">
+    <link rel="stylesheet" href="./Calendar/style.css">
+</head>
 
-    <body>
-        <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
-            <div class="container">
-                <button class="navbar-toggler" data-bs-toggle="collapse">
-                    <span class="visually-hidden">Toggle navigation</span>
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a href="index.html">
-                    <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
-                </a> 
-            </div>
-        </nav>
-        
-        <main>
-            <div class="form-container">
-                <form class="appointment-form">
-                    <h2>Appointment Form</h2>
-                    <div class="section">
-                        <h3>Customer Information</h3>
-                        <label>Full Name: <input type="text" name="name" id="Fullname" required></label>
-                        <label>Address: <input type="text" name="address" id="Address" required></label>
-                        <label>Contact #: <input type="text" name="contact" id="Contact" required></label>
-                        <label>Email: <input type="email" name="email" id="Email" required></label>
-                    </div>
-                    </form>
-                    <div class="section">
-                        <h3>Vehicle Information</h3>
-                        <label>Brand: <input type="text" name="brand"></label>
-                        <label>Color: <input type="text" name="color"></label>
-                        <label>Year Model: <input type="text" name="year_model"></label>
-                        <label>Plate #: <input type="text" name="plate"></label>
-                    </div>
-                    <div class="section">
-                        <h3>Estimated Price Breakdown:</h3>
-                        <p>Service Estimation: Php ####</p>
-                        <p>Towing Fee: Php ####</p>
-                        <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
-                        <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
-                        <input class="form-check-input" type="checkbox" name="terms" required> 
-                    </div>
-                    <div class="section">
-                        <h3>Car Body Panels Checklist (optional)</h3>
-                        <input class="form-check-input" type="checkbox" name="panel1" id="panel1">
-                        <label class="form-check-inline" for="panel1">Panel1</label>
-                        
-                        <input class="form-check-input" type="checkbox" name="panel2" id="panel2">
-                        <label class="form-check-inline" for="panel2">Panel2</label>
-                        
-                        <input class="form-check-input" type="checkbox" name="panel3" id="panel3">
-                        <label class="form-check-inline" for="panel3">Panel3</label>
-                        
-                        <input class="form-check-input" type="checkbox" name="panel4" id="panel4">
-                        <label class="form-check-inline" for="panel4">Panel4</label>
-                    </div>
-                    <div class="section">
-                        <h3>Car Functionality:</h3>
-                        <label class="form-check-inline">Car is functional and can run</label>
-                        <input type="checkbox" name="functionality" value="functional">
-                        
-                        <label class="form-check-inline">Car is not functional (+Php ### for Towing)</label>
-                        <input type="checkbox" name="functionality" value="non-functional">
-                    </div>
-                    <a class="btn btn-primary" role="button" href="calendar.html">Get Slots</a>
-                </form>
-            </div>
-        </main>
-
-        <!-- Terms and Conditions Modal -->
-        <div id="terms-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">×</span>
-                <h2>Terms and Conditions</h2>
-                <p>These terms and conditions outline the rules and regulations for the use of Reynaldo's Car Care Center's services.</p>
-                <p>By booking an appointment, you agree to these terms and conditions. Please read them carefully.</p>
-                <p><strong>Service Estimation:</strong> The estimated price for services is subject to change based on the actual inspection of the vehicle.</p>
-                <p><strong>Reservation Fee:</strong> The reservation fee is non-refundable and is required to confirm your appointment.</p>
-                <p><strong>Towing Service:</strong> If the car is non-functional, an additional fee will be charged for towing services.</p>
-                <p><strong>Privacy Policy:</strong> Your personal information will be handled with care and will not be shared with third parties without your consent.</p>
-                <p>For more details, please contact us.</p>
-            </div>
+<body>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+        <div class="container">
+            <button class="navbar-toggler" data-bs-toggle="collapse">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="index.html">
+                <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
+            </a> 
         </div>
+    </nav>
+    
+    <main>
+        <div class="form-container">
+            <form class="appointment-form" id="appointmentform">
+                <h2>Appointment Form</h2>
+                <div class="section">
+                    <h3>Customer Information</h3>
+                    <label>Full Name: <input type="text" name="Fullname" id="Fullname" required></label>
+                    <label>Address: <input type="text" name="Address" id="Address" required></label>
+                    <label>Contact #: <input type="text" name="Contact" id="Contact" required></label>
+                    <label>Email: <input type="email" name="Email" id="Email" required></label>
+                </div>
+                <div class="section">
+                    <h3>Vehicle Information</h3>
+                    <label>Brand: <input type="text" name="Brand" id="Brand"></label>
+                    <label>Color: <input type="text" name="Color" id="Color"></label>
+                    <label>Year Model: <input type="text" name="YearModel" id="YearModel"></label>
+                    <label>Plate #: <input type="text" name="Plate" id="Plate"></label>
+                </div>
+                <div class="section">
+                    <h3>Estimated Price Breakdown:</h3>
+                    <p>Service Estimation: Php ####</p>
+                    <p>Towing Fee: Php ####</p>
+                    <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
+                    <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
+                    <input class="form-check-input" type="checkbox" name="terms" required> 
+                </div>
+                <div class="section">
+                    <h3>Car Body Panels Checklist (optional)</h3>
+                    <input class="form-check-input" type="checkbox" name="panel1" id="panel1" value="panel1">
+                    <label class="form-check-inline" for="panel1">Panel1</label>
+                    
+                    <input class="form-check-input" type="checkbox" name="panel2" id="panel2" value="panel2">
+                    <label class="form-check-inline" for="panel2">Panel2</label>
+                    
+                    <input class="form-check-input" type="checkbox" name="panel3" id="panel3" value="panel3">
+                    <label class="form-check-inline" for="panel3">Panel3</label>
+                    
+                    <input class="form-check-input" type="checkbox" name="panel4" id="panel4" value="panel4">
+                    <label class="form-check-inline" for="panel4">Panel4</label>
+                </div>
+                <div class="section">
+                    <h3>Car Functionality:</h3>
+                    <label class="form-check-inline">Car is functional and can run</label>
+                    <input type="checkbox" name="functionality" value="functional" id="functional">
+                    
+                    <label class="form-check-inline">Car is not functional (+Php ### for Towing)</label>
+                    <input type="checkbox" name="functionality" value="nonfunctional" id="nonfunctional">
+                </div>
+
+                <div class="container">
+                    <h1>Appointment Scheduler</h1>
+                    <label for="datepicker">Select Date:</label>
+                    <input type="text" name="datepicker" id="datepicker" readonly>
+                    
+                    <label for="timepicker">Select Time:</label>
+                    <input type="text" name="timepicker" id="timepicker" readonly>
+
+                    <button id="show-slots-btn" type="button">Show Available Slots</button>
+                    
+                    <!-- Popup Window for Slots -->
+                    <div id="slots-popup" class="popup">
+                        <div class="popup-content">
+                            <span class="close">&times;</span>
+                            <h2>Available Slots</h2>
+                            <div id="slots">
+                                <!-- Add checkboxes or buttons here for selecting slots -->
+                                <label><input type="checkbox" class="slot" value="Slot 1"> Slot 1</label>
+                                <label><input type="checkbox" class="slot" value="Slot 2"> Slot 2</label>
+                                <label><input type="checkbox" class="slot" value="Slot 3"> Slot 3</label>
+                                <label><input type="checkbox" class="slot" value="Slot 4"> Slot 5</label>
+                                <label><input type="checkbox" class="slot" value="Slot 5"> Slot 5</label>
+                                <label><input type="checkbox" class="slot" value="Slot 6"> Slot 6</label>
+                                <label><input type="checkbox" class="slot" value="Slot 7"> Slot 7</label>
+                                <label><input type="checkbox" class="slot" value="Slot 8"> Slot 8</label>
+                                <label><input type="checkbox" class="slot" value="Slot 9"> Slot 9</label>
+                                <label><input type="checkbox" class="slot" value="Slot 10"> Slot 10</label>
+                                <label><input type="checkbox" class="slot" value="Slot 11"> Slot 11</label>
+                                <label><input type="checkbox" class="slot" value="Slot 12"> Slot 12</label>
+                                <label><input type="checkbox" class="slot" value="Slot 13"> Slot 13</label>
+                                <label><input type="checkbox" class="slot" value="Slot 14"> Slot 14</label>
+                                <label><input type="checkbox" class="slot" value="Slot 15"> Slot 15</label>
+                                <label><input type="checkbox" class="slot" value="Slot 16"> Slot 16</label>
+                                <label><input type="checkbox" class="slot" value="Slot 17"> Slot 17</label>
+                                <label><input type="checkbox" class="slot" value="Slot 17"> Slot 18</label>
+                                <label><input type="checkbox" class="slot" value="Slot 19"> Slot 19</label>
+                                <label><input type="checkbox" class="slot" value="Slot 20"> Slot 20</label>
+                                <label><input type="checkbox" class="slot" value="Slot 21"> Slot 21</label>
+                                <label><input type="checkbox" class="slot" value="Slot 22"> Slot 22</label>
+                                <label><input type="checkbox" class="slot" value="Slot 23"> Slot 23</label>
+                                <label><input type="checkbox" class="slot" value="Slot 24"> Slot 24</label>
+                                <label><input type="checkbox" class="slot" value="Slot 25"> Slot 26</label>
+                                <label><input type="checkbox" class="slot" value="Slot 26"> Slot 26</label>
+                                <!-- Add more slots as needed -->
+                            </div>
+                            <p id="availability">Slots Available: <span id="available-slots">26</span></p>
+                            <button id="confirm-btn" type="button">Confirm</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-slots-btn">Submit</button> 
+                    
+                    <!-- Success message -->
+                    <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
+                        Your appointment has been submitted successfully!
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Terms and Conditions Modal -->
+    <div id="terms-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>Terms and Conditions</h2>
+            <p>These terms and conditions outline the rules and regulations for the use of Reynaldo's Car Care Center's services.</p>
+            <p>By booking an appointment, you agree to these terms and conditions. Please read them carefully.</p>
+            <p><strong>Service Estimation:</strong> The estimated price for services is subject to change based on the actual inspection of the vehicle.</p>
+            <p><strong>Reservation Fee:</strong> The reservation fee is non-refundable and is required to confirm your appointment.</p>
+            <p><strong>Towing Service:</strong> If the car is non-functional, an additional fee will be charged for towing services.</p>
+            <p><strong>Privacy Policy:</strong> Your personal information will be handled with care and will not be shared with third parties without your consent.</p>
+            <p>For more details, please contact us.</p>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#appointmentform').submit(function(event) {
+                event.preventDefault();
+            
+                // Collect form values
+                var Fullname = $('#Fullname').val();
+                var Address = $('#Address').val();
+                var Contact = $('#Contact').val();
+                var Email = $('#Email').val();
+                var Brand = $('#Brand').val();
+                var Color = $('#Color').val();
+                var YearModel = $('#YearModel').val();
+                var Plate = $('#Plate').val();
+                var panel1 = $('#panel1').is(':checked') ? $('#panel1').val() : '';
+                var panel2 = $('#panel2').is(':checked') ? $('#panel2').val() : '';
+                var panel3 = $('#panel3').is(':checked') ? $('#panel3').val() : '';
+                var panel4 = $('#panel4').is(':checked') ? $('#panel4').val() : '';
+                var functionality = $('#functional').is(':checked') ? 'functional' : ($('#nonfunctional').is(':checked') ? 'nonfunctional' : '');
+                var datepicker = $('#datepicker').val();
+                var timepicker = $('#timepicker').val();
+                var slots = $('#slots').val();  // Ensure this input exists
+            
+                
+            
+                // AJAX request to send data to backend
+                $.ajax({
+                    type: 'POST',
+                    url: '/appointment',  // Ensure the server route is set correctly
+                    data: JSON.stringify({
+                        Fullname: Fullname,
+                        Address: Address,
+                        Contact: Contact,
+                        Email: Email,
+                        Brand: Brand,
+                        Color: Color,
+                        YearModel: YearModel,
+                        Plate: Plate,
+                        panel1: panel1,
+                        panel2: panel2,
+                        panel3: panel3,
+                        panel4: panel4,
+                        functionality: functionality,
+                        datepicker: datepicker,
+                        timepicker: timepicker,
+                        slots: slots
+                    }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        if (response.message === 'Appointment created successfully') {
+                            $('#success-message').show();
+                            window.location.href = '/success';  // Redirect if successful
+                        } else {
+                            alert('Failed to create appointment.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Provide more informative error message
+                        alert('An error occurred: ' + xhr.responseText || status || error);
+                        console.error('Error details:', xhr.responseText);  // Log error for debugging
+                    }
+                });
+            });
+        });
+    </script>
+    
         
-        <script src="./Appointment/appointment.js"></script>
+    
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
+    <script src="./Calendar/script.js"></script>
+    <script src="./Appointment/appointment.js"></script>
+</body>
 
-    </body>
-
-    </html>
+</html>
