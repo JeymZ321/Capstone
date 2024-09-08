@@ -26,5 +26,5 @@ const vehicleSchema = new Schema({
     timestamps: true  // Automatically adds createdAt and updatedAt timestamps
 });
 
-const Vehicle = mongoose.model('Vehicle', vehicleSchema);
+const Vehicle = mongoose.model('Vehicle', vehicleSchema); //D KO ALAM BAKIT GANON UNG LOGIC HAHAA
 module.exports = Vehicle;

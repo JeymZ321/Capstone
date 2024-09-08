@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const appointment = require('./models/Appointment');
 const customer = require('./models/Customer');
 const vehicle = require('./models/Vehicle');
+const admin = require('./models/Admin');
 const path = require('path');
 const port = 3000;
 

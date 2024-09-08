@@ -13,5 +13,5 @@ const appointmentSchema = new mongoose.Schema({
     timestamps: true  // Automatically adds createdAt and updatedAt timestamps
 });
 
-const Appointment = mongoose.model('Appointment', appointmentSchema);
+const Appointment = mongoose.model('Appointment', appointmentSchema);// D KO RIN BAKIT GANON LOGIC HAHAA
 module.exports = Appointment;
