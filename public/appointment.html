@@ -28,21 +28,77 @@
     <main>
         <div class="form-container">
             <form class="appointment-form" id="appointmentform">
-                <h2>Appointment Form</h2>
+                <h2>Registration Form</h2>
                 <div class="section">
                     <h3>Customer Information</h3>
-                    <label>Full Name: <input type="text" name="Fullname" id="Fullname" required></label>
+                    <label>Username: <input type="text" name="Username" id="username" required></label>
+                    <label>Password: <input type="password" name="Password" id="password" required></label>
+                    <label>Phone # <input type="text" name="Phonenumber" id="Phonenumber"</label>
+                    <!--<label>Full Name: <input type="text" name="Fullname" id="Fullname" required></label>
                     <label>Address: <input type="text" name="Address" id="Address" required></label>
                     <label>Contact #: <input type="text" name="Contact" id="Contact" required></label>
-                    <label>Email: <input type="email" name="Email" id="Email" required></label>
+                    <label>Email: <input type="email" name="Email" id="Email" required></label>-->
                 </div>
                 <div class="section">
+                    <!--Dropdown list-->
                     <h3>Vehicle Information</h3>
-                    <label>Brand: <input type="text" name="Brand" id="Brand"></label>
-                    <label>Color: <input type="text" name="Color" id="Color"></label>
-                    <label>Year Model: <input type="text" name="YearModel" id="YearModel"></label>
-                    <label>Plate #: <input type="text" name="Plate" id="Plate"></label>
+
+                    <!--Vehicles /CHANGE INTO PLUS BUTTON--> 
+                    <label for="Vehicle">Select Vehicle:</label>
+                    <select name="ATorMT" id="ATorMT">
+                        <option value="" disabled selected>Select AT or MT</option>
+                        <option value="V1">1</option>
+                        <option value="V2">2</option>
+                        <option value="V3">3</option>
+                        <option value="V4">4</option>
+                        <option value="V5">5</option>
+                    </select>
+                    
+                    <!--AT or MT Dropdown-->
+                    <label for="ATorMT">AT or MT:</label>
+                    <select name="ATorMT" id="ATorMT">
+                        <option value="" disabled selected>Select AT or MT</option>
+                        <option value="AT">Automatic</option>
+                        <option value="MT">Manual</option>
+                    </select>
+                    <!-- Brand Dropdown -->
+                    <label for="Brand">Brand:</label>
+                    <select name="Brand" id="Brand">
+                        <option value="" disabled selected>Select Brand</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Nissan">Nissan</option>
+                    </select>
+                
+                    <!-- Color Dropdown -->
+                    <label for="Color">Color:</label>
+                    <select name="Color" id="Color">
+                        <option value="" disabled selected>Select Color</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Black">Black</option>
+                        <option value="White">White</option>
+                        <option value="Silver">Silver</option>
+                    </select>
+                
+                    <!-- Year Model Dropdown -->
+                    <label for="YearModel">Year Model:</label>
+                    <select name="YearModel" id="YearModel">
+                        <option value="" disabled selected>Select Year Model</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                
+                    <!-- Plate Input (left as a text field) -->
+                    <label for="Plate">Plate #:</label>
+                    <input type="text" name="Plate" id="Plate">
                 </div>
+                
                 <div class="section">
                     <h3>Estimated Price Breakdown:</h3>
                     <p>Service Estimation: Php ####</p>
@@ -53,34 +109,45 @@
                 </div>
                 <div class="section">
                     <h3>Car Body Panels Checklist (optional)</h3>
-                    <input class="form-check-input" type="checkbox" name="panel1" id="panel1" value="panel1">
-                    <label class="form-check-inline" for="panel1">Panel1</label>
                     
-                    <input class="form-check-input" type="checkbox" name="panel2" id="panel2" value="panel2">
-                    <label class="form-check-inline" for="panel2">Panel2</label>
+                    <!-- Panel 1 -->
+                    <button type="button" id="panel1Btn" class="btn btn-outline-primary" onclick="togglePanel('panel1')">Panel 1</button>
+                    <input type="checkbox" name="panel1" id="panel1" value="panel1" class="d-none">
                     
-                    <input class="form-check-input" type="checkbox" name="panel3" id="panel3" value="panel3">
-                    <label class="form-check-inline" for="panel3">Panel3</label>
+                    <!-- Panel 2 -->
+                    <button type="button" id="panel2Btn" class="btn btn-outline-primary" onclick="togglePanel('panel2')">Panel 2</button>
+                    <input type="checkbox" name="panel2" id="panel2" value="panel2" class="d-none">
                     
-                    <input class="form-check-input" type="checkbox" name="panel4" id="panel4" value="panel4">
-                    <label class="form-check-inline" for="panel4">Panel4</label>
+                    <!-- Panel 3 -->
+                    <button type="button" id="panel3Btn" class="btn btn-outline-primary" onclick="togglePanel('panel3')">Panel 3</button>
+                    <input type="checkbox" name="panel3" id="panel3" value="panel3" class="d-none">
+                    
+                    <!-- Panel 4 -->
+                    <button type="button" id="panel4Btn" class="btn btn-outline-primary" onclick="togglePanel('panel4')">Panel 4</button>
+                    <input type="checkbox" name="panel4" id="panel4" value="panel4" class="d-none">
                 </div>
                 <div class="section">
                     <h3>Car Functionality:</h3>
-                    <label class="form-check-inline">Car is functional and can run</label>
-                    <input type="checkbox" name="functionality" value="functional" id="functional">
                     
-                    <label class="form-check-inline">Car is not functional (+Php ### for Towing)</label>
-                    <input type="checkbox" name="functionality" value="nonfunctional" id="nonfunctional">
+                    <label>Is the car functional?</label>
+                    
+                    <!-- Yes Button -->
+                    <button type="button" id="yesBtn" class="btn btn-outline-success" onclick="setFunctionality('functional')">Yes</button>
+                    
+                    <!-- No Button -->
+                    <button type="button" id="noBtn" class="btn btn-outline-danger" onclick="setFunctionality('nonfunctional')">No</button>
+                    
+                    <!-- Hidden input to store the selected functionality -->
+                    <input type="hidden" name="functionality" id="functionality" value="">
                 </div>
 
                 <div class="container">
                     <h1>Appointment Scheduler</h1>
                     <label for="datepicker">Select Date:</label>
-                    <input type="text" name="datepicker" id="datepicker" readonly>
+                    <input type="text" name="datepicker" id="datepicker"    >
                     
                     <label for="timepicker">Select Time:</label>
-                    <input type="text" name="timepicker" id="timepicker" readonly>
+                    <input type="text" name="timepicker" id="timepicker" >
 
                     <button id="show-slots-btn" type="button">Show Available Slots</button>
                     
@@ -156,10 +223,12 @@
                 event.preventDefault();
             
                 // Collect form values
-                var Fullname = $('#Fullname').val();
-                var Address = $('#Address').val();
-                var Contact = $('#Contact').val();
-                var Email = $('#Email').val();
+                //var Fullname = $('#Fullname').val();
+                //var Address = $('#Address').val();
+                //var Contact = $('#Contact').val();
+                //var Email = $('#Email').val();
+                var username = $('#username').val();
+                var password = $('#password').val();
                 var Brand = $('#Brand').val();
                 var Color = $('#Color').val();
                 var YearModel = $('#YearModel').val();
@@ -180,10 +249,12 @@
                     type: 'POST',
                     url: '/appointment',  // Ensure the server route is set correctly
                     data: JSON.stringify({
-                        Fullname: Fullname,
-                        Address: Address,
-                        Contact: Contact,
-                        Email: Email,
+                        //Fullname: Fullname,
+                        //Address: Address,
+                        //Contact: Contact,
+                        //Email: Email,
+                        username: username,
+                        password: password,
                         Brand: Brand,
                         Color: Color,
                         YearModel: YearModel,
@@ -199,8 +270,9 @@
                     }),
                     contentType: 'application/json',
                     success: function(response) {
-                        if (response.message === 'Appointment created successfully') {
+                        if (response.message === 'Appointment created successfully'+ datepicker) {
                             $('#success-message').show();
+                          
                             window.location.href = '/success';  // Redirect if successful
                         } else {
                             alert('Failed to create appointment.');
@@ -209,7 +281,7 @@
                     error: function(xhr, status, error) {
                         // Provide more informative error message
                         alert('An error occurred: ' + xhr.responseText || status || error);
-                        console.error('Error details:', xhr.responseText);  // Log error for debugging
+                        console.error('Error details:', xhr.responseText );  // Log error for debugging
                     }
                 });
             });

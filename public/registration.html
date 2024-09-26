@@ -39,6 +39,7 @@
             <div class="content">
                 <h2>Registration</h2>
                 <div class="form" id="createAccForm">
+                    <!--
                     <div class="inputBox">
                         <input type="text"  id="createUsername" required>
                         <i>Username</i> 
@@ -47,12 +48,13 @@
                         <input type="password" id="createPassword" required>
                         <i>Password</i> 
                     </div>
+                    -->
                     <div class="inputBox">
-                        <input type="text" id="createEmail" required>
+                        <input type="text" id="email" required>
                         <i>Email</i> 
                     </div>
                     <div class="inputBox">
-                        <input type="submit" id="createAccountButton" value="Create Account">
+                        <input type="submit" id="submit" value="Create Account">
                     </div>
                 </div>
             </div>
@@ -66,34 +68,32 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-    $('#createAccountButton').click(function() {
+            $('#submit').click(function(e) {
+                e.preventDefault();  // Prevent default form submission behavior
 
-        /*$('#createAccountButton').click(function(event) {
-            event.preventDefault();*/
-            
-        const username = $('#createUsername').val();
-        const password = $('#createPassword').val();
-        const email = $('#createEmail').val();
+                const email = $('#email').val();
 
-        $.ajax({
-            url: '/create-account',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                username: username,
-                password: password,
-                email: email
-            }),
-            success: function(response) {
-                alert(response.message);
-                $('#createAccForm')[0].reset();
-            },
-            error: function(error) {
-                alert('Error creating account');
-            }
+                if (!email) {
+                    alert('Please enter a valid email.');
+                    return;
+                }
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/send-registration-email',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ email: email }),
+                    success: function(response) {
+                        alert('Registration email sent!');  // Success message
+                        $('#registerForm')[0].reset();  // Reset the form
+                    },
+                    error: function(error) {
+                        alert('Error sending registration email.');
+                    }
+                });
+            });
         });
-    });
-});
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

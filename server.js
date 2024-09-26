@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+require("dotenv").config();
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const appointment = require('./models/Appointment');
+const appointment = require('./models/Appointment');  
 const customer = require('./models/Customer');
 const vehicle = require('./models/Vehicle');
 const admin = require('./models/Admin');
@@ -19,6 +21,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const uri = "mongodb://localhost:27017/UsersDB";
 
+app.get('/appointment', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'appointment.html'));
+});
+app.use('/appointmentcss', express.static(path.join(__dirname, 'public', 'Appointment', 'appointment.css')));
+
 // CONNECT TO MONGODB
 mongoose.connect(uri).then(() => {
   console.log('Connected to MongoDB');
@@ -31,7 +38,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html')); //LANDING PAGE
 });
 
-// CREATING AN ACCOUNT
+// CREATING AN ACCOUNT FOR USERS  //CHANGE INTO /appointment 
 app.post('/create-account', async (req, res) => {
   const { username, password, email } = req.body;
   try {
@@ -57,12 +64,12 @@ app.post('/create-account', async (req, res) => {
   }
 });
 
-// LOGIN AN ACCOUNT
+// LOGIN AN ACCOUNT FOR USERS
 app.post('/loginroute', async (req, res) => {
   const { username, password } = req.body;
   try {
     const Customer = await customer.findOne({ username });
-    if (!Customer) {
+    if (!Customer) {  
       return res.status(400).json({ message: 'Invalid username or password' });
     }
 
@@ -84,7 +91,7 @@ app.post('/loginroute', async (req, res) => {
   }
 });
 
-// APPOINTMENT FORM
+// APPOINTMENT FORM CONVERT THE PANEL INTO INPUT TEXT!!!!
 app.post('/appointment', async (req, res) => {
   const {
     Fullname,
@@ -106,9 +113,7 @@ app.post('/appointment', async (req, res) => {
   } = req.body;
 
   // Validate input
-  if (!datepicker || !timepicker) {
-    return res.status(400).json({ error: 'Date and time are required.' });
-  }
+
 
   try {
     // Create and save the new appointment
@@ -125,10 +130,10 @@ app.post('/appointment', async (req, res) => {
 
     // Combine panels into an object
     const CarBodyPanel = {
-      panel1: panel1 || false,
-      panel2: panel2 || false,
-      panel3: panel3 || false,
-      panel4: panel4 || false
+      panel1: panel1 === true,
+      panel2: panel2 === true,
+      panel3: panel3 === true,
+      panel4: panel4 === true
     };
 
     // Create and save the new vehicle
@@ -150,7 +155,47 @@ app.post('/appointment', async (req, res) => {
   }
 });
 
+// Email transporter setup (use environment variables for security)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+      user: 'caynojames07@gmail.com',
+      pass: 'fddz jopx zhia rffr',  // Consider using app passwords for Gmail
+  },
+});
+  
+// CHANGE INTO /create-account
+app.post('/send-registration-email', (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).send({ message: 'Email is required' });
+}
+  
+  const registrationLink = `http://127.0.0.1:3000/public/appointment.html?email=${encodeURIComponent(email)}`;
 
+  // Sending email
+  const mailOptions = {
+      from: {
+        name:'Reynaldos Car Care',
+        address: 'caynojames07@gmail'
+      },
+      to: email,
+      subject: 'Complete Your Registration',
+      text: `Thank you for registering! Click the link to confirm your registration: ${registrationLink}`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          console.log('Error sending email:', error);
+          return res.status(500).send('Error sending email.');
+      }
+      console.log('Email sent: ' + info.response);
+      res.status(200).send('Registration email sent.');
+  });
+});
 
 
 // CONNECTING TO THE PORT

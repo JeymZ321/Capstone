@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 
 
 const appointmentSchema = new mongoose.Schema({
-    Fullname: { type: String, required: true, trim: true },
-    Address: { type: String, required: true, trim: true },
-    Contact: { type: String, required: true, trim: true },
-    Email: { type: String, required: true, trim: true },
-    datepicker: { type: Date, required: false },  // Properly set as Date type
+    //Fullname: { type: String, required: true, trim: true },
+    //Address: { type: String, required: true, trim: true },
+    //Contact: { type: String, required: true, trim: true },
+    //:Email { type: String, required: true, trim: true },
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    iv: { type: String, required: true },
+    key: { type: String, required: true },
+    datepicker: { type: String, required: false },  // Properly set as Date type
     timepicker: { type: String, required: false, trim: true },
     slots: { type: [String], required: true }  // Storing slots as an array of strings
 }, {

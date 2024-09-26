@@ -48,7 +48,7 @@
         <section class="clean-block clean-cart dark">
             <div class="container">
                 <div class="block-heading">
-                    <h2 style="color: rgb(112,18,18);font-weight: bold;">Shopping Cart</h2>
+                    <h2 style="color: rgb(112,18,18);font-weight: bold;">SERVICES</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
                 </div>
                 <div class="content">
@@ -74,7 +74,7 @@
                                         <div class="col-6 col-md-2">
                                             <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
                                         </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
                                     </div>
                                 </div>
                                 <!-- Product 2 -->
@@ -96,7 +96,7 @@
                                         <div class="col-6 col-md-2">
                                             <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
                                         </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
                                     </div>
                                 </div>
                                 <!-- Product 3 -->
@@ -118,7 +118,7 @@
                                         <div class="col-6 col-md-2">
                                             <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
                                         </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="120">$120</span></div>
+                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
                                     </div>
                                 </div>
                                 <!-- Repeat similar structure for other products -->
@@ -127,10 +127,9 @@
                         <div class="col-md-12 col-lg-4">
                             <div class="summary">
                                 <h3>Summary</h3>
-                                <h4><span class="text">Subtotal</span><span class="price" id="subtotal">$0</span></h4>
-                                <h4><span class="text">Discount</span><span class="price">$0</span></h4>
-                                <h4><span class="text">Shipping</span><span class="price">$0</span></h4>
-                                <h4><span class="text">Total</span><span class="price" id="total">$0</span></h4>
+                                <h4><span class="text">Subtotal</span><span class="price" id="subtotal">PHP 0</span></h4>
+                                <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">PHP 500.00</span></h4>
+                                <h4><span class="text">Total</span><span class="price" id="total">PHP 0</span></h4>
                                 <a href="appointment.html"><button class="btn btn-primary btn-lg d-block w-100" type="button">Get Appointment</button></a>
                             </div>
                         </div>
@@ -180,27 +179,33 @@
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     <script>
-        let total = 0;
+        let total = 500; // Initialize with the Appointment Fee
+let isAppointmentFeeAdded = true; // The fee is already added to the total
 
-        function addToCart(button) {
-            const product = button.closest('.product');
-            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-            total += price;
+function addToCart(button) {
+    const product = button.closest('.product');
+    const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+    total += price;
 
-            // Update subtotal and total in the summary
-            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
-            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
-        }
+    // Update subtotal and total in the summary
+    document.getElementById('subtotal').innerText = `PHP ${(total - 500).toFixed(2)}`; // Subtract the Appointment Fee for Subtotal
+    document.getElementById('total').innerText = `PHP ${total.toFixed(2)}`; // Total includes the Appointment Fee
+}
 
-        function cancelItem(button) {
-            const product = button.closest('.product');
-            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-            total -= price;
+function cancelItem(button) {
+    const product = button.closest('.product');
+    const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+    
+    // Ensure the total does not go below the appointment fee (500)
+    if (total > 500) {
+        total -= price;
+    }
 
-            // Update subtotal and total in the summary 
-            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
-            document.getElementById('total').innerText = `$${total.toFixed(2)}`;
-        }
+    // Update subtotal and total in the summary
+    document.getElementById('subtotal').innerText = `PHP ${(total - 500).toFixed(2)}`; // Subtract the Appointment Fee for Subtotal
+    document.getElementById('total').innerText = `PHP ${total.toFixed(2)}`; // Total includes the Appointment Fee
+}
+
     </script>
 </body>
 </html>

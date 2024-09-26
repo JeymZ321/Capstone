@@ -26,4 +26,42 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = "none";
         }
     });
+    function setFunctionality(value) {
+        // Get the buttons and hidden input field
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const functionalityInput = document.getElementById('functionality');
+        
+        // Set the value of the hidden input based on the selected button
+        functionalityInput.value = value;
+        
+        // Change the button styles to indicate selection
+        if (value === 'functional') {
+            yesBtn.classList.remove('btn-outline-success');
+            yesBtn.classList.add('btn-success');
+            noBtn.classList.remove('btn-danger');
+            noBtn.classList.add('btn-outline-danger');
+        } else {
+            noBtn.classList.remove('btn-outline-danger');
+            noBtn.classList.add('btn-danger');
+            yesBtn.classList.remove('btn-success');
+            yesBtn.classList.add('btn-outline-success');
+        }
+    }
+    function togglePanel(panelId) {
+        const panelBtn = document.getElementById(panelId + 'Btn');
+        const panelCheckbox = document.getElementById(panelId);
+        
+        // Toggle the checkbox value
+        panelCheckbox.checked = !panelCheckbox.checked;
+        
+        // Change the button color based on the checked state
+        if (panelCheckbox.checked) {
+            panelBtn.classList.remove('btn-outline-primary');
+            panelBtn.classList.add('btn-primary');
+        } else {
+            panelBtn.classList.remove('btn-primary');
+            panelBtn.classList.add('btn-outline-primary');
+        }
+    }
 });

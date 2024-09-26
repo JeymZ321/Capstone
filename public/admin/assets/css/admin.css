@@ -1,0 +1,5 @@
+.sidebar .nav-item .nav-link.active {
+  font-weight: 700;
+  background: darkred;
+}
+
