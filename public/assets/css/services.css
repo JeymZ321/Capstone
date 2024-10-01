@@ -1,0 +1,252 @@
+
+.product {
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;   
+}
+
+
+
+.clean-block.clean-cart .items .product{
+    padding-bottom: 0px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.price {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+}
+
+.category-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.category-button {
+    flex: 1;
+    background-color: #000000;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0 5px;
+    border-radius: 8px;
+}
+
+.category-button:hover {
+    background-color: rgb(14, 17, 55);
+    transition: transform 0.3s ease;
+    transform: scale(1.1); 
+}
+
+.search-bar {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-to-cart{
+    background-color: #191b1d;
+}
+
+.product-name{
+    margin-top: 10px;
+}
+
+.col-12{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.price-per-item{
+    font-size: 17px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.cart-item img {
+    width: 100px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+
+.product-price {
+    margin-left: 10px; /* Adjust the value as needed */
+}
+
+.mobile-dropdown{
+    display: none;
+}
+
+.add-to-cart:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(169, 11, 11);
+}
+
+.appointmentbutton{
+    background-color:  rgb(169, 11, 11);
+    text-decoration: none;
+}
+
+#clear-all{
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    color:rgb(169, 11, 11);
+    text-decoration: underline  2px;
+    box-shadow: none;
+}
+
+.cancel-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom:20px;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+
+  .cancel-button img.x-icon {
+    width: 20px;  /* Adjust size here */
+    height: 20px; /* Adjust size here */
+}
+
+  .cancel-button:focus {
+    outline: none; /* Remove default outline on focus */
+  }
+
+
+
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .product {
+        display: flex !important;
+        flex-direction: row; /* Align image and content side by side */
+        align-items: center;
+        padding: 10px;
+    }
+
+    .product-image {
+        flex: 0 0 auto; /* Ensure image doesn't shrink */
+        margin-right: 10px; /* Space between image and text */
+        margin-bottom: 60px;
+    }
+
+    .product-image img {
+        width: 100px; /* Adjust the width as needed */
+        height: auto;
+        
+    }
+
+    .product-info {
+        flex: 1; /* Take up the remaining width */
+        text-align: left;
+        font-size: 12px;
+        display: flex;
+        flex-direction: co;
+    }
+
+    .product-name, .product-specs, .price {
+        margin: 5px 0; /* Add some space between text elements */
+    }
+    
+
+    .product-specs div {
+        margin-bottom: 5px; /* Space between each spec */
+    }
+
+    .price {
+        font-weight: bold;
+        color: #000;
+    }
+
+
+    .btn {
+        margin: 5px 0;
+    
+    }
+
+
+    .search-bar {
+        width: 90%;
+        margin: 0 auto 20px auto;
+    }
+
+    .cart-summary {
+        font-size: 12px;
+    }
+
+    .clean-block.clean-cart .items {
+        padding-top: 0px;
+    }
+
+    .search-bar{
+        margin-bottom: 0px;
+    }
+
+    .checkout-button {
+        font-size: 14px;
+    }
+
+    .category-button {
+        display: none; /* Hides the buttons on mobile */
+      }
+      .mobile-dropdown {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* Makes the dropdown more user-friendly on mobile */
+      }
+    
+}
+
+@media (min-width: 769px) { /* Targeting large screens */
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);  /* Single column layout by default (for mobile) */
+        grid-gap: 20px; 
+        margin: 20px 0;
+    }
+}
+
