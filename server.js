@@ -184,7 +184,7 @@ app.post('/send-registration-email', (req, res) => {
       },
       to: email,
       subject: 'Complete Your Registration',
-      text: `Thank you for registering! Click the link to confirm your registration: ${registrationLink}`
+      text: `You received this email for going on a site because you have visited our site. Click the link if you want to proceed for registration form. ${registrationLink}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

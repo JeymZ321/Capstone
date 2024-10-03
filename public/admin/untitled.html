@@ -1,9 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin CMS Dashboard</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/admin-styles.css">
+</head>
 <body>
     <div class="container-fluid">
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-                aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -22,6 +31,7 @@
         </nav>
 
         <div class="row mt-5">
+            <!-- Sidebar Menu -->
             <div class="col-md-3">
                 <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action active">CMS Dashboard</a>
@@ -30,8 +40,12 @@
                     <a href="#" class="list-group-item list-group-item-action">Settings</a>
                 </div>
             </div>
+
+            <!-- Main Content Area -->
             <div class="col-md-9">
                 <h2 class="mb-4">Admin CMS</h2>
+
+                <!-- Toolbar Buttons -->
                 <div class="btn-toolbar mb-3" role="toolbar">
                     <div class="btn-group mr-2" role="group">
                         <button type="button" class="btn btn-primary">Add New Page</button>
@@ -45,12 +59,93 @@
                         <button type="button" class="btn btn-danger">Logout</button>
                     </div>
                 </div>
-                <p>Welcome to the admin content management system. Use the buttons above to manage your website content and user access.</p>
+
+                <!-- CMS Content Area -->
+                <div id="cms-content">
+                    <p>Welcome to the admin content management system. Use the buttons above to manage your website content and user access.</p>
+
+                    <!-- Example Content Management Form -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            Add New Content
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="page-title">Page Title</label>
+                                    <input type="text" class="form-control" id="page-title" placeholder="Enter page title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="page-content">Page Content</label>
+                                    <textarea class="form-control" id="page-content" rows="5" placeholder="Enter page content"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Manage Pages Example -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            Manage Pages
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">Homepage <button class="btn btn-sm btn-primary float-right">Edit</button></li>
+                                <li class="list-group-item">About Us <button class="btn btn-sm btn-primary float-right">Edit</button></li>
+                                <li class="list-group-item">Services <button class="btn btn-sm btn-primary float-right">Edit</button></li>
+                                <li class="list-group-item">Contact Us <button class="btn btn-sm btn-primary float-right">Edit</button></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Example User Management -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            Manage Users
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>admin</td>
+                                        <td>admin@example.com</td>
+                                        <td>Administrator</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>editor</td>
+                                        <td>editor@example.com</td>
+                                        <td>Editor</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <!-- Add more users as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
+</html>

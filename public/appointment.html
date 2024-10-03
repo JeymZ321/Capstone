@@ -44,15 +44,24 @@
                     <h3>Vehicle Information</h3>
 
                     <!--Vehicles /CHANGE INTO PLUS BUTTON--> 
-                    <label for="Vehicle">Select Vehicle:</label>
-                    <select name="ATorMT" id="ATorMT">
-                        <option value="" disabled selected>Select AT or MT</option>
+                    <label for="Vehicle">How Many:</label>
+                    <select name="Vehicle" id="Vehicle">
+                        <option value="" disabled selected>How many vehicles you have</option>
                         <option value="V1">1</option>
                         <option value="V2">2</option>
                         <option value="V3">3</option>
                         <option value="V4">4</option>
                         <option value="V5">5</option>
                     </select>
+
+                    <!--Gas--> 
+                    <label for="Vehicle">Selec Gas Type:</label>
+                    <select name="Vehicle" id="Vehicle">
+                        <option value="" disabled selected>Type</option>
+                        <option value="gas">Gas</option>
+                        <option value="diesel">Diesel</option>
+                    </select>
+                    
                     
                     <!--AT or MT Dropdown-->
                     <label for="ATorMT">AT or MT:</label>
@@ -109,23 +118,57 @@
                 </div>
                 <div class="section">
                     <h3>Car Body Panels Checklist (optional)</h3>
-                    
-                    <!-- Panel 1 -->
-                    <button type="button" id="panel1Btn" class="btn btn-outline-primary" onclick="togglePanel('panel1')">Panel 1</button>
-                    <input type="checkbox" name="panel1" id="panel1" value="panel1" class="d-none">
-                    
-                    <!-- Panel 2 -->
-                    <button type="button" id="panel2Btn" class="btn btn-outline-primary" onclick="togglePanel('panel2')">Panel 2</button>
-                    <input type="checkbox" name="panel2" id="panel2" value="panel2" class="d-none">
-                    
-                    <!-- Panel 3 -->
-                    <button type="button" id="panel3Btn" class="btn btn-outline-primary" onclick="togglePanel('panel3')">Panel 3</button>
-                    <input type="checkbox" name="panel3" id="panel3" value="panel3" class="d-none">
-                    
-                    <!-- Panel 4 -->
-                    <button type="button" id="panel4Btn" class="btn btn-outline-primary" onclick="togglePanel('panel4')">Panel 4</button>
-                    <input type="checkbox" name="panel4" id="panel4" value="panel4" class="d-none">
+                
+                    <!-- Panel 1 Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel1Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Panel 1
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="panel1Dropdown">
+                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        </ul>
+                    </div>
+                
+                    <!-- Panel 2 Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel2Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Panel 2
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="panel2Dropdown">
+                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        </ul>
+                    </div>
+                
+                    <!-- Panel 3 Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel3Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Panel 3
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="panel3Dropdown">
+                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        </ul>
+                    </div>
+                
+                    <!-- Panel 4 Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel4Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Panel 4
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="panel4Dropdown">
+                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        </ul>
+                    </div>
                 </div>
+                
+                
                 <div class="section">
                     <h3>Car Functionality:</h3>
                     
