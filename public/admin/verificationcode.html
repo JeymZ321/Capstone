@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Verification</title>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-body">
+            <h4 class="card-title text-center">Enter Verification Code</h4>
+            <form id="verificationForm">
+              <div class="mb-3">
+                <input class="form-control" type="text" id="verificationCode" placeholder="Enter verification code" required>
+              </div>
+              <button class="btn btn-primary btn-block" id="verifyCodeBtn" type="submit">Verify Code</button>
+            </form>
+            <div class="text-center mt-3">
+              <a class="small" href="login.html">Already verified? Login here</a>
+            </div>
+            <div class="text-center mt-3">
+              <input type="email" id="email" class="form-control" placeholder="Enter your email for resend" required>
+              <button class="btn btn-secondary mt-3" id="resendCodeBtn">Resend Verification Code</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Handle verification code submission
+      $("#verifyCodeBtn").click(function (e) {
+        e.preventDefault();
+
+        const verificationCode = $("#verificationCode").val();
+
+        // Check if the verification code meets a certain length or criteria
+        if (verificationCode.length !== 6) {
+          alert("Please enter a valid 6-digit verification code.");
+          return;
+        }
+
+        // Disable the submit button to prevent multiple submissions
+        $("#verifyCodeBtn").prop("disabled", true).text("Verifying...");
+
+        // AJAX to verify the code
+        $.ajax({
+          type: 'POST',
+          url: '/verify-code', // Backend route for verification
+          data: JSON.stringify({ verificationCode }),
+          contentType: 'application/json',
+          success: function (response) {
+            console.log('Verification successful!', response); // Log for debugging
+            alert('Verification successful!');
+            window.location.href = 'login.html'; // Redirect to login page
+          },
+          error: function (xhr, status, error) {
+            console.error('Verification failed:', xhr.responseText); // Log for debugging
+            alert('Invalid or expired verification code. Please try again.');
+
+            // Re-enable the submit button
+            $("#verifyCodeBtn").prop("disabled", false).text("Verify Code");
+
+            // Clear the input field
+            $("#verificationCode").val('');
+          }
+        });
+      });
+
+      // Resend verification code logic
+      $("#resendCodeBtn").click(function (e) {
+        e.preventDefault();
+
+        function isValidEmail(email) {
+          const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return regex.test(email);
+        }
+
+        // Inside your click function
+        const email = $("#email").val();
+        if (!isValidEmail(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        $("#resendCodeBtn").prop('disabled', true).text('Sending...');
+
+        // Send AJAX request to resend the verification code
+        $.ajax({
+          type: 'POST',
+          url: '/resend-verification-code', // Backend route to resend the code
+          data: JSON.stringify({ email }), // Send the email to backend
+          contentType: 'application/json',
+          success: function (response) {
+            alert('A new verification code has been sent to your email.');
+          },
+          error: function (xhr, status, error) {
+            console.error('Error resending verification code:', xhr.responseText); // Log for debugging
+            alert('Error resending verification code. Please try again.');
+          }
+        });
+      });
+    }).always(function () {
+      $("#resendCodeBtn").prop('disabled', false).text('Resend Code');
+  });
+  </script>
+</body>
+
+</html>
