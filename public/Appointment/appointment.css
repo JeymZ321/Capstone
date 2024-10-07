@@ -3,6 +3,7 @@ body {
     background-color: #f8f8f8;
     margin: 0;
     padding: 0;
+}
 
 header {
     background-color: #333;
@@ -22,21 +23,48 @@ nav.navbar {
     z-index: 1000; 
 }
 
+.appointment-form-wrapper {
+    position: relative;
+    background-color: #800000; /* Background color for the form */
+    border-radius: 20px; /* Rounded corners for the form border */
+    padding: 10px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Shadow effect */
+}
+
 main {
-    display: flex;
     justify-content: center;
     align-items: center;
     padding: 5rem 2rem 2rem;
-    margin-top: 140px;
     min-height: calc(100vh - 140px);
     box-sizing: border-box;
-    
-    
+    margin-top: 100px;
 }
+
+.block-heading{
+    position: absolute;
+    top: -30px; /* Move the heading above the form */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #800000; /* The color of the trapezoid */
+    padding: 5px 70px;
+    border-radius: 10px; /* Rounded corners for the trapezoid */
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Creates a trapezoid */
+    text-align: center;
+    color: white;
+}
+
+.block-heading h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 
 .form-container {
     margin-top: 0;
-    max-width: 600px;
+    max-width: 100%;
     width: 100%;
     background-color: rgb(230, 230, 230);
     padding: 2rem;
@@ -46,22 +74,9 @@ main {
 
 .appointment-form h2 {
     text-align: center;
-    margin-bottom: 1rem;
 }
 
-.section {
-    margin-bottom: 2rem;
-    
-}
-
-label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-    margin-bottom: 1rem; 
-}
-
-input[type="text"],
+select, input[type="text"],
 input[type="email"],
 input[type="name"],
 input[type="address"],
@@ -72,7 +87,6 @@ input[type="name"],
 input[type="address"], 
 input[type="contact"], 
 input[type="date"] {
-    width: 100%;
     width: 100%; 
     padding: 0.5rem;
     border: 1px solid #ccc;
@@ -150,5 +164,5 @@ input[type="date"] {
     text-decoration: none;
     cursor: pointer;
 }
-}
+
 

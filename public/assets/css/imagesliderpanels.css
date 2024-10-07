@@ -1,0 +1,85 @@
+.slider-container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 0 auto;
+}
+
+/* Image slider */
+.image-slider img {
+    width: 70%;
+    height: auto;
+    max-width: 100%;
+}
+
+/* Toggle tokens */
+.toggle-tokens {
+    margin-top: 20px;
+    display: flex; /* Use flexbox for horizontal layout */
+    justify-content: center; /* Center the tokens */
+    gap: 10px;
+}
+
+label {
+    cursor: pointer;
+}
+
+.token {
+    display: inline-block;
+    background-color: #ffffff;
+    border: 2px solid black;
+    padding: 10px 20px;
+    margin: 5px;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Change background color when selected */
+input[type="checkbox"]:checked + .token {
+    background-color: #ff2121;
+    color: rgb(255, 255, 255);
+}
+
+/* Hide the checkbox */
+input[type="checkbox"] {
+    display: none;
+}
+
+/* Slider controls */
+.controls button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+}
+
+.controls {
+    display: flex; 
+    justify-content: center;
+    gap: 20px; 
+    margin-top: 20px;
+}
+
+.controls button:hover {
+    background-color: #90001a;
+}
+
+button[type="submit"],
+#show-slots-btn
+{
+    background-color: #90001a;
+}
+
+button[type="submit"]:hover,
+#show-slots-btn:hover
+{
+    background-color: #570000;
+}
+
+

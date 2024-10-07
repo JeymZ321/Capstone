@@ -8,240 +8,197 @@
     <meta name="description" content="This is the Login page">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="assets/css/about_us_extra.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
+    <link rel="stylesheet" href="assets/css/services.css">
+    <link rel="stylesheet" href="assets/css/hover_button.css">
     <link rel="stylesheet" href="./Appointment/appointment.css">
     <link rel="stylesheet" href="./Calendar/style.css">
+    <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
+    <link rel="stylesheet" href="assets/js/imagesliderpanels.js">
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
-            <button class="navbar-toggler" data-bs-toggle="collapse">
-                <span class="visually-hidden">Toggle navigation</span>
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a href="index.html">
-                <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
-            </a> 
+            <a class="navbar-brand logo" href="index.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"></a>
         </div>
     </nav>
     
+        
     <main>
+        <div class="appointment-form-wrapper">
+        <div class="block-heading">
+            <h2 style="font-weight: bold;">Appointment Form</h2>
+        </div>
+
+        </section>
         <div class="form-container">
-            <form class="appointment-form" id="appointmentform">
-                <h2>Registration Form</h2>
-                <div class="section">
-                    <h3>Customer Information</h3>
-                    <label>Username: <input type="text" name="Username" id="username" required></label>
-                    <label>Password: <input type="password" name="Password" id="password" required></label>
-                    <label>Phone # <input type="text" name="Phonenumber" id="Phonenumber"</label>
-                    <!--<label>Full Name: <input type="text" name="Fullname" id="Fullname" required></label>
-                    <label>Address: <input type="text" name="Address" id="Address" required></label>
-                    <label>Contact #: <input type="text" name="Contact" id="Contact" required></label>
-                    <label>Email: <input type="email" name="Email" id="Email" required></label>-->
-                </div>
-                <div class="section">
-                    <!--Dropdown list-->
-                    <h3>Vehicle Information</h3>
+            <div class="row">
+                <!-- Column for Summary of Price Breakdown -->
+                <div class="col-md-6">
+                    <div class="row">
+                        <h3>Customer Information</h3>
+                        <div class="col-md-6">
+                            <label for="username">Name: <input type="text" name="Username" id="username" required></label>  
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phonenumber" >Phone #: <input type="text" name="Phonenumber" id="phonenumber"></label>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label for="email">Email: <input type="text" name="Email" id="email"></label>
+                        </div>
 
-                    <!--Vehicles /CHANGE INTO PLUS BUTTON--> 
-                    <label for="Vehicle">How Many:</label>
-                    <select name="Vehicle" id="Vehicle">
-                        <option value="" disabled selected>How many vehicles you have</option>
-                        <option value="V1">1</option>
-                        <option value="V2">2</option>
-                        <option value="V3">3</option>
-                        <option value="V4">4</option>
-                        <option value="V5">5</option>
-                    </select>
+                        <div class="col-md-4">
+                            <label for="city">City: <input type="text" name="City" id="city"></label>
+                        </div>
 
-                    <!--Gas--> 
-                    <label for="Vehicle">Selec Gas Type:</label>
-                    <select name="Vehicle" id="Vehicle">
-                        <option value="" disabled selected>Type</option>
-                        <option value="gas">Gas</option>
-                        <option value="diesel">Diesel</option>
-                    </select>
+                        <div class="col-md-4">
+                            <label for="platenum">Plate Number: <input type="text" name="PlateNumber" id="platenum"></label>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label for="vehicle">Vehicle:</label>
+                            <select name="Vehicle" id="vehicle" class="col-md-6" style="width: fit-content;">
+                                <option value="" disabled selected>Select Vehicle:</option>
+                                <option value="V1">Honda Civic Type R - Red - 2017 </option>
+                                <option value="V2">Nissan Grand Livina - White Pearl - 2022</option>
+                            </select>
+                        </div>
+                        <br><br>
+                        <div class="slider-container col-md-6">
+                            <div class="image-slider">
+                                <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" alt="Image 1">
+                            </div>
                     
+                            <div class="toggle-tokens">
+                                <label>
+                                    <input type="checkbox" id="token1-checkbox" onclick="toggleToken(0)">
+                                    <span id="token1" class="token">Token 1-1</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token2-checkbox" onclick="toggleToken(1)">
+                                    <span id="token2" class="token">Token 1-2</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token3-checkbox" onclick="toggleToken(2)">
+                                    <span id="token3" class="token">Token 1-3</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token4-checkbox" onclick="toggleToken(3)">
+                                    <span id="token4" class="token">Token 1-4</span>
+                                </label>
+                            </div>
                     
-                    <!--AT or MT Dropdown-->
-                    <label for="ATorMT">AT or MT:</label>
-                    <select name="ATorMT" id="ATorMT">
-                        <option value="" disabled selected>Select AT or MT</option>
-                        <option value="AT">Automatic</option>
-                        <option value="MT">Manual</option>
-                    </select>
-                    <!-- Brand Dropdown -->
-                    <label for="Brand">Brand:</label>
-                    <select name="Brand" id="Brand">
-                        <option value="" disabled selected>Select Brand</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Ford">Ford</option>
-                        <option value="Chevrolet">Chevrolet</option>
-                        <option value="Nissan">Nissan</option>
-                    </select>
-                
-                    <!-- Color Dropdown -->
-                    <label for="Color">Color:</label>
-                    <select name="Color" id="Color">
-                        <option value="" disabled selected>Select Color</option>
-                        <option value="Red">Red</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Black">Black</option>
-                        <option value="White">White</option>
-                        <option value="Silver">Silver</option>
-                    </select>
-                
-                    <!-- Year Model Dropdown -->
-                    <label for="YearModel">Year Model:</label>
-                    <select name="YearModel" id="YearModel">
-                        <option value="" disabled selected>Select Year Model</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
-                
-                    <!-- Plate Input (left as a text field) -->
-                    <label for="Plate">Plate #:</label>
-                    <input type="text" name="Plate" id="Plate">
-                </div>
-                
-                <div class="section">
-                    <h3>Estimated Price Breakdown:</h3>
-                    <p>Service Estimation: Php ####</p>
-                    <p>Towing Fee: Php ####</p>
-                    <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
-                    <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
-                    <input class="form-check-input" type="checkbox" name="terms" required> 
-                </div>
-                <div class="section">
-                    <h3>Car Body Panels Checklist (optional)</h3>
-                
-                    <!-- Panel 1 Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel1Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Panel 1
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="panel1Dropdown">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                            <li><a class="dropdown-item" href="#">Option 3</a></li>
-                        </ul>
-                    </div>
-                
-                    <!-- Panel 2 Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel2Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Panel 2
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="panel2Dropdown">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                            <li><a class="dropdown-item" href="#">Option 3</a></li>
-                        </ul>
-                    </div>
-                
-                    <!-- Panel 3 Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel3Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Panel 3
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="panel3Dropdown">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                            <li><a class="dropdown-item" href="#">Option 3</a></li>
-                        </ul>
-                    </div>
-                
-                    <!-- Panel 4 Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="panel4Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Panel 4
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="panel4Dropdown">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                            <li><a class="dropdown-item" href="#">Option 3</a></li>
-                        </ul>
+                            <div class="controls">
+                                <button onclick="prevImage()">Previous</button>
+                                <button onclick="nextImage()">Next</button>
+                            </div>
+                        </div> 
+   
                     </div>
                 </div>
-                
-                
-                <div class="section">
-                    <h3>Car Functionality:</h3>
-                    
+            
+
+            <div class="col-md-6">
+                <div class="row">
+                <div class="col-md-4">
                     <label>Is the car functional?</label>
+
                     
-                    <!-- Yes Button -->
-                    <button type="button" id="yesBtn" class="btn btn-outline-success" onclick="setFunctionality('functional')">Yes</button>
+                    <label for="yesBtn"><input type="radio" id="yesBtn" name="carfunc" value="yes">Yes</label>
                     
-                    <!-- No Button -->
-                    <button type="button" id="noBtn" class="btn btn-outline-danger" onclick="setFunctionality('nonfunctional')">No</button>
                     
-                    <!-- Hidden input to store the selected functionality -->
-                    <input type="hidden" name="functionality" id="functionality" value="">
+                    <label for="noBtn"><input type="radio" id="noBtn" name="carfunc" value="no">No</label>
+                    
                 </div>
 
-                <div class="container">
-                    <h1>Appointment Scheduler</h1>
+                <div class="col-md-4">
                     <label for="datepicker">Select Date:</label>
-                    <input type="text" name="datepicker" id="datepicker"    >
-                    
+                    <input type="text" name="datepicker" id="datepicker">
+                </div>
+
+                <div class="col-md-4">
                     <label for="timepicker">Select Time:</label>
                     <input type="text" name="timepicker" id="timepicker" >
-
-                    <button id="show-slots-btn" type="button">Show Available Slots</button>
-                    
-                    <!-- Popup Window for Slots -->
-                    <div id="slots-popup" class="popup">
-                        <div class="popup-content">
-                            <span class="close">&times;</span>
-                            <h2>Available Slots</h2>
-                            <div id="slots">
-                                <!-- Add checkboxes or buttons here for selecting slots -->
-                                <label><input type="checkbox" class="slot" value="Slot 1"> Slot 1</label>
-                                <label><input type="checkbox" class="slot" value="Slot 2"> Slot 2</label>
-                                <label><input type="checkbox" class="slot" value="Slot 3"> Slot 3</label>
-                                <label><input type="checkbox" class="slot" value="Slot 4"> Slot 5</label>
-                                <label><input type="checkbox" class="slot" value="Slot 5"> Slot 5</label>
-                                <label><input type="checkbox" class="slot" value="Slot 6"> Slot 6</label>
-                                <label><input type="checkbox" class="slot" value="Slot 7"> Slot 7</label>
-                                <label><input type="checkbox" class="slot" value="Slot 8"> Slot 8</label>
-                                <label><input type="checkbox" class="slot" value="Slot 9"> Slot 9</label>
-                                <label><input type="checkbox" class="slot" value="Slot 10"> Slot 10</label>
-                                <label><input type="checkbox" class="slot" value="Slot 11"> Slot 11</label>
-                                <label><input type="checkbox" class="slot" value="Slot 12"> Slot 12</label>
-                                <label><input type="checkbox" class="slot" value="Slot 13"> Slot 13</label>
-                                <label><input type="checkbox" class="slot" value="Slot 14"> Slot 14</label>
-                                <label><input type="checkbox" class="slot" value="Slot 15"> Slot 15</label>
-                                <label><input type="checkbox" class="slot" value="Slot 16"> Slot 16</label>
-                                <label><input type="checkbox" class="slot" value="Slot 17"> Slot 17</label>
-                                <label><input type="checkbox" class="slot" value="Slot 17"> Slot 18</label>
-                                <label><input type="checkbox" class="slot" value="Slot 19"> Slot 19</label>
-                                <label><input type="checkbox" class="slot" value="Slot 20"> Slot 20</label>
-                                <label><input type="checkbox" class="slot" value="Slot 21"> Slot 21</label>
-                                <label><input type="checkbox" class="slot" value="Slot 22"> Slot 22</label>
-                                <label><input type="checkbox" class="slot" value="Slot 23"> Slot 23</label>
-                                <label><input type="checkbox" class="slot" value="Slot 24"> Slot 24</label>
-                                <label><input type="checkbox" class="slot" value="Slot 25"> Slot 26</label>
-                                <label><input type="checkbox" class="slot" value="Slot 26"> Slot 26</label>
-                                <!-- Add more slots as needed -->
-                            </div>
-                            <p id="availability">Slots Available: <span id="available-slots">26</span></p>
-                            <button id="confirm-btn" type="button">Confirm</button>
-                        </div>
-                    </div>
-                    <button type="submit" id="submit-slots-btn">Submit</button> 
-                    
-                    <!-- Success message -->
-                    <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
-                        Your appointment has been submitted successfully!
-                    </div>
                 </div>
+                
+                <div class="col-md-12">
+                    <button id="show-slots-btn" type="button" >Show Available Slots</button>
+                </div>
+                
+            
+            <!-- Popup Window for Slots -->
+            <div id="slots-popup" class="popup">
+                <div class="popup-content">
+                    <span class="close">&times;</span>
+                    <h2>Available Slots</h2>
+                    <div id="slots">
+                        <!-- Add checkboxes or buttons here for selecting slots -->
+                        <label><input type="checkbox" class="slot" value="Slot 1"> Slot 1</label>
+                        <label><input type="checkbox" class="slot" value="Slot 2"> Slot 2</label>
+                        <label><input type="checkbox" class="slot" value="Slot 3"> Slot 3</label>
+                        <label><input type="checkbox" class="slot" value="Slot 4"> Slot 5</label>
+                        <label><input type="checkbox" class="slot" value="Slot 5"> Slot 5</label>
+                        <label><input type="checkbox" class="slot" value="Slot 6"> Slot 6</label>
+                        <label><input type="checkbox" class="slot" value="Slot 7"> Slot 7</label>
+                        <label><input type="checkbox" class="slot" value="Slot 8"> Slot 8</label>
+                        <label><input type="checkbox" class="slot" value="Slot 9"> Slot 9</label>
+                        <label><input type="checkbox" class="slot" value="Slot 10"> Slot 10</label>
+                        <label><input type="checkbox" class="slot" value="Slot 11"> Slot 11</label>
+                        <label><input type="checkbox" class="slot" value="Slot 12"> Slot 12</label>
+                        <label><input type="checkbox" class="slot" value="Slot 13"> Slot 13</label>
+                        <label><input type="checkbox" class="slot" value="Slot 14"> Slot 14</label>
+                        <label><input type="checkbox" class="slot" value="Slot 15"> Slot 15</label>
+                        <label><input type="checkbox" class="slot" value="Slot 16"> Slot 16</label>
+                        <label><input type="checkbox" class="slot" value="Slot 17"> Slot 17</label>
+                        <label><input type="checkbox" class="slot" value="Slot 17"> Slot 18</label>
+                        <label><input type="checkbox" class="slot" value="Slot 19"> Slot 19</label>
+                        <label><input type="checkbox" class="slot" value="Slot 20"> Slot 20</label>
+                        <label><input type="checkbox" class="slot" value="Slot 21"> Slot 21</label>
+                        <label><input type="checkbox" class="slot" value="Slot 22"> Slot 22</label>
+                        <label><input type="checkbox" class="slot" value="Slot 23"> Slot 23</label>
+                        <label><input type="checkbox" class="slot" value="Slot 24"> Slot 24</label>
+                        <label><input type="checkbox" class="slot" value="Slot 25"> Slot 26</label>
+                        <label><input type="checkbox" class="slot" value="Slot 26"> Slot 26</label>
+                        <!-- Add more slots as needed -->
+                    </div>
+                    <p id="availability">Slots Available: <span id="available-slots">26</span></p>
+                    <button id="confirm-btn" type="button">Confirm</button>
+                </div>
+            </div>
+
+                <div class="section"><br>
+                  <h3>Estimated Price Breakdown:</h3>
+                  <p>Service Estimation: Php ####</p>
+                  <p>Towing Fee: Php ####</p>
+                  <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
+                  <input class="form-check-input" type="checkbox" name="terms" required style="display: inline-block !important;">
+                  <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
+                  
+                
+                </div>
+
+                <div class="col-md-12">
+                    <button type="submit" id="submit-slots-btn">Submit</button> 
+                </div>
+
+                <!-- Success message -->
+                <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
+                    Your appointment has been submitted successfully!
+                </div>
+              </div>
+
+    
             </form>
         </div>
+    </div>
     </main>
 
     <!-- Terms and Conditions Modal -->
@@ -344,6 +301,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
     <script src="./Calendar/script.js"></script>
     <script src="./Appointment/appointment.js"></script>
+    <script src="assets/js/imagesliderpanels.js"></script>
 </body>
 
 </html>
