@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Shopping Cart - Brand</title>
+    <title>Services - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
+    <link rel="stylesheet" href="assets/css/services.css">
+    <link rel="stylesheet" href="assets/css/hover_button.css">
 </head>
 
 <body>
@@ -24,22 +26,11 @@
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="user_services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="user_about-us.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="user_contact-us.html">Contact Us</a></li>   
-                </ul>
-            </div>
-
-            <!-- User Profile Dropdown -->
-            <div class="dropdown ms-3">
-                <a class="dropdown-toggle text-white" href="#" role="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="assets/img/user-icon.png" width="40px" class="rounded-circle" alt="User Profile">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                    <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                    <li><a class="dropdown-item" href="settings.html">Settings</a></li>
-                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35px; background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -48,90 +39,114 @@
         <section class="clean-block clean-cart dark">
             <div class="container">
                 <div class="block-heading">
-                    <h2 style="color: rgb(112,18,18);font-weight: bold;">SERVICES</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <h2 style="color: rgb(112,18,18);font-weight: bold;">Services</h2>
                 </div>
+                
                 <div class="content">
+                    
                     <div class="row g-0">
                         <div class="col-md-12 col-lg-8">
+                            <div class="search-bar">
+                                <input type="text" placeholder="Search service..." class="search-input" id="search-input" />
+                            </div>
                             <div class="items" id="cart-items">
-                                <!-- Product 1 -->
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
-                                        </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
-                                        </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
-                                        </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
-                                    </div>
+                                <div class="category-buttons text-center mb-4">
+                                    <button class="category-button" onclick="filterProducts('mechanical')">Mechanical</button>
+                                    <button class="category-button" onclick="filterProducts('ac-services')">AC Services</button>
+                                    <button class="category-button" onclick="filterProducts('painting')">Painting Services</button>
+                                    <button class="category-button" onclick="filterProducts('pms')">PMS Services</button>
+                                    <button class="category-button" onclick="filterProducts('electrical')">Electrical</button>
+                                    <!-- Add more buttons as needed -->
                                 </div>
-                                <!-- Product 2 -->
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
+                                <select id="category-dropdown" class="mobile-dropdown" onchange="filterByCategory(this.value)">
+                                    <option value="all">All Categories</option>
+                                    <option value="mechanical">Mechanical</option>
+                                    <option value="ac-services">AC Services</option>
+                                    <option value="painting-services">Painting Services</option>
+                                    <option value="pms-services">PMS Services</option>
+                                    <option value="electrical">Electrical</option>
+                                  </select>
+                                <div class="row">
+                                    <div class="product-grid">
+                                    <div class="product mechanical product-container">
+                                        <div class="product-image">
+                                            <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
                                         </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                        <div class="product-info">
+                                            <div class="details-column">
+                                                <p class="product-name">Engine Fixing</p>
+                                                <div class="product-specs">
+                                                    <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                    <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                    <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                <div class="price">
+                                                    <span class="price-per-item" data-price="1500">₱ 1,500.00</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
-                                        </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
-                                        </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
-                                    </div>
-                                </div>
-                                <!-- Product 3 -->
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
-                                        </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                             </div>
+                                            
+                                                
                                         </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
-                                        </div>
-                                        <div class="col-6 col-md-2">
-                                            <button class="btn btn-danger cancel-btn btn-sm" onclick="cancelItem(this)">Cancel</button>
-                                        </div>
-                                        <div class="col-6 col-md-2 price"><span class="price-per-item" data-price="1000">PHP 1000</span></div>
                                     </div>
+                                    <div class="product mechanical product-container">
+                                        <div class="product-image">
+                                            <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="details-column">
+                                                <p class="product-name">Break Fixing</p>
+                                                <div class="product-specs">
+                                                    <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                    <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                    <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                </div>
+                                                <div class="price"><span class="price-per-item" data-price="1000">₱ 1,000.00</span></div>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                    <div class="product ac-services product-container">
+                                        <div class="product-image">
+                                            <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="details-column">
+                                                <p class="product-name">Freon Something</p>
+                                                <div class="product-specs">
+                                                    <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                    <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                    <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                </div>
+                                                <div class="price"><span class="price-per-item" data-price="2000">₱ 2,000.00</span></div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    
+                                                                                                  
                                 </div>
-                                <!-- Repeat similar structure for other products -->
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                            <div class="summary">
-                                <h3>Summary</h3>
-                                <h4><span class="text">Subtotal</span><span class="price" id="subtotal">PHP 0</span></h4>
-                                <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">PHP 500.00</span></h4>
-                                <h4><span class="text">Total</span><span class="price" id="total">PHP 0</span></h4>
-                                <a href="appointment.html"><button class="btn btn-primary btn-lg d-block w-100" type="button">Get Appointment</button></a>
-                            </div>
+                            </div>   
+                            <br>
+                            <div class="col-md-12 col-lg-4">
+                                <div class="summary">
+                                    <h3>Summary</h3>
+                                    <h4><span class="text">Service(s):</span><span class= "price" id="cart-details"></span></h4>
+                                    <h4><span class="text">Subtotal</span><span class="price" id="subtotal">₱ 0</span></h4>
+                                    <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">₱ 500.00</span></h4>
+                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 0</span></h4>
+                                    <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
+                                    <a href="login.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
+                                </div>
+                            </div>                         
                         </div>
                     </div>
                 </div>
@@ -178,34 +193,153 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script>
-        let total = 500; // Initialize with the Appointment Fee
-let isAppointmentFeeAdded = true; // The fee is already added to the total
-
-function addToCart(button) {
-    const product = button.closest('.product');
-    const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-    total += price;
-
-    // Update subtotal and total in the summary
-    document.getElementById('subtotal').innerText = `PHP ${(total - 500).toFixed(2)}`; // Subtract the Appointment Fee for Subtotal
-    document.getElementById('total').innerText = `PHP ${total.toFixed(2)}`; // Total includes the Appointment Fee
-}
-
-function cancelItem(button) {
-    const product = button.closest('.product');
-    const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
     
-    // Ensure the total does not go below the appointment fee (500)
-    if (total > 500) {
-        total -= price;
+    <script>
+    let cartItems = [];
+    let total = 500; // Start with the appointment fee of ₱500
+
+    function filterProducts(category) {
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            product.style.display = 'none'; // Hide all products first
+            if (product.classList.contains(category)) {
+                product.style.display = 'block'; // Show only products in the selected category
+            }
+        });
+
+        // Change category button background color
+        const categoryButtons = document.querySelectorAll('.category-button');
+        categoryButtons.forEach(button => {
+            button.style.backgroundColor = ''; // Reset all buttons' background color
+        });
+        document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)'; // Highlight active category
     }
 
-    // Update subtotal and total in the summary
-    document.getElementById('subtotal').innerText = `PHP ${(total - 500).toFixed(2)}`; // Subtract the Appointment Fee for Subtotal
-    document.getElementById('total').innerText = `PHP ${total.toFixed(2)}`; // Total includes the Appointment Fee
-}
+    function addToCart(button) {
+        const product = button.closest('.product');
+        const name = product.querySelector('.product-name').innerText;
+        const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+        const imageSrc = product.querySelector('.product-image img').src; // Get image source
 
+        // Prevent adding the same product again
+        if (cartItems.some(item => item.name === name)) {
+            alert('This product is already in the cart.');
+            return;
+        }
+
+        // Add to cart array
+        cartItems.push({ name, price, imageSrc });
+
+        // Update total price
+        total += price;
+        document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
+        document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
+
+        // Show in the cart summary
+        const cartDetails = document.getElementById('cart-details');
+        const productDetail = document.createElement('div');
+        productDetail.className = 'cart-item d-flex align-items-center'; // Flexbox for image and details alignment
+        productDetail.innerHTML = `
+            <div class="cart-item-content d-flex align-items-center">
+                <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px;"> 
+                <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+            </div>
+            
+        `;
+        cartDetails.appendChild(productDetail);
+
+        // Hide the "Add to Cart" button after adding
+        button.style.display = 'none';
+    }
+
+    function cancelItem(name) {
+        const product = cartItems.find(item => item.name === name);
+        if (product) {
+            total -= product.price;
+            document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
+            document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
+
+            cartItems = cartItems.filter(item => item.name !== name);
+
+            // Remove from the cart display
+            const cartDetails = document.getElementById('cart-details');
+            const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(name));
+            if (itemToRemove) {
+                cartDetails.removeChild(itemToRemove);
+            }
+
+            // Show the "Add to Cart" button again
+            const productElement = Array.from(document.querySelectorAll('.product')).find(product => product.querySelector('.product-name').innerText === name);
+            if (productElement) {
+                productElement.querySelector('.add-to-cart').style.display = 'block';
+            }
+        }
+    }
+
+    function clearCart() {
+        cartItems = [];
+        total = 500; // Reset to the appointment fee only
+
+        document.getElementById('cart-details').innerHTML = '';
+        document.getElementById('subtotal').innerText = '₱ 0';
+        document.getElementById('total').innerText = '₱ 500';
+
+        // Show all "Add to Cart" buttons again
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.style.display = 'block';
+        });
+    }
+
+    document.querySelector('.search-input').addEventListener('focus', showAllProducts);
+
+    function showAllProducts() {
+        const products = document.querySelectorAll('.product');
+
+        // Show all products and reset any filters
+        products.forEach(product => {
+            product.style.display = 'block'; // Show all products
+        });
+
+        // Remove the active background from category buttons when search is clicked
+        const categoryButtons = document.querySelectorAll('.category-button');
+        categoryButtons.forEach(button => {
+            button.style.backgroundColor = ''; // Reset all buttons' background color
+        });
+    }
+
+    function searchProducts() {
+        const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+            const productName = product.querySelector('.product-name').innerText.toLowerCase();
+
+            if (productName.includes(searchTerm)) {
+                product.style.display = 'block'; // Show products that match the search term
+            } else {
+                product.style.display = 'none'; // Hide products that don't match
+            }
+        });
+    }
+
+    document.querySelector('.search-input').addEventListener('input', searchProducts);
+
+
+    function filterByCategory(category) {
+    const products = document.querySelectorAll('.product');
+    products.forEach(product => {
+      if (category === 'all' || product.classList.contains(category)) {
+        product.style.display = 'block'; // Show matching category
+      } else {
+        product.style.display = 'none';  // Hide others
+      }
+    });
+  }
+
+    window.onload = function() {
+        filterProducts('mechanical'); // Automatically show Mechanical products on page load
+    };
     </script>
 </body>
 </html>

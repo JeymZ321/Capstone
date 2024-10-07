@@ -51,7 +51,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col">
-                                                <button class="btn btn-primary" type="button" style="/*margin-bottom: 9px;*/border-radius: 9px;width: 100px;/*margin-left: -15px;*/text-align: center;margin: auto;display: block;">Login</button>
+                                                <button class="btn btn-primary" type="button" id="adminbtnlogin" style="border-radius: 9px;width: 100px;text-align: center;margin: auto;display: block;">Login</button>
                                             </div>
                                          </div>
                                         <hr>
@@ -60,7 +60,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
+                                        <a class="small" href="admin-register.html">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
@@ -70,6 +70,49 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Capture the form submission event
+        $('#adminbtnlogin').click(function(e) {
+            e.preventDefault(); // Prevent the form from submitting the default way
+            
+            // Gather form data
+            const username = $('#InputUsername').val();
+            const password = $('#InputPassword').val();
+            const email = $("#InputEmail").val();
+
+            // Prepare data to send via AJAX
+            const loginData = {
+                username: username,
+                password: password,
+                email: email
+            };
+
+            // Perform the AJAX request
+            $.ajax({
+                type: 'POST', // The request method
+                url: '/loginadmin', // Replace with your login API URL
+                data: JSON.stringify(loginData), // Send data as JSON
+                contentType: 'application/json', // Specify content type
+                success: function(response) {
+                    // Show success alert
+                    alert("Login successful!");
+
+                    // Redirect to another page
+                    window.location.href = 'index.html'; // Redirect on success
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.log("Login failed:", error);
+                    alert("Invalid login credentials. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
