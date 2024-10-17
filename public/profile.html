@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 100px;
+        }
+        .footer-dark {
+            background-color: #343a40;
+            padding: 30px 0;
+            color: #f0f9ff;
+        }
+        .footer-dark h5 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .footer-dark ul {
+            padding: 0;
+            list-style: none;
+            line-height: 1.6;
+        }
+        .footer-dark ul a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+        <div class="container">
+            <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;"> 
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="user_services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="user_about-us.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="user_contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <!-- User Profile Dropdown -->
+            <div class="dropdown ms-3">
+                <a class="dropdown-toggle text-white" href="#" role="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="assets/img/user-icon.png" width="40px" class="rounded-circle" alt="User Profile">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+                    <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                    <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Pending User Status -->
+    <div class="container mt-5">
+        <div class="alert alert-warning text-center" id="pendingStatus">
+            Your account is pending approval.
+        </div>
+    </div>
+
+    <!-- Edit Profile Section -->
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">Edit Profile</h3>
+                        <form id="profileForm">
+                            <!-- Username -->
+                            <div class="form-group mb-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group mb-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter a new password">
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="form-group mb-3">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your new password">
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-dark mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="200px">
+                </div>
+                <div class="col-md-3">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Sign up</a></li>
+                        <li><a href="services.html">Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="about-us.html">Company Information</a></li>
+                        <li><a href="contact-us.html">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>© 2024 Reynaldo's Car Care Center</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script>
+        document.querySelector('#profileForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const userId = 'user-id';  // Replace 'user-id' with dynamic ID fetching logic
+            const username = document.querySelector('#username').value;
+            const email = document.querySelector('#email').value;
+            const password = document.querySelector('#password').value;
+
+            const data = { username, email, password };
+
+            try {
+                const response = await fetch(`/profile/update/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`  // JWT token from local storage
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Profile updated successfully');
+                } else {
+                    alert(result.message || 'Error updating profile');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    </script>
+</body>
+
+</html>

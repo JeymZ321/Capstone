@@ -4,7 +4,8 @@ const CustomerSchema = new mongoose.Schema({
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },  // Ensure email is unique
     iv: { type: String, required: true },
-    key: { type: String, required: true }
+    key: { type: String, required: true },
+    isVerified: { type: Boolean, default: false } // Track if email is verified
 });
 
 const Customer = mongoose.model('customer', CustomerSchema);

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 
 <body id="page-top">
@@ -126,121 +127,35 @@
                         </ul>
                     </div>
                 </nav>
-                <div class="container-fluid">
-                    <h3 class="text-dark mb-4" style="font-weight: bold;">Appointments</h3>
-                    <div class="card shadow">
-                        <div class="card-header py-3" style="background: rgb(248, 249, 252);">
-                            <p class="text-primary m-0 fw-bold">Customer Information</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                                </div>
-                            </div>
-                            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                                <table class="table tabler-bordered" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                            <th>Actions</th> <!-- New column for Archive button -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                            <td><button class="btn btn-warning archive-btn" onclick="archiveRow(this)">Archive</button></td>
-                                        </tr>
-                                        <!-- Repeat for other rows -->
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>Name</strong></td>
-                                            <td><strong>Position</strong></td>
-                                            <td><strong>Office</strong></td>
-                                            <td><strong>Age</strong></td>
-                                            <td><strong>Start date</strong></td>
-                                            <td><strong>Salary</strong></td>
-                                            <td><strong>Actions</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <h1>Appointments</h1>
+<div id="appointments"></div>
+
+<script>
+    async function fetchAppointments() {
+        try {
+            const response = await fetch('http://localhost:3000/appointments'); // Corrected endpoint
+            const appointments = await response.json();
+            
+            const appointmentsContainer = document.getElementById('appointments'); // Ensure this ID matches
+            appointmentsContainer.innerHTML = appointments.map(appointment => `
+                <div>
+                    <p>Name: ${appointment.username}</p> <!-- Adjust to match your schema -->
+                    <p>Date: ${new Date(appointment.datepicker).toLocaleDateString()}</p> <!-- Adjust if necessary -->
+                    <p>Time: ${appointment.timepicker}</p> <!-- Adjust if necessary -->
                 </div>
-            </div>
-            <div id="content-1">
-                <div class="container-fluid">
-                    <div class="card shadow"></div>
-                </div>
-            </div>
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
-                </div>
-            </footer>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error fetching appointments:', error);
+        }
+    }
+
+    fetchAppointments();
+</script>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script>
-        // Function to archive a row when Archive button is clicked
-        function archiveRow(button) {
-            // Find the row to archive
-            const row = button.parentNode.parentNode;
-            const name = row.cells[0].innerText;
-            const position = row.cells[1].innerText;
-            const office = row.cells[2].innerText;
-            const age = row.cells[3].innerText;
-            const startDate = row.cells[4].innerText;
-            const salary = row.cells[5].innerText;
     
-            // Store archived data in localStorage (can be replaced with backend logic)
-            let archives = JSON.parse(localStorage.getItem('archives')) || [];
-            archives.push({ name, position, office, age, startDate, salary });
-            localStorage.setItem('archives', JSON.stringify(archives));
-    
-            // Optionally remove the row from the current table
-            row.remove();
-        }
-    </script>
     
 </body>
 
