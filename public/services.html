@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
     <link rel="stylesheet" href="assets/css/services.css">
     <link rel="stylesheet" href="assets/css/hover_button.css">
+    <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
+
 </head>
 
 <body>
@@ -53,19 +55,21 @@
                                 <div class="category-buttons text-center mb-4">
                                     <button class="category-button" onclick="filterProducts('mechanical')">Mechanical</button>
                                     <button class="category-button" onclick="filterProducts('ac-services')">AC Services</button>
-                                    <button class="category-button" onclick="filterProducts('painting')">Painting Services</button>
-                                    <button class="category-button" onclick="filterProducts('pms')">PMS Services</button>
+                                    <button class="category-button" onclick="filterProducts('paint-restoration')">Paint Restoration</button>
                                     <button class="category-button" onclick="filterProducts('electrical')">Electrical</button>
+                                    <button class="category-button" onclick="filterProducts('panels')">Panel Repairs</button>
+                                    <button class="category-button" onclick="filterProducts('packages-promos')">Packages and Promos</button>
                                     <!-- Add more buttons as needed -->
                                 </div>
                                 <select id="category-dropdown" class="mobile-dropdown" onchange="filterByCategory(this.value)">
                                     <option value="all">All Categories</option>
                                     <option value="mechanical">Mechanical</option>
                                     <option value="ac-services">AC Services</option>
-                                    <option value="painting-services">Painting Services</option>
-                                    <option value="pms-services">PMS Services</option>
+                                    <option value="paint-restoration">Paint Restoration</option>
                                     <option value="electrical">Electrical</option>
-                                  </select>
+                                    <option value="panels">Panel Repairs</option>
+                                    <option value="packages-promos">Packages and Promos</option>
+                                </select>                                
                                 <div class="row">
                                     <div class="product-grid">
                                     <div class="product mechanical product-container">
@@ -129,6 +133,27 @@
                                             </div>
                                         </div> 
                                     </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                          <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                          <div class="details-column">
+                                            <p class="product-name">Select a Panel</p>
+                                            <div class="product-specs">
+                                              <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                              <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                              <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                            <!-- Button to trigger the modal -->
+                                            <div class="col-12">
+                                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tokenModal">Select Panel and Tokens</button>
+                                            </div>
+                                            <div class="price"><span class="price-per-item">₱ 1,000.00-5,000.00</span></div>
+                                          </div>
+                                        </div>   
+                                      </div>
                                     
                                                                                                   
                                 </div>
@@ -139,11 +164,11 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="summary">
                                     <h3>Summary</h3>
-                                    <h4><span class="text">Service(s):</span><span class= "price" id="cart-details"></span></h4>
-                                    <h4><span class="text" style="opacity: 0;">Service(s):</span><span class= "price" id="cart-details"></span></h4>
+                                    <h4><span class="text">Service(s):</span></h4>
+                                    <h4><span class= "price" id="cart-details" ></span></h4>
                                     <h4><span class="text">Subtotal</span><span class="price" id="subtotal">₱ 0</span></h4>
                                     <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">₱ 500.00</span></h4>
-                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 0</span></h4>
+                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 500.00</span></h4>
                                     <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
                                     <a href="login.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
                                 </div>
@@ -154,6 +179,56 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal for Token Selection -->
+<div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tokenModalLabel">Select Tokens for Panel Repairs</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="slider-container col-md-12">
+            <div class="image-slider">
+              <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
+            </div>
+            
+            <div class="toggle-tokens">
+                <label>
+                  <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Front Bumper', 500)">
+                  <span id="token1" class="token">Front Bumper - ₱ 500.00</span>
+                </label>
+                <label>
+                  <input type="checkbox" id="token2-checkbox" onclick="toggleToken(2, 'Rear Bumper', 600)">
+                  <span id="token2" class="token">Rear Bumper - ₱ 600.00</span>
+                </label>
+                <label>
+                  <input type="checkbox" id="token3-checkbox" onclick="toggleToken(3, 'Left Door', 700)">
+                  <span id="token3" class="token">Left Door - ₱ 700.00</span>
+                </label>
+                <label>
+                  <input type="checkbox" id="token4-checkbox" onclick="toggleToken(4, 'Right Door', 800)">
+                  <span id="token4" class="token">Right Door - ₱ 800.00</span>
+                </label>
+              </div>
+              
+  
+            <div class="controls">
+              <button onclick="prevImage()">Previous</button>
+              <button onclick="nextImage()">Next</button>
+            </div>
+  
+            <!-- Add to Cart Button -->
+            <div class="col-12 mt-3">
+              <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -196,72 +271,181 @@
     <script src="assets/js/theme.js"></script>
     
     <script>
-    let cartItems = [];
-    let total = 500; // Start with the appointment fee of ₱500
+        let cartItems = [];
+        let total = 500; // Start with the appointment fee of ₱500
+    
+        let selectedPanels = [];
+        let panelTotal = 0; // Total for selected panels
+    
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products first
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
+    
+            // Change category button background color
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = ''; // Reset all buttons' background color
+            });
+            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)'; // Highlight active category
+        }
+    
+        function toggleToken(tokenId, panelName, price) {
+            const checkbox = document.getElementById(`token${tokenId}-checkbox`);
 
-    function filterProducts(category) {
-        const products = document.querySelectorAll('.product');
-        products.forEach(product => {
-            product.style.display = 'none'; // Hide all products first
-            if (product.classList.contains(category)) {
-                product.style.display = 'block'; // Show only products in the selected category
+            if (checkbox.checked) {
+                selectedPanels.push({ panelName, price, tokenId }); // Store tokenId
+                addPanelToCart(panelName, price, tokenId); // Pass tokenId to cart
+            } else {
+                // Remove the deselected panel from the array
+                selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
+                removePanel(panelName); // Automatically remove from cart
             }
-        });
 
-        // Change category button background color
-        const categoryButtons = document.querySelectorAll('.category-button');
-        categoryButtons.forEach(button => {
-            button.style.backgroundColor = ''; // Reset all buttons' background color
-        });
-        document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)'; // Highlight active category
-    }
-
-    function addToCart(button) {
-        const product = button.closest('.product');
-        const name = product.querySelector('.product-name').innerText;
-        const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-        const imageSrc = product.querySelector('.product-image img').src; // Get image source
-
-        // Prevent adding the same product again
-        if (cartItems.some(item => item.name === name)) {
-            alert('This product is already in the cart.');
-            return;
+            updatePanelTotal();
         }
 
-        // Add to cart array
-        cartItems.push({ name, price, imageSrc });
+        function addPanelToCart(panelName, price, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
 
-        // Update total price
-        total += price;
-        document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
-        document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
+            // Check if the panel is already in the cart to avoid duplicates
+            if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panelName))) {
+                const panelDetail = document.createElement('div');
+                panelDetail.className = 'cart-item d-flex align-items-center';
+                panelDetail.innerHTML = `
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <span>${panelName} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="removePanel('${panelName}', ${tokenId})">
+                            <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                        </button>
+                    </div>
+                </div>`;
+                cartDetails.appendChild(panelDetail);
+            }
 
-        // Show in the cart summary
-        const cartDetails = document.getElementById('cart-details');
-        const productDetail = document.createElement('div');
-        productDetail.className = 'cart-item d-flex align-items-center'; // Flexbox for image and details alignment
-        productDetail.innerHTML = `
-            <div class="cart-item-content d-flex align-items-center">
-                <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px;"> 
-                <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
-                <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
-            </div>
+            updateTotal(); // Recalculate total after adding
+        }
+
+    
+        function updatePanelTotal() {
+            panelTotal = selectedPanels.reduce((total, panel) => total + panel.price, 0);
+            document.getElementById('subtotal').innerText = `₱ ${(panelTotal).toFixed(2)}`;
+        }
+    
+        function calculateTotal() {
+            document.getElementById('cart-details').style.display = 'block';
+            const cartDetails = document.getElementById('cart-details');
             
-        `;
-        cartDetails.appendChild(productDetail);
+            selectedPanels.forEach(panel => {
+                // Check if the panel is already in the cart to avoid duplicates
+                if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
+                    const panelDetail = document.createElement('div');
+                    panelDetail.className = 'cart-item d-flex align-items-center';
+                    panelDetail.innerHTML = `
+                    <div class="cart-item-box"><div class="cart-item-content d-flex align-items-center">
+                            <span>${panel.panelName} <span class="product-price"> ₱ ${panel.price.toFixed(2)}</span></span>
+                            <button class="cancel-button" onclick="removePanel('${panel.panelName}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>
+                    `;
+                    cartDetails.appendChild(panelDetail);
+                }
+            });
 
-        // Hide the "Add to Cart" button after adding
-        button.style.display = 'none';
-    }
+            // After adding tokens, update total amount
+            updateTotal();
+            
+            // Close the modal
+            document.querySelector('.btn-close').click();
+        }
+    
+     
+        function removePanel(panelName, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(panelName));
+            
+            if (itemToRemove) {
+                cartDetails.removeChild(itemToRemove); // Remove from cart display
+            }
 
-    function cancelItem(name) {
-        const product = cartItems.find(item => item.name === name);
-        if (product) {
-            total -= product.price;
-            document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
-            document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
+            // Uncheck the corresponding checkbox using tokenId
+            const checkbox = document.getElementById(`token${tokenId}-checkbox`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
 
-            cartItems = cartItems.filter(item => item.name !== name);
+            // Remove the deselected panel from the selectedPanels array
+            selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
+
+            updateTotal(); // Recalculate total after removal
+        }
+
+
+        function addToCart(button) {
+            const product = button.closest('.product');
+            const name = product.querySelector('.product-name').innerText;
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            const imageSrc = product.querySelector('.product-image img').src; // Get image source
+
+            // Check if the item is already in the cart to avoid duplicates
+            if (cartItems.some(item => item.name === name)) {
+                alert('This product is already in the cart.');
+                return;
+            }
+
+            // Add to cart array
+            cartItems.push({ name, price, imageSrc });
+
+            document.getElementById('cart-details').style.display = 'block';
+
+            // Update the cart display
+            const cartDetails = document.getElementById('cart-details');
+            const productDetail = document.createElement('div');
+            productDetail.className = 'cart-item d-flex align-items-center';
+            productDetail.innerHTML = `
+                <div class="cart-item-box"><div class="cart-item-content d-flex align-items-center">
+                    <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;"> 
+                    <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                    <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                </div></div>
+            `;
+            cartDetails.appendChild(productDetail);
+
+            // Recalculate the total after adding the item
+            updateTotal();
+
+            // Hide the "Add to Cart" button after adding
+            button.style.display = 'none';
+        }
+
+        function updateTotal() {
+            let subtotal = 0;
+
+            // Calculate subtotal by summing up the price of each product in the cart
+            cartItems.forEach(item => {
+                subtotal += item.price;
+            });
+
+            // Add the selected panels/tokens to the subtotal
+            selectedPanels.forEach(panel => {
+                subtotal += panel.price;
+            });
+
+            // Update subtotal and total display
+            document.getElementById('subtotal').innerText = `₱ ${(subtotal).toFixed(2)}`;
+            document.getElementById('total').innerText = `₱ ${(subtotal + 500).toFixed(2)}`; // Add the ₱500 appointment fee
+        }
+
+            
+        function cancelItem(name) {
+            const productIndex = cartItems.findIndex(item => item.name === name);
+            if (productIndex !== -1) {
+                cartItems.splice(productIndex, 1); // Remove from cartItems array
+            }
 
             // Remove from the cart display
             const cartDetails = document.getElementById('cart-details');
@@ -270,81 +454,113 @@
                 cartDetails.removeChild(itemToRemove);
             }
 
+            if (cartItems.length === 0 && selectedPanels.length === 0) {
+                document.getElementById('cart-details').style.display = 'none';
+            }
+
+            // Recalculate the total after removing the item
+            updateTotal();
+
             // Show the "Add to Cart" button again
             const productElement = Array.from(document.querySelectorAll('.product')).find(product => product.querySelector('.product-name').innerText === name);
             if (productElement) {
                 productElement.querySelector('.add-to-cart').style.display = 'block';
             }
         }
-    }
 
-    function clearCart() {
-        cartItems = [];
-        total = 500; // Reset to the appointment fee only
+    
+        function clearCart() {
+            cartItems = [];
+            selectedPanels = [];
+            total = 500; // Reset to the appointment fee only
 
-        document.getElementById('cart-details').innerHTML = '';
-        document.getElementById('subtotal').innerText = '₱ 0';
-        document.getElementById('total').innerText = '₱ 500';
+            document.getElementById('cart-details').innerHTML = '';
+            document.getElementById('cart-details').style.display = 'none';
+            updateTotal(); // Reset subtotal and total
 
-        // Show all "Add to Cart" buttons again
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.style.display = 'block';
-        });
-    }
+            // Show all "Add to Cart" buttons again
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.style.display = 'block';
+            });
 
-    document.querySelector('.search-input').addEventListener('focus', showAllProducts);
+            const tokenCheckboxes = document.querySelectorAll('.toggle-tokens input[type="checkbox"]');
+            tokenCheckboxes.forEach(checkbox => {
+                checkbox.checked = false; // Uncheck all token checkboxes
+            });
+            
+        }
+    
+        document.querySelector('.search-input').addEventListener('focus', showAllProducts);
+    
+        function showAllProducts() {
+            const products = document.querySelectorAll('.product');
+    
+            // Show all products and reset any filters
+            products.forEach(product => {
+                product.style.display = 'block'; // Show all products
+            });
+    
+            // Remove the active background from category buttons when search is clicked
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = ''; // Reset all buttons' background color
+            });
+        }
+    
+        function searchProducts() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            const products = document.querySelectorAll('.product');
 
-    function showAllProducts() {
-        const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                const productName = product.querySelector('.product-name').innerText.toLowerCase();
 
-        // Show all products and reset any filters
-        products.forEach(product => {
-            product.style.display = 'block'; // Show all products
-        });
+                if (productName.includes(searchTerm)) {
+                    product.style.display = 'block';  // Show products that match the search term
+                } else {
+                    product.style.display = 'none';  // Hide products that don't match
+                }
+            });
+        }
+    
+        document.querySelector('.search-input').addEventListener('input', searchProducts);
+    
+    
+        function filterByCategory(category) {
+            console.log("Filtering category: ", category);  // Check if the correct category is being passed
+            
+            const products = document.querySelectorAll('.product');  // Select all product elements
+            
+            products.forEach(product => {
+                // If 'all' is selected, or the product matches the selected category, show the product
+                if (category === 'all' || product.classList.contains(category)) {
+                    product.style.display = 'block';  // Show the product
+                } else {
+                    product.style.display = 'none';   // Hide non-matching products
+                }
+            });
+        }
 
-        // Remove the active background from category buttons when search is clicked
-        const categoryButtons = document.querySelectorAll('.category-button');
-        categoryButtons.forEach(button => {
-            button.style.backgroundColor = ''; // Reset all buttons' background color
-        });
-    }
 
-    function searchProducts() {
-        const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-        const products = document.querySelectorAll('.product');
+    
+        window.onload = function() {
+            // Set the default category on page load
+            filterByCategory('all');  // Or 'mechanical' if that's the default
 
-        products.forEach(product => {
-            const productName = product.querySelector('.product-name').innerText.toLowerCase();
-
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block'; // Show products that match the search term
-            } else {
-                product.style.display = 'none'; // Hide products that don't match
+            // Add search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', searchProducts);
             }
-        });
-    }
 
-    document.querySelector('.search-input').addEventListener('input', searchProducts);
-
-
-    function filterByCategory(category) {
-    const products = document.querySelectorAll('.product');
-    products.forEach(product => {
-      if (category === 'all' || product.classList.contains(category)) {
-        product.style.display = 'block'; // Show matching category
-      } else {
-        product.style.display = 'none';  // Hide others
-      }
-    });
-  }
-
-    window.onload = function() {
-        filterProducts('mechanical'); // Automatically show Mechanical products on page load
-    };
-
-
-
-
+            // Add functionality for dropdown
+            const dropdown = document.getElementById('category-dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('change', function() {
+                    filterByCategory(this.value);
+                });
+            }
+        }
+    
     </script>
 </body>
 </html>

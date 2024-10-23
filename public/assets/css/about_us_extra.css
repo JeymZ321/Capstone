@@ -40,13 +40,27 @@
   background-size: cover;
 }
 
+.parallax_aboutus2 {
+  flex: 1;
+  background-image: url('../../assets/img/tech/carcar.png');
+  min-height: 500px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /* Text section */
 
 .text_aboutus {
   flex: 1;
   padding: 50px;
-  background-color: rgb(0,0,0);
+  background-image: url('../../assets/img/scenery/aboutus_txt_bg.png');
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .text_aboutus h2 {
@@ -87,6 +101,10 @@
     background-attachment: scroll;
     width: 90%;
   }
+
+  .parallax_aboutus2{
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -95,6 +113,8 @@
     padding: 20px;
     box-shadow: none;
     text-align: center;
+    background-image: none;
+
   }
 }
 
@@ -107,6 +127,7 @@
 @media screen and (max-width: 768px) {
   .text_aboutus p {
     font-size: 1em;
+    color: black;
   }
 }
 
