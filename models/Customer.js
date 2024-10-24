@@ -1,69 +1,14 @@
 const mongoose = require('mongoose');
+
 const CustomerSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true },  // Ensure email is unique
-    iv: { type: String, required: true },
-    key: { type: String, required: true },
-    isVerified: { type: Boolean, default: false } // Track if email is verified
+    email: { type: String, required: true, unique: true },
+    profilePicture: { type: String, default: 'assets/img/default-user-icon.png' },
+    suggestions: [{ type: String }],
+    isVerified: { type: Boolean, default: false },
+    verificationToken: { type: String }, // Optional: if you implement email verification
+    registrationDate: { type: Date, default: Date.now } // Optional: to keep track of when the user registered
 });
 
-const Customer = mongoose.model('customer', CustomerSchema);
+const Customer = mongoose.model('Customer', CustomerSchema);
 module.exports = Customer;
-
-
-
-
-/*const mongoose = require('mongoose');
-
-const customerSchema = new mongoose.Schema({
-
-    Name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    Address: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    ContactNumber: {    
-        type: String, 
-        required: true,
-        trim: true
-    },
-    Email: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    DateEntry: {      
-        type: String,
-        required: true,
-        trim: true  
-    },
-    DateRelease: {
-        type: String,
-        required: true, 
-        trim: true
-    },
-    EstimateControl: {
-        type: Number,
-        required: true,
-        trim: true      
-    },   
-    VehicleId: {      
-        type: Number,
-        required: true,
-        trim: true              
-
-    }
-}, {
-
-    timestamps: true
-}); 
-
-const customer = mongoose.model('Customer', customerSchema);
-
-module.exports = customer;*/
+ 

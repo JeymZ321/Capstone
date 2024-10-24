@@ -8,11 +8,11 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const appointment = require('./models/Appointment');  
+const Appointment = require('./models/Appointment');  
 const customer = require('./models/Customer');
 const vehicle = require('./models/Vehicle');
 const Admin = require('./models/Admin');
+const Archive = require('./models/archives');
 const UnverifiedAdmin = require('./models/UnverifiedAdmin'); 
 //const profileRoutes = require('./public/profile');
 const router = express.Router();
@@ -54,75 +54,89 @@ app.get('/', (req, res) => {
 
 /*------------------------------CUSTOMER ROUTES------------------------------*/
 
-/*----------CREATING AN ACCOUNT FOR USERS || CHANGE INTO /appointment--------------*/
-app.post('/create-account', async (req, res) => {
-  const { username, password, email } = req.body;
+/*----------CREATING AN ACCOUNT FOR USERS/ REGISTRATION FORM--------------*/
+app.post('/registration', async (req, res) => {
+  const { email, suggestions } = req.body; 
+  if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+  }
+
   try {
-    const iv = crypto.randomBytes(16);
-    const encryptionKey = crypto.randomBytes(32);
-    const cipher = crypto.createCipheriv('aes-256-cbc', encryptionKey, iv);
-    let encryptedPassword = cipher.update(password, 'utf8', 'hex');
-    encryptedPassword += cipher.final('hex');
+      // Check if the email is already registered
+      const existingCustomer = await customer.findOne({ email });
+      if (existingCustomer) {
+          return res.status(400).json({ message: 'Email is already registered' });
+      }
 
-    const newcustomer = new customer({
-      username,
-      password: encryptedPassword,
-      email,
-      iv: iv.toString('hex'),
-      key: encryptionKey.toString('hex')
-    });
+      // Create a new customer with the provided email and suggestions
+      const newCustomer = new customer({
+          email,
+          suggestions,
+          isVerified: true  // Set to true for now, or implement email verification if needed
+      });
 
-    await newcustomer.save();
-    res.status(200).json({ message: 'Account created successfully' });
+      await newCustomer.save();
+      res.status(200).json({ message: 'Account created successfully' });
   } catch (error) {
-    console.log('Account creation failed', error);
-    res.status(500).json({ message: 'Account creation failed' });
+      console.log('Account creation failed:', error);
+      res.status(500).json({ message: 'Account creation failed' });
   }
 });
 
   /*----------------LOGIN AN ACCOUNT FOR USERS--------------*/
   app.post('/loginroute', async (req, res) => {
-    const { username, password, googleApiKey } = req.body;
-    
+    const { email, googleApiKey } = req.body;
+  
     try {
-        const Customer = await customer.findOne({ username });
+        // Check if the email is registered
+        const Customer = await customer.findOne({ email });
         if (!Customer) {
-            return res.status(400).json({ message: 'Invalid username or password' });
+            return res.status(400).json({ message: 'Email is not registered' });
         }
-
-        // Use bcrypt to compare the password
-        const isMatch = await bcrypt.compare(password, Customer.password); 
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid username or password' });
+  
+        // Check if the email is verified
+        if (!customer.isVerified) {
+            return res.status(400).json({ message: 'Please verify your email before logging in' });
         }
-
-         // Verify the Google API Key if provided
-         if (googleApiKey) {
-          (async () => {
-              const fetch = (await import('node-fetch')).default;
-              const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${googleApiKey}`);
-              const data = await response.json();
-      
-              if (data.error) {
-                  return res.status(400).json({ message: 'Invalid Google API Key' });
-              }
-      
-              // Save userInfo or use it as needed
-              const userInfo = {
-                  email: data.email,
-                  name: data.name,
-                  picture: data.picture,
-              };
-          })();
-      }
-              
-        const redirectUrl = 'homepage.html'; // HOMEPAGE FOR USERS
-        res.status(200).json({ message: 'Login successfully', redirectUrl });
-
+  
+        // Verify the Google API Key (id_token)
+        const fetch = (await import('node-fetch')).default;
+        const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${googleApiKey}`);
+        const data = await response.json();
+  
+        if (data.error || data.email !== email) {
+            return res.status(400).json({ message: 'Invalid Google API Key or email does not match' });
+        }
+  
+        // Login successful, return the homepage
+        res.status(200).json({ message: 'Login successfully', redirectUrl: 'homepage.html' });
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ message: 'Error logging in' });
     }
+  });
+
+/*------------------------Route to get the user's profile------------------------*/
+app.get('/api/profile', async (req, res) => {
+  const { email } = req.query;  // Assuming the email is passed as a query parameter
+
+  try {
+      // Find the user by email
+      const user = await customer.findOne({ email });
+      
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Send the user's profile data back
+      res.status(200).json({
+          email: user.email,
+          picture: user.picture || 'assets/img/default-user-icon.png'  // Default image if no profile picture exists
+      });
+  } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Server error fetching profile' });
+  }
 });
 
 
@@ -410,67 +424,76 @@ app.get('/api/admin/availability', (req, res) => {
   res.status(200).json(availableAppointments);
 });
 
-/*----------------------APPOINTMENT FORM CONVERT THE PANEL INTO INPUT TEXT---------------*/
-app.post('/appointment', async (req, res) => {
-  const {
-    Fullname,
-    Address,
-    Contact,
-    Email,
-    Brand,
-    Color,
-    YearModel,
-    Plate,
-    panel1,
-    panel2,
-    panel3,
-    panel4,
-    functionality,  // Updated: combined functional and nonfunctional into one
-    datepicker,
-    timepicker,
-    slots
-  } = req.body;
-
-  
+/*----------------------APPOINTMENT ROUTE FOR ADMIN---------------*/
+app.get('/api/appointments', async (req, res) => {
   try {
-    // Create and save the new appointment
-    const newAppointment = new appointment({
-      Fullname,
-      Address,
-      Contact,
-      Email,
-      datepicker,
-      timepicker,
-      slots
-    });
-    await newAppointment.save();
-
-    // Combine panels into an object
-    const CarBodyPanel = {
-      panel1: panel1 === true,
-      panel2: panel2 === true,
-      panel3: panel3 === true,
-      panel4: panel4 === true
-    };
-
-    // Create and save the new vehicle
-    const newVehicle = new vehicle({
-      Brand,
-      Color,
-      YearModel,
-      PlateNumber: Plate,
-      CarBodyPanel,  // Store panels in a nested object
-      CarFunctionality: functionality  // Store functionality as a single value
-    });
-    await newVehicle.save();
-
-    // Send success response
-    res.status(200).json({ message: 'Appointment created successfully' });
+      const appointments = await Appointment.find({}, '-password -iv -key'); // Exclude sensitive fields
+      res.status(200).json(appointments);
   } catch (error) {
-    console.log('Appointment creation failed:', error);
-    res.status(500).json({ message: 'Appointment creation failed' });
+      console.error('Error fetching appointments:', error);
+      res.status(500).json({ message: 'Error fetching appointments' });
   }
 });
+
+// Archive appointment and store it in 'archives' collection
+app.post('/api/appointments/archive/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const appointmentToArchive = await Appointment.findById(id);
+      if (!appointmentToArchive) {
+          return res.status(404).json({ message: 'Appointment not found' });
+      }
+
+      // Move to archives collection
+      const archivedAppointment = new Archive({
+          email: appointmentToArchive.email,
+          datepicker: appointmentToArchive.datepicker,
+          timepicker: appointmentToArchive.timepicker,
+          slots: appointmentToArchive.slots,
+      });
+
+      await archivedAppointment.save();
+
+      // Delete the original appointment
+      await Appointment.deleteOne({ _id: id });
+
+      res.status(200).json({ message: 'Appointment archived successfully' });
+  } catch (error) {
+      console.error('Error archiving appointment:', error);
+      res.status(500).json({ message: 'Error archiving appointment' });
+  }
+});
+
+/*----------------------APPOINTMENT FORM CONVERT THE PANEL INTO INPUT TEXT---------------*/
+app.post('/appointment', async (req, res) => {
+  try {
+      const { email, phonenumber, city, platenum, vehicle, carfunc, datepicker, timepicker, panels, slots } = req.body;
+
+      // Create a new appointment record
+      const newAppointment = new Appointment({
+          email,
+          phonenumber,
+          city,
+          platenum,
+          vehicle,
+          carfunc,
+          datepicker,
+          timepicker,
+          panels,
+          slots
+      });
+
+      // Save the appointment to the database
+      await newAppointment.save();
+
+      res.status(200).json({ message: 'Appointment created successfully' });
+  } catch (error) {
+      console.error('Error creating appointment:', error);
+      res.status(500).json({ message: 'Error creating appointment' });
+  }
+});
+
 
 /*------------------------- Email transporter setup ---------------------*/
 const transporter = nodemailer.createTransport({
@@ -486,37 +509,45 @@ const transporter = nodemailer.createTransport({
   
 /*---------------------------CHANGE INTO /create-account---------------*/
 const secretKey = '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';
+const jwt = require('jsonwebtoken');
+
 app.post('/send-registration-email', async (req, res) => {
-  const { email } = req.body;
-  if (!email) {
-      return res.status(400).send({ message: 'Email is required' });
-  }
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).send({ message: 'Email is required' });
+    }
 
-  // Generate a token for registration confirmation
-  const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
+    try {
+        // Generate a token for registration confirmation
+        const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
 
-  const registrationLink = `http://127.0.0.1:3000/public/registrationform.html?token=${token}`;
+        const registrationLink = `http://127.0.0.1:3000/public/registrationform.html?token=${token}`;
 
-  /*---------Sending email------------*/
-  const mailOptions = {
-      from: {
-          name: 'Reynaldo\'s Car Care',
-          address: 'caynojames07@gmail.com' // Make sure to include '.com'
-      },
-      to: email,
-      subject: 'Complete Your Registration',
-      text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
-  };
+        /*---------Sending email------------*/
+        const mailOptions = {
+            from: {
+                name: "Reynaldo's Car Care",
+                address: 'caynojames07@gmail.com'
+            },
+            to: email,
+            subject: 'Complete Your Registration',
+            text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
+        };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          console.log('Error sending email:', error);
-          return res.status(500).send('Error sending email.');
-      }
-      console.log('Email sent: ' + info.response);
-      res.status(200).send('Registration email sent.');
-  });
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+                return res.status(500).send('Error sending email.');
+            }
+            console.log('Email sent: ' + info.response);
+            res.status(200).send('Registration email sent.');
+        });
+    } catch (error) {
+        console.log('Error in registration email:', error);
+        res.status(500).send('An error occurred while sending the registration email.');
+    }
 });
+
 
 app.get('/confirm-registration', async (req, res) => {
   const { token } = req.query;
@@ -531,13 +562,13 @@ app.get('/confirm-registration', async (req, res) => {
       const { email } = decoded;
 
       // Find the user by email
-      let Customer = await customer.findOne({ email });
-      if (!Customer) {
+      let customer = await Customer.findOne({ email });
+      if (!customer) {
           return res.status(400).send({ message: 'Email not found. Please register first.' });
       }
 
       // Check if the user is already verified
-      if (Customer.isVerified) {
+      if (customer.isVerified) {
           return res.status(400).send({ message: 'Email is already verified' });
       }
 

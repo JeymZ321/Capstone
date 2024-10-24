@@ -45,9 +45,6 @@
                     <div class="row">
                         <h3>Customer Information</h3>
                         <div class="col-md-6">
-                            <label for="username">Name: <input type="text" name="Username" id="username" required></label>  
-                        </div>
-                        <div class="col-md-6">
                             <label for="phonenumber" >Phone #: <input type="text" name="Phonenumber" id="phonenumber"></label>
                         </div>
                         
@@ -218,78 +215,67 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#appointmentform').submit(function(event) {
-                event.preventDefault();
-            
-                // Collect form values
-                //var Fullname = $('#Fullname').val();
-                //var Address = $('#Address').val();
-                //var Contact = $('#Contact').val();
-                //var Email = $('#Email').val();
-                var username = $('#username').val();
-                var password = $('#password').val();
-                var Brand = $('#Brand').val();
-                var Color = $('#Color').val();
-                var YearModel = $('#YearModel').val();
-                var Plate = $('#Plate').val();
-                var panel1 = $('#panel1').is(':checked') ? $('#panel1').val() : '';
-                var panel2 = $('#panel2').is(':checked') ? $('#panel2').val() : '';
-                var panel3 = $('#panel3').is(':checked') ? $('#panel3').val() : '';
-                var panel4 = $('#panel4').is(':checked') ? $('#panel4').val() : '';
-                var functionality = $('#functional').is(':checked') ? 'functional' : ($('#nonfunctional').is(':checked') ? 'nonfunctional' : '');
-                var datepicker = $('#datepicker').val();
-                var timepicker = $('#timepicker').val();
-                var slots = $('#slots').val();  // Ensure this input exists
-            
-                
-            
-                // AJAX request to send data to backend
-                $.ajax({
-                    type: 'POST',
-                    url: '/appointment',  // Ensure the server route is set correctly
-                    data: JSON.stringify({
-                        //Fullname: Fullname,
-                        //Address: Address,
-                        //Contact: Contact,
-                        //Email: Email,
-                        username: username,
-                        password: password,
-                        Brand: Brand,
-                        Color: Color,
-                        YearModel: YearModel,
-                        Plate: Plate,
-                        panel1: panel1,
-                        panel2: panel2,
-                        panel3: panel3,
-                        panel4: panel4,
-                        functionality: functionality,
-                        datepicker: datepicker,
-                        timepicker: timepicker,
-                        slots: slots
-                    }),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        if (response.message === 'Appointment created successfully'+ datepicker) {
-                            $('#success-message').show();
-                          
-                            window.location.href = '/success';  // Redirect if successful
-                        } else {
-                            alert('Failed to create appointment.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Provide more informative error message
-                        alert('An error occurred: ' + xhr.responseText || status || error);
-                        console.error('Error details:', xhr.responseText );  // Log error for debugging
-                    }
-                });
-            });
+        $(document).ready(function () {
+    $('#appointmentform').submit(function (event) {
+        event.preventDefault();
+
+        // Collect form values
+        var email = $('#email').val();
+        var phonenumber = $('#phonenumber').val();
+        var city = $('#city').val();
+        var platenum = $('#platenum').val();
+        var vehicle = $('#vehicle').val();
+        var carfunc = $('input[name="carfunc"]:checked').val(); // Get selected radio button
+        var datepicker = $('#datepicker').val();
+        var timepicker = $('#timepicker').val();
+
+        // Collect selected panels (if any)
+        var panel1 = $('#panel1').is(':checked') ? $('#panel1').val() : '';
+        var panel2 = $('#panel2').is(':checked') ? $('#panel2').val() : '';
+        var panel3 = $('#panel3').is(':checked') ? $('#panel3').val() : '';
+        var panel4 = $('#panel4').is(':checked') ? $('#panel4').val() : '';
+        var panels = [panel1, panel2, panel3, panel4].filter(Boolean); // Filter out empty panels
+
+        // Collect selected slots (if any)
+        var selectedSlots = [];
+        $('.slot:checked').each(function () {
+            selectedSlots.push($(this).val());
         });
+
+        // AJAX request to send data to backend
+        $.ajax({
+            type: 'POST',
+            url: '/appointment',  // Ensure the server route is set correctly
+            data: JSON.stringify({
+                email: email,
+                phonenumber: phonenumber,
+                city: city,
+                platenum: platenum,
+                vehicle: vehicle,
+                carfunc: carfunc,
+                datepicker: datepicker,
+                timepicker: timepicker,
+                panels: panels,
+                slots: selectedSlots
+            }),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.message === 'Appointment created successfully') {
+                    $('#success-message').show();
+                    window.location.href = '/success';  // Redirect if successful
+                } else {
+                    alert('Failed to create appointment.');
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred: ' + (xhr.responseText || status || error));
+            }
+        });
+    });
+});
+
     </script>
-    
-        
-    
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>

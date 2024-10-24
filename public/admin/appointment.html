@@ -127,30 +127,77 @@
                         </ul>
                     </div>
                 </nav>
-                <h1>Appointments</h1>
-<div id="appointments"></div>
+
+    <!-- Appointment Table -->
+    <div class="appointment-container">
+        <h1>Appointments</h1>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Slots</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentTableBody">
+                <!-- Rows will be injected here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
 
 <script>
-    async function fetchAppointments() {
-        try {
-            const response = await fetch('http://localhost:3000/appointments'); // Corrected endpoint
-            const appointments = await response.json();
-            
-            const appointmentsContainer = document.getElementById('appointments'); // Ensure this ID matches
-            appointmentsContainer.innerHTML = appointments.map(appointment => `
-                <div>
-                    <p>Name: ${appointment.username}</p> <!-- Adjust to match your schema -->
-                    <p>Date: ${new Date(appointment.datepicker).toLocaleDateString()}</p> <!-- Adjust if necessary -->
-                    <p>Time: ${appointment.timepicker}</p> <!-- Adjust if necessary -->
-                </div>
-            `).join('');
-        } catch (error) {
-            console.error('Error fetching appointments:', error);
-        }
-    }
+    $(document).ready(function () {
+        // Fetch appointments from the backend
+        $.get('/api/appointments', function (appointments) {
+            const tableBody = $('#appointmentTableBody');
+            appointments.forEach(appointment => {
+                const slotsList = appointment.slots.length > 0 ? 
+                    appointment.slots.map(slot => `<li>${slot}</li>`).join('') : 
+                    '<li>No Slots Available</li>';
+                const row = `
+                    <tr>
+                        <td>${appointment.email}</td>
+                        <td>${appointment.datepicker}</td>
+                        <td>${appointment.timepicker}</td>
+                        <td><ul>${slotsList}</ul></td>
+                        <td>
+                            <button class="btn btn-primary viewDetails" data-id="${appointment._id}">View</button>
+                            <button class="btn btn-danger archive" data-id="${appointment._id}">Archive</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
 
-    fetchAppointments();
+            // Handle archive action with confirmation
+            $('.archive').click(function () {
+                const id = $(this).data('id');
+                if (confirm('Are you sure you want to archive this appointment?')) {
+                    $.post(`/api/appointments/archive/${id}`, function (response) {
+                        alert(response.message);
+                        location.reload(); // Reload the page to reflect changes
+                    }).fail(function () {
+                        alert('Failed to archive the appointment.');
+                    });
+                }
+            });
+
+            // Handle view details action
+            $('.viewDetails').click(function () {
+                const id = $(this).data('id');
+                window.location.href = `/viewAppointment.html?id=${id}`;
+            });
+        }).fail(function () {
+            alert('Failed to fetch appointments.');
+        });
+    });
 </script>
+
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

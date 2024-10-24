@@ -57,28 +57,23 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#submit').click(function(e) {
-                e.preventDefault();  // Prevent default form submission behavior
-
+        $(document).ready(function () {
+            $('#submit').click(function (e) {
+                e.preventDefault();
                 const email = $('#email').val();
-
                 if (!email) {
                     alert('Please enter a valid email.');
                     return;
                 }
-
-                // Send AJAX request
                 $.ajax({
                     url: '/send-registration-email',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ email: email }),
-                    success: function(response) {
-                        alert('Registration email sent!');  // Success message
-                        $('#registerForm')[0].reset();  // Reset the form
+                    success: function (response) {
+                        alert('Registration email sent! Please check your email to complete the registration.');
                     },
-                    error: function(error) {
+                    error: function () {
                         alert('Error sending registration email.');
                     }
                 });

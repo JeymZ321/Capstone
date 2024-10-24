@@ -31,9 +31,9 @@
             </div>
             
             <!-- User Profile Dropdown -->
-            <div class="dropdown ms-3">
+            <div class="dropdown ms-auto me-3">
                 <a class="dropdown-toggle text-white" href="#" role="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="assets/img/user-icon.png" width="40px" class="rounded-circle" alt="User Profile">
+                    <img id="profileImage" src="assets/img/user-icon.png" width="40px" class="rounded-circle" alt="User Profile">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                     <li><a class="dropdown-item" href="profile.html">Profile</a></li>
@@ -128,6 +128,30 @@
             <p>© 2024 Reynaldo's Car Care Center</p>
         </div>
     </footer>
+
+    <script>
+        $(document).ready(function () {
+            // Example: Fetch user's profile from the backend
+            const userEmail = 'user@gmail.com';  // You can dynamically set this from session/local storage
+    
+            $.ajax({
+                url: `/api/profile?email=${userEmail}`,  // Fetch profile from the backend using email
+                method: 'GET',
+                success: function (data) {
+                    // Update the UI with profile data
+                    if (data.picture) {
+                        $('#profileImage').attr('src', data.picture); // Update profile image
+                    }
+                    $('#userEmail').text(data.email);  // Optionally show email if needed
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching profile:', error);
+                    alert('Failed to load profile data.');
+                }
+            });
+        });
+    </script>
+    
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
