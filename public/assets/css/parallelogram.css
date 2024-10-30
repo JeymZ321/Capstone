@@ -1,0 +1,25 @@
+/* Parallelogram Shape */
+.parallelogram {
+    position: absolute;
+    top: 140px;
+    left: -10px;
+    background-color: rgb(199, 6, 6);
+    color: white;
+    padding: 10px 40px;
+    transform: skew(-20deg);
+    font-weight: bold;
+    box-shadow: 0 3px 1px 4px rgb(0, 0, 0);
+    font-size: 25px;
+    font-family: "Montserrat";
+}
+
+.parallelogram::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 0;
+    height: 0;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+}

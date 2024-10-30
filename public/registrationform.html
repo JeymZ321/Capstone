@@ -4,145 +4,385 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Appointment Form</title>
+    <title>Registration Form</title>
     <meta name="description" content="This is the Login page">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
     <link rel="stylesheet" href="./Appointment/appointment.css">
-    <link rel="stylesheet" href="./Calendar/style.css">
+    <link rel="stylesheet" href="assets/css/parallelogram.css">
+
+    <style>
+         .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        #addVehicleButton{
+            background-color: black;
+        }
+
+        .image-preview {
+            width: 200px; /* Set fixed width */
+            height: 200px; /* Set fixed height */
+            border: 1px solid #ccc; /* Optional: add a border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure content does not overflow */
+        }
+        .image-preview img {
+            max-width: 100%; /* Ensure the image fits within the container */
+            max-height: 100%; /* Ensure the image fits within the container */
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        h3{
+            font-family: "Bebas Neue";
+            font-weight: lighter;
+            font-size: 40px;
+        }
+
+        .input-group .form-control {
+            border-radius: 20px 0 0 20px;
+            border-right: none;
+        }
+
+        .input-group .btn {
+            border-radius: 0 20px 20px 0;
+            background-color: black;
+            color: #ffcccc;
+            margin-top: 27px;
+        }
+
+        .input-group .btn:hover {
+            background-color: #333;
+        }
+
+        .edit-btn, .delete-btn{
+            width: 80%;
+            margin: 0 auto;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+        .responsive-textbox {
+            column-width: 100%;   /* Ensures the textbox fills the entire width */
+            box-sizing: content-box;
+        }
+        }
+   
+
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
-            <button class="navbar-toggler" data-bs-toggle="collapse">
-                <span class="visually-hidden">Toggle navigation</span>
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a href="index.html">
-                <img src="assets/img/Logo.jpg" style="border-radius: 70px;width: 140px;height: 140px;padding: 0px;">
-            </a> 
+            <a class="navbar-brand logo" href="index.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="70px" style="margin: 0px;padding: 0px;" href="index.html"></a>
+            <h3 style="color:white">Registration Form</h3>
         </div>
     </nav>
     
     <main>
-        <div class="form-container">
-            <form id="registrationForm">
-                <h2>Registration Form</h2>
-                <div class="section">
-                    <h3>Customer Information</h3>
-                    <label>Email: <input type="email" name="email" id="email" required></label>
+        
+        <form id="registrationForm" class="form-container mt-4" >
+            <div class="row">
+            
+                <div class="col-md-12 mb-4">
+                   
                 </div>
+                
+                <div class="col-md-6">
+                    <div class="row">
+                        <h3 class="mt-4">Customer Information</h3>
+                        <div class="col-md-6">
+                            <label for="name">Name: <input type="text" placeholder="Name" name="Type your name here.. " id="name" required></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phonenumber" >Phone #: <input type="text" placeholder="+63" name="Phonenumber" id="phonenumber" required></label>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label for="email responsive-textbox">Email: <input type="email" placeholder="example@gmail.com" name="email" id="email" required></label>
+                        </div>
+                       
 
-                <div class="section">
+                        <div class="container my-4 col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control mt-4" placeholder="Enter Code">
+                                <div class="input-group-append">
+                                    <button class="btn" type="button">Get Code</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       
+                        <div class="col-md-4 mb-2">
+                            <label for="city">City: <input type="text" placeholder="City"  name="City" id="city"></label>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="password">Password: <input type="password" placeholder="********"  name="Password" id="password" required></label>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="password">Confirm Password: <input type="password" placeholder="********"  name="Password" id="password" required></label>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+                
+
+                <div class="col-md-6">
                     <!--Dropdown list-->
-                    <h3>Vehicle Information</h3>
+                    <h3 class="mt-4">Vehicle Information</h3>
 
-                    <!--Vehicles /CHANGE INTO PLUS BUTTON--> 
-                    <label for="Vehicle">How Many:</label>
-                    <select name="Vehicle" id="Vehicle">
-                        <option value="" disabled selected>How many vehicles you have</option>
-                        <option value="V1">1</option>
-                        <option value="V2">2</option>
-                        <option value="V3">3</option>
-                        <option value="V4">4</option>
-                        <option value="V5">5</option>
-                    </select>
+                    <div class="vehicle-list" id="vehicleList"></div>
 
-                    <!--Gas--> 
-                    <label for="Vehicle">Selec Gas Type:</label>
-                    <select name="Vehicle" id="Vehicle">
-                        <option value="" disabled selected>Type</option>
-                        <option value="gas">Gas</option>
-                        <option value="diesel">Diesel</option>
-                    </select>
+                    <button type="button" class="btn btn-primary" id="addVehicleButton" data-bs-toggle="modal" data-bs-target="#vehicleModal">
+                        Add New Vehicle
+                    </button>
+
                     
-                    
-                    <!--AT or MT Dropdown-->
-                    <label for="ATorMT">AT or MT:</label>
-                    <select name="ATorMT" id="ATorMT">
-                        <option value="" disabled selected>Select AT or MT</option>
-                        <option value="AT">Automatic</option>
-                        <option value="MT">Manual</option>
-                    </select>
-                    <!-- Brand Dropdown -->
-                    <label for="Brand">Brand:</label>
-                    <select name="Brand" id="Brand">
-                        <option value="" disabled selected>Select Brand</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Ford">Ford</option>
-                        <option value="Chevrolet">Chevrolet</option>
-                        <option value="Nissan">Nissan</option>
-                    </select>
-                
-                    <!-- Color Dropdown -->
-                    <label for="Color">Color:</label>
-                    <select name="Color" id="Color">
-                        <option value="" disabled selected>Select Color</option>
-                        <option value="Red">Red</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Black">Black</option>
-                        <option value="White">White</option>
-                        <option value="Silver">Silver</option>
-                    </select>
-                
-                    <!-- Year Model Dropdown -->
-                    <label for="YearModel">Year Model:</label>
-                    <select name="YearModel" id="YearModel">
-                        <option value="" disabled selected>Select Year Model</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
-                
-                    <!-- Plate Input (left as a text field) -->
-                    <label for="Plate">Plate #:</label>
-                    <input type="text" name="Plate" id="Plate">
                 </div>
 
-                <div class="section">
-                    <h3>Suggestions or Comments</h3>
-                    <label for="suggestions">Please provide any additional comments or needs:</label>
-                    <textarea id="suggestions" name="suggestions" rows="4" cols="50" placeholder="Enter your suggestions or comments here..."></textarea>
-                </div>
+                
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </main>
-
+                <button type="submit" class="btn btn-success mt-4" style="background-color: darkred; width: 25%; margin:0 auto;">Submit</button>
+               
+            </div>
+        </form>
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#registrationForm').submit(function (event) {
-                event.preventDefault();
 
-                var email = $('#email').val();
-                var suggestions = $('#suggestions').val();  // Capture suggestions
+        <div class="parallelogram">Setting Up Your Account..</div>
+    </main>
 
-                // AJAX request to send email and suggestions to backend
-                $.ajax({
-                    type: 'POST',
-                    url: '/registration',
-                    data: JSON.stringify({ email: email, suggestions: suggestions }),
-                    contentType: 'application/json',
-                    success: function (response) {
-                        alert(response.message);
-                        if (response.message === 'Account created successfully') {
-                            window.location.href = '/login.html';  // Redirect to login page
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        alert('An error occurred: ' + (xhr.responseText || status || error));
-                    }
-                });
+<!-- Vehicle Modal -->
+<div class="modal fade" id="vehicleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: darkred; color: white;" >
+                <h5 class="modal-title" >Add Vehicle Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: rgb(255, 255, 255);"></button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <div class="row">
+                        <div class="col-md-6">                    
+                            <label for="brandModel">Brand Model: <input type="text" placeholder="Example: Toyota Avanza" name="BrandModel" id="brandModel" required></label>
+                        </div>
+                        <div class="col-md-6">                    
+                            <label for="color">Color: <input type="text" placeholder="Example: Candy Red" name="Color" id="color" required></label>
+                        </div>
+                        <div class="col-md-4">                    
+                            <label for="platenum">Plate #: <input type="text" placeholder="ABC 1234" maxlength="8" name="PlateNumber" id="platenum" required></label>
+                        </div>
+                        <div class="col-md-4">                    
+                            <label for="yearmodel">Year Model: <input type="text" placeholder="2024" minlength="4" maxlength="4" name="YearModel" id="yearmodel" required></label>
+                        </div>
+
+                        <div class="col-md-4"> 
+                            <label for="transmission">Transmission: 
+                                <select id="transmission" required>
+                                    <option disabled selected>Select Transmission</option>
+                                    <option>Automatic</option>
+                                    <option>Manual</option>
+                                    <option>CVT</option>
+                                    <option>Dual Clutch</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vehicleImage" class="mb-3">Vehicle Image (optional): 
+                                <input type="file" accept="image/*" name="VehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
+                            </label>
+                            <div id="imagePreview" class="image-preview">
+                                <img id="preview" src="#" alt="Image Preview" style="display: none;">
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-2" id="removeImageButton" onclick="removeImage()" style="display: none;">
+                                Remove Image
+                            </button>
+                        </div>
+                        <div class="col-md-6 mt-5">
+                            <br>
+                            <p style="opacity: .5; font-size: 14px;"><i>Note: Reynaldo's Car Care Center doesn't accomodate Electric Vehicles.</i></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveVehicleButton" style="background-color: rgb(0, 0, 0); color: white;">Save Vehicle</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let vehicleCount = 0;
+    let isEditing = false;
+    let currentItem = null; // Store the item being edited
+
+    document.getElementById('saveVehicleButton').addEventListener('click', () => {
+        // Get values from the modal form
+        const brandModel = document.getElementById('brandModel').value;
+        const color = document.getElementById('color').value;
+        const plateNumber = document.getElementById('platenum').value;
+        const yearModel = document.getElementById('yearmodel').value;
+        const transmission = document.getElementById('transmission').value;
+        const preview = document.getElementById('preview').src;
+
+        // Validate required fields
+        if (!brandModel || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
+            alert('Please fill out all required fields.');
+            return;
+        }
+
+        // Increment vehicle count and assign a unique name
+        if (!isEditing) vehicleCount++;
+        const vehicleName = `Vehicle ${vehicleCount}: <br> 
+        <span style="font-size: 18px; color: black;">${brandModel} ${color} - (${yearModel}) - ${transmission}</span>`
+
+        // Concatenate vehicle information with image (if provided)
+        const vehicleInfo = `
+            <div style="background-color: white; padding: 10px; border-radius: 5px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>${vehicleName}</strong><br><br>
+                        <strong>Brand Model:</strong> ${brandModel} <br>
+                        <strong>Color:</strong> ${color} <br>
+                        <strong>Plate #:</strong> ${plateNumber} <br>
+                        <strong>Year Model:</strong> ${yearModel} <br>
+                        <strong>Transmission:</strong> ${transmission}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="image-preview mt-2">${preview && preview !== '#' ? `<img src="${preview}" alt="Vehicle Image" style="max-width:100%; max-height:100%; object-fit: cover;">` : ''}</div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>`;
+
+        if (isEditing && currentItem) {
+            // Update the existing vehicle entry
+            currentItem.innerHTML = vehicleInfo;
+            
+            // Reattach event listeners
+            currentItem.querySelector('.edit-btn').addEventListener('click', () => {
+                editVehicle(currentItem, brandModel, color, plateNumber, yearModel, transmission, preview);
             });
+            currentItem.querySelector('.delete-btn').addEventListener('click', () => {
+                deleteVehicle(currentItem);
+            });
+
+            // Reset editing state
+            isEditing = false;
+            currentItem = null;
+        } else {
+            // Create new vehicle entry and append to the list
+            const vehicleItem = document.createElement('div');
+            vehicleItem.className = 'alert alert-info mt-2';
+            vehicleItem.innerHTML = vehicleInfo;
+            vehicleItem.id = `vehicle-${vehicleCount}`;
+            document.getElementById('vehicleList').appendChild(vehicleItem);
+
+            // Attach edit and delete event listeners
+            vehicleItem.querySelector('.edit-btn').addEventListener('click', () => {
+                editVehicle(vehicleItem, brandModel, color, plateNumber, yearModel, transmission, preview);
+            });
+            vehicleItem.querySelector('.delete-btn').addEventListener('click', () => {
+                deleteVehicle(vehicleItem);
+            });
+        }
+
+        // Reset form and image preview after adding/updating the vehicle
+        document.getElementById('vehicleForm').reset();
+        removeImage(); // Clear image preview
+        bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+    });
+
+    function editVehicle(item, brandModel, color, plateNumber, yearModel, transmission, previewSrc) {
+        // Populate form with existing data
+        document.getElementById('brandModel').value = brandModel;
+        document.getElementById('color').value = color;
+        document.getElementById('platenum').value = plateNumber;
+        document.getElementById('yearmodel').value = yearModel;
+        document.getElementById('transmission').value = transmission;
+        document.getElementById('preview').src = previewSrc;
+        document.getElementById('preview').style.display = previewSrc ? 'block' : 'none';
+        document.getElementById('removeImageButton').style.display = previewSrc ? 'inline-block' : 'none';
+
+        // Set editing state
+        isEditing = true;
+        currentItem = item;
+
+        // Show the modal for editing
+        bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).show();
+    }
+
+    function deleteVehicle(item) {
+        item.remove();
+        renumberVehicles();
+    }
+
+    function renumberVehicles() {
+        const vehicleItems = document.querySelectorAll('#vehicleList .alert');
+        vehicleCount = 0; // Reset vehicle count
+        
+        vehicleItems.forEach((vehicleItem, index) => {
+            vehicleCount = index + 1; // Update count based on order in the list
+
+            // Update vehicle name and id
+            const vehicleInfoDiv = vehicleItem.querySelector('strong');
+            if (vehicleInfoDiv) {
+                const vehicleName = `Vehicle ${vehicleCount}: <br> 
+                <span style="font-size: 18px; color: black;">${vehicleInfoDiv.innerHTML.split(': <br>')[1]}</span>`;
+                vehicleInfoDiv.innerHTML = vehicleName;
+            }
+            
+            vehicleItem.id = `vehicle-${vehicleCount}`;
         });
-    </script>
+    }
+
+    function previewImage(event) {
+        const preview = document.getElementById('preview');
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        const removeButton = document.getElementById('removeImageButton');
+
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+            removeButton.style.display = 'inline-block'; // Show Remove Image button
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+            removeButton.style.display = 'none'; // Hide Remove Image button if no file
+        }
+    }
+
+    // Function to remove the selected image
+    function removeImage() {
+        document.getElementById('vehicleImage').value = ''; // Clear file input
+        document.getElementById('preview').src = ''; // Clear preview
+        document.getElementById('preview').style.display = 'none'; // Hide preview
+        document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
+    }
+</script>
+
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

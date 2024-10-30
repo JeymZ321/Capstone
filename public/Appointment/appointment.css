@@ -1,3 +1,10 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f8f8;
@@ -20,7 +27,6 @@ nav.navbar {
     left: 0;
     width: 100%;
     z-index: 1000;
-    z-index: 1000; 
 }
 
 .appointment-form-wrapper {
@@ -39,7 +45,7 @@ main {
     padding: 5rem 2rem 2rem;
     min-height: calc(100vh - 140px);
     box-sizing: border-box;
-    margin-top: 100px;
+    margin-top: 70px;
 }
 
 .block-heading{
@@ -53,6 +59,12 @@ main {
     clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Creates a trapezoid */
     text-align: center;
     color: white;
+}
+
+h3{
+    font-family: "Bebas Neue";
+    font-weight: lighter;
+    font-size: 40px;
 }
 
 .block-heading h2 {
@@ -76,6 +88,13 @@ main {
     text-align: center;
 }
 
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 select, input[type="text"],
 input[type="email"],
 input[type="name"],
@@ -83,16 +102,17 @@ input[type="address"],
 input[type="contact"],
 input[type="text"], 
 input[type="email"], 
-input[type="name"], 
+input[type="password"], 
 input[type="address"], 
 input[type="contact"], 
-input[type="date"] {
+input[type="date"]{
     width: 100%; 
-    padding: 0.5rem;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-sizing: border-box;
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 
@@ -123,24 +143,6 @@ input[type="date"] {
 }
 
 
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
-}
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
 
 
 

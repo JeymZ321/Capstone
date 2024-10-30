@@ -23,24 +23,19 @@
     <link rel="stylesheet" href="./Appointment/appointment.css">
     <link rel="stylesheet" href="./Calendar/style.css">
     <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
+    <link rel="stylesheet" href="assets/css/parallelogram.css">
 </head>
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
-            <a class="navbar-brand logo" href="index.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"></a>
+            <a class="navbar-brand logo" href="index.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="70px" style="margin: 0px;padding: 0px;" href="index.html"></a>
         </div>
     </nav>
     
         
     <main>
-        <div class="appointment-form-wrapper">
-        <div class="block-heading">
-            <h2 style="font-weight: bold;">Appointment Form</h2>
-        </div>
-
-        </section>
-        <div class="form-container">
+        <div class="form-container mt-4">
             <form id="appointmentForm" method="POST">
                 <div class="row">
                     <!-- Column for Summary of Price Breakdown -->
@@ -48,33 +43,54 @@
                         <div class="row">
                             <h3>Customer Information</h3>
                             <div class="col-md-6">
+                                <label for="name">Name: <input type="text" placeholder="Name" name="Type your name here.. " id="name" required></label>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label for="phonenumber">Phone #:
-                                    <input type="text" name="phonenumber" placeholder="Enter your phone number" id="phonenumber">
+                                    <input type="text" name="phonenumber" placeholder="+63" id="phonenumber" required>
                                 </label>
                             </div>
                             
                             <div class="col-md-8">
                                 <label for="email">Email:
-                                    <input type="text" name="email" placeholder="Enter your email" id="email">
+                                    <input type="text" name="email" placeholder="example@gmail.com" id="email" required>
                                 </label>
                             </div>
             
                             <div class="col-md-4">
                                 <label for="city">City:
-                                    <input type="text" name="city" placeholder="Enter your city" id="city">
+                                    <input type="text" name="city" placeholder="City" id="city">
                                 </label>
                             </div>
             
                             <div class="col-md-4">
                                 <label for="platenum">Plate Number:
-                                    <input type="text" name="platenum" placeholder="Enter your plate number" id="platenum">
+                                    <input type="text" name="platenum" placeholder="Enter your plate number" id="platenum" required>
                                 </label>
                             </div>
-                            
+                            <!--ITO DAPAT JAMESSS HAHA pero ang papasok na laman ung galing sa vehicle data ng users-->
                             <div class="col-md-8">
                                 <label for="vehicle">Vehicle:</label>
+                                <select name="Vehicle" id="vehicle" style="height: auto;" required>
+                                    <option value="" disabled selected>Select Vehicle:</option>
+                                    <option value="V1">Honda Civic Type R - Red - 2017 </option>
+                                    <option value="V2">Nissan Grand Livina - White Pearl - 2022</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="vehicle">Vehicle:</label>
                                 <input type="text" id="vehicle" name="vehicle" class="col-md-6" style="width: fit-content;" placeholder="Enter Vehicle Information">
-                            </div>                            
+                            </div>      
+                            
+                            
+                            <br><br>
+                            <div class="section col-md-12 mt-3">
+                                <h3>Suggestions or Comments</h3>
+                                <label for="suggestions">Please provide any additional comments or needs:</label>
+                                <textarea class="col-md-12 mt-2" id="suggestions" name="suggestions" rows="4" style="width: 100%;"  placeholder="Enter your suggestions or comments here..."></textarea>
+                            </div>
                         </div>
                     </div>
                 
@@ -137,6 +153,7 @@
             </form>
         </div>
     </div>
+        <div class="parallelogram">Appointment Form</div>
     </main>
 
     <!-- Terms and Conditions Modal -->

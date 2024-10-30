@@ -20,24 +20,15 @@
     
   }
   
-  body {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 30px;
-    background-color: #e2e1dc;
-  }
   .container {
     position: relative;
     width: 1255px;
     min-height: 850px;
-    margin: 0 auto;
     padding: 5px;
     color: #fff;
     display: flex;
-  
+    padding: 10px;
+    margin: 20px;
     border-radius: 10px;
     background-color: #1d1c1c;
   }
