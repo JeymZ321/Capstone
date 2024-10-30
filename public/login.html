@@ -58,7 +58,7 @@ input:-moz-autofill {
 
    
 
-
+    <!-- <script src="https://accounts.google.com/gsi/client" async defer></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=initializeGoogleAuth" async defer></script>
 
@@ -74,7 +74,7 @@ input:-moz-autofill {
         function onSignIn(googleUser) {
             const id_token = googleUser.getAuthResponse().id_token;
 
-            // AJAX call to the backend for login
+            // AJAX call to the back end for login
             $.ajax({
                 type: 'POST',
                 url: '/loginroute',
@@ -82,7 +82,7 @@ input:-moz-autofill {
                 contentType: 'application/json',
                 success: function(response) {
                     if (response.message === 'Login successfully') {
-                        window.location.href = response.redirectUrl;
+                        window.location.href = 'homepage.html';
                     } else {
                         $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
                     }

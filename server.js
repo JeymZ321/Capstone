@@ -18,10 +18,14 @@ const UnverifiedAdmin = require('./models/UnverifiedAdmin');
 const router = express.Router();
 const path = require('path');
 
+
+
 const port = 3000;
 
 const app = express();
-
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 /* MIDDLEWARE */
 
 /*------------------------ROUTES-----------------------*/
@@ -35,10 +39,10 @@ app.use('/uploads', express.static('uploads')); // Serve static files from the u
 
 const uri = "mongodb://localhost:27017/UsersDB";
 
-app.get('/appointment', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'appointment.html'));
-});
-app.use('/appointmentcss', express.static(path.join(__dirname, 'public', 'Appointment', 'appointment.css')));
+// app.get('/appointment', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'appointment.html'));
+// });
+// app.use('/appointmentcss', express.static(path.join(__dirname, 'public', 'Appointment', 'appointment.css')));
 
 // CONNECT TO MONGODB 
 mongoose.connect(uri).then(() => {
@@ -85,36 +89,36 @@ app.post('/registration', async (req, res) => {
 
   /*----------------LOGIN AN ACCOUNT FOR USERS--------------*/
   app.post('/loginroute', async (req, res) => {
-    const { email, googleApiKey } = req.body;
-  
+    const { googleApiKey } = req.body;
     try {
+        const fetch = (await import('node-fetch')).default;
+        const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${googleApiKey}`);
+        const data = await response.json();
+
+        if (data.error) {
+            return res.status(400).json({ message: 'Invalid Google API Key' });
+        }
+
+        const email = data.email;
+        
         // Check if the email is registered
         const Customer = await customer.findOne({ email });
         if (!Customer) {
             return res.status(400).json({ message: 'Email is not registered' });
         }
-  
+
         // Check if the email is verified
-        if (!customer.isVerified) {
+        if (!Customer.isVerified) {
             return res.status(400).json({ message: 'Please verify your email before logging in' });
         }
-  
-        // Verify the Google API Key (id_token)
-        const fetch = (await import('node-fetch')).default;
-        const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${googleApiKey}`);
-        const data = await response.json();
-  
-        if (data.error || data.email !== email) {
-            return res.status(400).json({ message: 'Invalid Google API Key or email does not match' });
-        }
-  
+
         // Login successful, return the homepage
         res.status(200).json({ message: 'Login successfully', redirectUrl: 'homepage.html' });
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ message: 'Error logging in' });
     }
-  });
+});
 
 /*------------------------Route to get the user's profile------------------------*/
 app.get('/api/profile', async (req, res) => {
@@ -138,83 +142,6 @@ app.get('/api/profile', async (req, res) => {
       res.status(500).json({ message: 'Server error fetching profile' });
   }
 });
-
-
-/*-------------------------Update profile route--------------------------*/
-/*-----Middleware to verify JWT token----*/
-/**
- * Update profile route
- *
- * This route is protected by the authMiddleware, which verifies the JWT token
- * sent in the Authorization header. If the token is valid, the request is passed
- * to the next middleware function. If the token is invalid or missing, a 401
- * status code is returned.
- *
- * The route expects the following parameters:
- * - id: The ID of the user to update
- * - username: The new username
- * - email: The new email address
- * - password: The new password (optional)
- *
- * If the email address is different from the existing one, it is checked against
- * the database to prevent duplicate email addresses. If the email address
- * already exists, a 400 status code is returned.
- *
- * If the password is provided, it is hashed and stored in the database.
- *
- * The route returns a 200 status code if the update is successful, or a 500
- * status code if an error occurs.
- */
-// const authMiddleware = (req, res, next) => {
-//   const token = req.header('Authorization');
-//   if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
-
-//   try {
-//       const decoded = jwt.verify(token.replace('Bearer ', ''), 'yourSecretKey'); // Replace 'yourSecretKey' with your actual secret key
-//       req.user = decoded;
-//       next();
-//   } catch (error) {
-//       return res.status(400).json({ message: 'Invalid token.' });
-//   }
-// };
-
-// router.put('/profile/update/:id', authMiddleware, async (req, res) => {
-//   try {
-//       const { username, email, password } = req.body;
-//       const customer = await Customer.findById(req.params.id);
-
-//       if (!customer) {
-//           return res.status(404).json({ message: 'User not found' });
-//       }
-
-//       // Update email only if it's different and doesn't exist
-//       if (email && email !== customer.email) {
-//           const existingEmail = await Customer.findOne({ email });
-//           if (existingEmail) {
-//               return res.status(400).json({ message: 'Email already exists' });
-//           }
-//           customer.email = email;
-//       }
-
-//       // Update username
-//       if (username) {
-//           customer.username = username;
-//       }
-
-//       // Update password if provided, and encrypt it
-//       if (password) {
-//           const salt = await bcrypt.genSalt(10);
-//           const hashedPassword = await bcrypt.hash(password, salt);
-//           customer.password = hashedPassword;
-//       }
-
-//       // Save the updated profile
-//       await customer.save();
-//       res.status(200).json({ message: 'Profile updated successfully' });
-//   } catch (error) {
-//       res.status(500).json({ message: 'Server error', error: error.message });
-//   }
-// });
 
 /*---------------------------------ADMIN LOGIN-------------------------------------*/
 
@@ -436,66 +363,118 @@ app.get('/api/appointments', async (req, res) => {
 });
 
 // Archive appointment and store it in 'archives' collection
-app.post('/api/appointments/archive/:id', async (req, res) => {
-  const { id } = req.params;
 
+
+
+/*----------------------Getting database of appointments for admin---------------*/
+app.get('/display/appointment', async (req, res) => {
   try {
-      const appointmentToArchive = await Appointment.findById(id);
-      if (!appointmentToArchive) {
-          return res.status(404).json({ message: 'Appointment not found' });
-      }
-
-      // Move to archives collection
-      const archivedAppointment = new Archive({
-          email: appointmentToArchive.email,
-          datepicker: appointmentToArchive.datepicker,
-          timepicker: appointmentToArchive.timepicker,
-          slots: appointmentToArchive.slots,
-      });
-
-      await archivedAppointment.save();
-
-      // Delete the original appointment
-      await Appointment.deleteOne({ _id: id });
-
-      res.status(200).json({ message: 'Appointment archived successfully' });
-  } catch (error) {
-      console.error('Error archiving appointment:', error);
-      res.status(500).json({ message: 'Error archiving appointment' });
+    const appointments = await Appointment.find({status: 'active'});
+    console.log('Appointments', appointments);
+    res.render('appointment/index', { appointments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
   }
 });
 
-/*----------------------APPOINTMENT FORM CONVERT THE PANEL INTO INPUT TEXT---------------*/
+
+// Archive appointment and store it in 'archives' collection
+app.patch('/appointments/:id/archive', async (req, res) => {
+  try {
+      const appointmentId = req.params.id;
+
+      // Update the status to 'archived'
+      const updatedAppointment = await Appointment.findByIdAndUpdate(
+          appointmentId,
+          { status: 'archived' },
+          { new: true } // Return the updated document
+      );
+
+      if (updatedAppointment) {
+          res.json({ message: 'Appointment archived successfully!' });
+      } else {
+          res.status(404).json({ message: 'Appointment not found.' });
+      }
+  } catch (error) {
+      console.error('Error archiving appointment:', error);
+      res.status(500).json({ message: 'Failed to archive appointment.' });
+  }
+});
+
+
+
+/*----------------------Getting database of archives for admin---------------*/
+app.get('/display/archives', async (req, res) => {
+  try {
+    const arcappointments = await Appointment.find({status: 'archived'});
+    console.log('Appointments', arcappointments);
+    res.render('archieves/index', { arcappointments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+app.patch('/appointments/:id/delete', async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+
+        // Update the status to 'archived'
+        const updatedAppointment = await Appointment.findByIdAndUpdate(
+            appointmentId,
+            { status: 'deleted' },
+            { new: true } // Return the updated document
+        );
+
+        if (updatedAppointment) {
+            res.json({ message: 'Appointment delete  successfully!' });
+        } else {
+            res.status(404).json({ message: 'Appointment not found.' });
+        }
+    } catch (error) {
+        console.error('Error deleting appointment:', error);
+        res.status(500).json({ message: 'Failed to adelete  appointment.' });
+    }
+});
+
+
+
+/*----------------------APPOINTMENT FORM---------------*/
+// Route to handle appointment form submissions
 app.post('/appointment', async (req, res) => {
   try {
-      const { email, phonenumber, city, platenum, vehicle, carfunc, datepicker, timepicker, panels, slots } = req.body;
+      console.log('Received request data:', req.body);
 
-      // Create a new appointment record
+      const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, slot } = req.body;
+
+      // Create a new appointment instance with the provided data
       const newAppointment = new Appointment({
           email,
           phonenumber,
           city,
-          platenum,
           vehicle,
           carfunc,
-          datepicker,
-          timepicker,
-          panels,
-          slots
+          platenum,
+          datetime, // Combined DateTime field
+          slot // Selected slot
       });
 
       // Save the appointment to the database
-      await newAppointment.save();
+      const savedAppointment = await newAppointment.save();
 
-      res.status(200).json({ message: 'Appointment created successfully' });
+      // Respond with success message and saved appointment data
+      return res.status(200).json({ message: 'Appointment created successfully!', appointment: savedAppointment });
   } catch (error) {
       console.error('Error creating appointment:', error);
-      res.status(500).json({ message: 'Error creating appointment' });
+      // Respond with error message if something goes wrong
+      return res.status(500).json({ message: 'Error creating appointment', error: error.message });
   }
 });
 
 
-/*------------------------- Email transporter setup ---------------------*/
+/*---------------------------CHANGE INTO /create-account---------------*/
+const secretKey = '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';
+const jwt = require('jsonwebtoken');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
@@ -506,10 +485,6 @@ const transporter = nodemailer.createTransport({
       pass: 'fddz jopx zhia rffr',  // Consider using app passwords for Gmail
   },
 });
-  
-/*---------------------------CHANGE INTO /create-account---------------*/
-const secretKey = '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';
-const jwt = require('jsonwebtoken');
 
 app.post('/send-registration-email', async (req, res) => {
     const { email } = req.body;

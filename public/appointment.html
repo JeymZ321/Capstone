@@ -14,13 +14,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
     <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
     <link rel="stylesheet" href="assets/css/services.css">
     <link rel="stylesheet" href="assets/css/hover_button.css">
     <link rel="stylesheet" href="./Appointment/appointment.css">
     <link rel="stylesheet" href="./Calendar/style.css">
     <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
-    <link rel="stylesheet" href="assets/js/imagesliderpanels.js">
 </head>
 
 <body>
@@ -39,160 +41,99 @@
 
         </section>
         <div class="form-container">
-            <div class="row">
-                <!-- Column for Summary of Price Breakdown -->
-                <div class="col-md-6">
-                    <div class="row">
-                        <h3>Customer Information</h3>
-                        <div class="col-md-6">
-                            <label for="phonenumber" >Phone #: <input type="text" name="Phonenumber" id="phonenumber"></label>
-                        </div>
-                        
-                        <div class="col-md-8">
-                            <label for="email">Email: <input type="text" name="Email" id="email"></label>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="city">City: <input type="text" name="City" id="city"></label>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="platenum">Plate Number: <input type="text" name="PlateNumber" id="platenum"></label>
-                        </div>
-                        
-                        <div class="col-md-8">
-                            <label for="vehicle">Vehicle:</label>
-                            <select name="Vehicle" id="vehicle" class="col-md-6" style="width: fit-content;">
-                                <option value="" disabled selected>Select Vehicle:</option>
-                                <option value="V1">Honda Civic Type R - Red - 2017 </option>
-                                <option value="V2">Nissan Grand Livina - White Pearl - 2022</option>
-                            </select>
-                        </div>
-                        <br><br>
-                        <div class="slider-container col-md-6">
-                            <div class="image-slider">
-                                <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" alt="Image 1">
-                            </div>
-                    
-                            <div class="toggle-tokens">
-                                <label>
-                                    <input type="checkbox" id="token1-checkbox" onclick="toggleToken(0)">
-                                    <span id="token1" class="token">Token 1-1</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token2-checkbox" onclick="toggleToken(1)">
-                                    <span id="token2" class="token">Token 1-2</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token3-checkbox" onclick="toggleToken(2)">
-                                    <span id="token3" class="token">Token 1-3</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token4-checkbox" onclick="toggleToken(3)">
-                                    <span id="token4" class="token">Token 1-4</span>
-                                </label>
-                            </div>
-                    
-                            <div class="controls">
-                                <button onclick="prevImage()">Previous</button>
-                                <button onclick="nextImage()">Next</button>
-                            </div>
-                        </div> 
-   
-                    </div>
-                </div>
-            
-
-            <div class="col-md-6">
+            <form id="appointmentForm" method="POST">
                 <div class="row">
-                <div class="col-md-4">
-                    <label>Is the car functional?</label>
-
-                    
-                    <label for="yesBtn"><input type="radio" id="yesBtn" name="carfunc" value="yes">Yes</label>
-                    
-                    
-                    <label for="noBtn"><input type="radio" id="noBtn" name="carfunc" value="no">No</label>
-                    
-                </div>
-
-                <div class="col-md-4">
-                    <label for="datepicker">Select Date:</label>
-                    <input type="text" name="datepicker" id="datepicker">
-                </div>
-
-                <div class="col-md-4">
-                    <label for="timepicker">Select Time:</label>
-                    <input type="text" name="timepicker" id="timepicker" >
-                </div>
-                
-                <div class="col-md-12">
-                    <button id="show-slots-btn" type="button" >Show Available Slots</button>
-                </div>
-                
+                    <!-- Column for Summary of Price Breakdown -->
+                    <div class="col-md-6">
+                        <div class="row">
+                            <h3>Customer Information</h3>
+                            <div class="col-md-6">
+                                <label for="phonenumber">Phone #:
+                                    <input type="text" name="phonenumber" placeholder="Enter your phone number" id="phonenumber">
+                                </label>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <label for="email">Email:
+                                    <input type="text" name="email" placeholder="Enter your email" id="email">
+                                </label>
+                            </div>
             
-            <!-- Popup Window for Slots -->
-            <div id="slots-popup" class="popup">
-                <div class="popup-content">
-                    <span class="close">&times;</span>
-                    <h2>Available Slots</h2>
-                    <div id="slots">
-                        <!-- Add checkboxes or buttons here for selecting slots -->
-                        <label><input type="checkbox" class="slot" value="Slot 1"> Slot 1</label>
-                        <label><input type="checkbox" class="slot" value="Slot 2"> Slot 2</label>
-                        <label><input type="checkbox" class="slot" value="Slot 3"> Slot 3</label>
-                        <label><input type="checkbox" class="slot" value="Slot 4"> Slot 5</label>
-                        <label><input type="checkbox" class="slot" value="Slot 5"> Slot 5</label>
-                        <label><input type="checkbox" class="slot" value="Slot 6"> Slot 6</label>
-                        <label><input type="checkbox" class="slot" value="Slot 7"> Slot 7</label>
-                        <label><input type="checkbox" class="slot" value="Slot 8"> Slot 8</label>
-                        <label><input type="checkbox" class="slot" value="Slot 9"> Slot 9</label>
-                        <label><input type="checkbox" class="slot" value="Slot 10"> Slot 10</label>
-                        <label><input type="checkbox" class="slot" value="Slot 11"> Slot 11</label>
-                        <label><input type="checkbox" class="slot" value="Slot 12"> Slot 12</label>
-                        <label><input type="checkbox" class="slot" value="Slot 13"> Slot 13</label>
-                        <label><input type="checkbox" class="slot" value="Slot 14"> Slot 14</label>
-                        <label><input type="checkbox" class="slot" value="Slot 15"> Slot 15</label>
-                        <label><input type="checkbox" class="slot" value="Slot 16"> Slot 16</label>
-                        <label><input type="checkbox" class="slot" value="Slot 17"> Slot 17</label>
-                        <label><input type="checkbox" class="slot" value="Slot 17"> Slot 18</label>
-                        <label><input type="checkbox" class="slot" value="Slot 19"> Slot 19</label>
-                        <label><input type="checkbox" class="slot" value="Slot 20"> Slot 20</label>
-                        <label><input type="checkbox" class="slot" value="Slot 21"> Slot 21</label>
-                        <label><input type="checkbox" class="slot" value="Slot 22"> Slot 22</label>
-                        <label><input type="checkbox" class="slot" value="Slot 23"> Slot 23</label>
-                        <label><input type="checkbox" class="slot" value="Slot 24"> Slot 24</label>
-                        <label><input type="checkbox" class="slot" value="Slot 25"> Slot 26</label>
-                        <label><input type="checkbox" class="slot" value="Slot 26"> Slot 26</label>
-                        <!-- Add more slots as needed -->
+                            <div class="col-md-4">
+                                <label for="city">City:
+                                    <input type="text" name="city" placeholder="Enter your city" id="city">
+                                </label>
+                            </div>
+            
+                            <div class="col-md-4">
+                                <label for="platenum">Plate Number:
+                                    <input type="text" name="platenum" placeholder="Enter your plate number" id="platenum">
+                                </label>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <label for="vehicle">Vehicle:</label>
+                                <input type="text" id="vehicle" name="vehicle" class="col-md-6" style="width: fit-content;" placeholder="Enter Vehicle Information">
+                            </div>                            
+                        </div>
                     </div>
-                    <p id="availability">Slots Available: <span id="available-slots">26</span></p>
-                    <button id="confirm-btn" type="button">Confirm</button>
-                </div>
-            </div>
-
-                <div class="section"><br>
-                  <h3>Estimated Price Breakdown:</h3>
-                  <p>Service Estimation: Php ####</p>
-                  <p>Towing Fee: Php ####</p>
-                  <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
-                  <input class="form-check-input" type="checkbox" name="terms" required style="display: inline-block !important;">
-                  <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
-                  
                 
-                </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Is the car functional?</label>
+                                <label for="yesBtn"><input type="radio" id="yesBtn" name="carfunc" value="yes">Yes</label>
+                                <label for="noBtn"><input type="radio" id="noBtn" name="carfunc" value="no">No</label>
+                            </div>
+            
+                            <div class="col-md-6">
+                                <label for="datetimepicker">Select Date and Time:</label>
+                                <input type="text" name="datetimepicker" id="datetimepicker" placeholder="MM/DD/YYYY HH:MM" required>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <button id="show-slots-btn" type="button">Show Available Slots</button>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="selected-slot" name="slot">
 
-                <div class="col-md-12">
-                    <button type="submit" id="submit-slots-btn">Submit</button> 
+                        <!-- Popup Window for Slots -->
+                        <div id="slots-popup" class="popup" style="display:none;">
+                            <div class="popup-content">
+                                <span class="close">&times;</span>
+                                <h2>Available Slots</h2>
+                                <div id="slots">
+                                    <!-- Add radio buttons or other selectors for selecting slots -->
+                                    <label><input type="radio" class="slot" name="slot" value="1"> Slot 1</label>
+                                    <label><input type="radio" class="slot" name="slot" value="2"> Slot 2</label>
+                                    <!-- Add more slots as needed -->
+                                </div>
+                                <p id="availability">Slots Available: <span id="available-slots">26</span></p>
+                                <button id="confirm-btn" type="button">Confirm</button>
+                            </div>
+                        </div>
+            
+                        <div class="section"><br>
+                            <h3>Estimated Price Breakdown:</h3>
+                            <p>Service Estimation: Php ####</p>
+                            <p>Towing Fee: Php ####</p>
+                            <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
+                            <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
+                            <br><br>
+                        </div>
+            
+                        <!-- Submit Button -->
+                        <div class="col-md-12">
+                            <button type="submit" id="submit-slots-btn">Submit</button>
+                        </div>
+            
+                        <!-- Success message -->
+                        <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
+                            Your appointment has been submitted successfully!
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Success message -->
-                <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
-                    Your appointment has been submitted successfully!
-                </div>
-              </div>
-
-    
             </form>
         </div>
     </div>
@@ -215,79 +156,183 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-    $('#appointmentform').submit(function (event) {
-        event.preventDefault();
+$(document).ready(function () {
+    const totalSlots = 26;
+    let selectedSlots = {};  // Stores selected slots for each date
+    let confirmedSlots = {}; // Stores confirmed slots for each date
+    let currentSelectedDateTime = null;
 
-        // Collect form values
-        var email = $('#email').val();
-        var phonenumber = $('#phonenumber').val();
-        var city = $('#city').val();
-        var platenum = $('#platenum').val();
-        var vehicle = $('#vehicle').val();
-        var carfunc = $('input[name="carfunc"]:checked').val(); // Get selected radio button
-        var datepicker = $('#datepicker').val();
-        var timepicker = $('#timepicker').val();
+    // Initialize DateTime Picker
+    $('#datetimepicker').datetimepicker({
+        dateFormat: 'dd/mm/yy',
+        timeFormat: 'HH:mm',
+        minDate: 0, // Disable past dates
+        controlType: 'select', // Shows dropdowns for hour and minute selection
+        oneLine: true // Shows date and time on the same line
+    });
 
-        // Collect selected panels (if any)
-        var panel1 = $('#panel1').is(':checked') ? $('#panel1').val() : '';
-        var panel2 = $('#panel2').is(':checked') ? $('#panel2').val() : '';
-        var panel3 = $('#panel3').is(':checked') ? $('#panel3').val() : '';
-        var panel4 = $('#panel4').is(':checked') ? $('#panel4').val() : '';
-        var panels = [panel1, panel2, panel3, panel4].filter(Boolean); // Filter out empty panels
+    // Function to create slots
+    function createSlots() {
+        $('#slots').empty();
+        for (let i = 0; i < totalSlots; i++) {
+            const slot = document.createElement('div');
+            slot.classList.add('slot');
+            slot.setAttribute('data-slot', i + 1); // Store slot number as data attribute
+            slot.textContent = i + 1;
 
-        // Collect selected slots (if any)
-        var selectedSlots = [];
-        $('.slot:checked').each(function () {
-            selectedSlots.push($(this).val());
+            // Check if slot is confirmed or selected
+            if (confirmedSlots[currentSelectedDateTime]?.includes(i + 1)) {
+                slot.classList.add('confirmed');
+                slot.textContent += ' (Locked)';
+            } else if (selectedSlots[currentSelectedDateTime]?.includes(i + 1)) {
+                slot.classList.add('unavailable');
+            } else {
+                slot.classList.add('available');
+            }
+
+            $('#slots').append(slot);
+        }
+    }
+
+    // Function to update available slots display
+    function updateAvailableSlots() {
+        const selected = selectedSlots[currentSelectedDateTime]?.length || 0;
+        const confirmed = confirmedSlots[currentSelectedDateTime]?.length || 0;
+        const availableSlots = totalSlots - (selected + confirmed);
+        $('#available-slots').text(availableSlots);
+    }
+
+    // Show the popup with available slots
+    $('#show-slots-btn').on('click', function() {
+        currentSelectedDateTime = $('#datetimepicker').val();
+
+        if (currentSelectedDateTime) {
+            selectedSlots[currentSelectedDateTime] ??= [];
+            confirmedSlots[currentSelectedDateTime] ??= [];
+            
+            createSlots();
+            updateAvailableSlots();
+            $('#slots-popup').fadeIn();
+        } else {
+            alert("Please select a date and time first.");
+        }
+    });
+
+    // Close the popup
+    $('.close').on('click', function() {
+        $('#slots-popup').fadeOut();
+    });
+
+    // Confirm and lock slots for the current date and time
+    $("#confirm-btn").click(function() {
+        if (!confirmedSlots[currentSelectedDateTime]) {
+            confirmedSlots[currentSelectedDateTime] = [];
+        }
+
+        selectedSlots[currentSelectedDateTime].forEach(slot => {
+            if (!confirmedSlots[currentSelectedDateTime].includes(slot)) {
+                confirmedSlots[currentSelectedDateTime].push(slot);
+            }
         });
 
-        // AJAX request to send data to backend
+        // Store the first selected slot value in the hidden input
+        if (selectedSlots[currentSelectedDateTime]?.length > 0) {
+            $('#selected-slot').val(selectedSlots[currentSelectedDateTime][0]); // Store only one selected slot if needed
+        }
+
+        // Clear selected slots for the date and time, and refresh slots
+        selectedSlots[currentSelectedDateTime] = [];
+        createSlots();
+        updateAvailableSlots();
+
+        $("#slots-popup").fadeOut();
+        alert("Your slots for " + currentSelectedDateTime + " have been confirmed!");
+    });
+
+    // Close popup when clicking outside the content
+    $(window).on('click', function(event) {
+        if (event.target.id === 'slots-popup') {
+            $('#slots-popup').fadeOut();
+        }
+    });
+
+    // Handle slot selection/deselection
+    $('#slots').on('click', '.slot', function() {
+        const slotNumber = parseInt($(this).data('slot'));
+
+        if ($(this).hasClass('available')) {
+            $(this).removeClass('available').addClass('unavailable');
+            selectedSlots[currentSelectedDateTime].push(slotNumber);
+        } else if ($(this).hasClass('unavailable')) {
+            $(this).removeClass('unavailable').addClass('available');
+            selectedSlots[currentSelectedDateTime] = selectedSlots[currentSelectedDateTime].filter(slot => slot !== slotNumber);
+        }
+
+        updateAvailableSlots();
+    });
+
+    // Submit form with DateTime and slot info
+    $('#appointmentForm').on('submit', function (event) {
+        event.preventDefault();
+
+        const datetimepicker = $('#datetimepicker').val();
+        const selectedSlot = $('#selected-slot').val(); // Retrieve the hidden input's value
+
+        // Validate date, time, and slot selection
+        if (!datetimepicker || !selectedSlot) {
+            alert("Please select both a date and time, and a slot for your appointment.");
+            return;
+        }
+
+        // Collect other form data
+        const formData = {
+            phonenumber: $('#phonenumber').val(),
+            email: $('#email').val(),
+            city: $('#city').val(),
+            vehicle: $('#vehicle').val(),
+            carfunc: $('input[name="carfunc"]:checked').val(),
+            platenum: $('#platenum').val(),
+            datetime: datetimepicker,
+            slot: selectedSlot // Add the selected slot here
+        };
+
+        console.log('Form Data:', formData);
+
+        // AJAX POST request
         $.ajax({
+            url: '/appointment',
             type: 'POST',
-            url: '/appointment',  // Ensure the server route is set correctly
-            data: JSON.stringify({
-                email: email,
-                phonenumber: phonenumber,
-                city: city,
-                platenum: platenum,
-                vehicle: vehicle,
-                carfunc: carfunc,
-                datepicker: datepicker,
-                timepicker: timepicker,
-                panels: panels,
-                slots: selectedSlots
-            }),
+            data: JSON.stringify(formData),
             contentType: 'application/json',
             success: function (response) {
-                if (response.message === 'Appointment created successfully') {
-                    $('#success-message').show();
-                    window.location.href = '/success';  // Redirect if successful
-                } else {
-                    alert('Failed to create appointment.');
-                }
+                console.log('Success:', response);
+                $('#success-message').show().delay(3000).fadeOut();
             },
-            error: function (xhr, status, error) {
-                alert('An error occurred: ' + (xhr.responseText || status || error));
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+                console.error('Response Text:', jqXHR.responseText);
+                alert('An error occurred. Please try again.');
             }
         });
     });
+
+
+    // Other form/modal functions remain the same...
 });
 
-    </script>
-
+    </script>     
+    
+        
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
     <script src="./Calendar/script.js"></script>
     <script src="./Appointment/appointment.js"></script>
-    <script src="assets/js/imagesliderpanels.js"></script>
 </body>
 
 </html>
