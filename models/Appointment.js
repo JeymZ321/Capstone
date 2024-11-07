@@ -7,7 +7,8 @@ const appointmentSchema = new mongoose.Schema({
     platenum: { type: String },
     vehicle: { type: String },
     carfunc: { type: String },
-    datetime: { type: String }, // Combine date and time into one field
+    datetime: { type: String, unique: true },
+    suggestions: { type: String },
     slot: { type: String },
     status: { type: String, default:'active'}
 }, {

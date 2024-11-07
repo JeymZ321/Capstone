@@ -33,7 +33,8 @@
             <!-- User Profile Dropdown -->
             <div class="dropdown ms-auto me-3">
                 <a class="dropdown-toggle text-white" href="#" role="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img id="profileImage" src="assets/img/user-icon.png" width="40px" class="rounded-circle" alt="User Profile">
+                    <img id="profileImage" src="assets/img/default-user-icon.png" alt="Profile Image" width="30" height="30" class="rounded-circle me-2">
+                    <span id="userNameDisplay">Welcome, User</span>  <!-- Placeholder for username -->
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                     <li><a class="dropdown-item" href="profile.html">Profile</a></li>
@@ -128,29 +129,43 @@
             <p>© 2024 Reynaldo's Car Care Center</p>
         </div>
     </footer>
-
+    
     <script>
         $(document).ready(function () {
-            // Example: Fetch user's profile from the backend
-            const userEmail = 'user@gmail.com';  // You can dynamically set this from session/local storage
+            // Retrieve the name from local storage
+            const name = localStorage.getItem('name');
+            console.log("Retrieved name from local storage:", name);  // Log the name
     
-            $.ajax({
-                url: `/api/profile?email=${userEmail}`,  // Fetch profile from the backend using email
-                method: 'GET',
-                success: function (data) {
-                    // Update the UI with profile data
-                    if (data.picture) {
-                        $('#profileImage').attr('src', data.picture); // Update profile image
+            if (name) {
+                // Set username placeholder in the dropdown
+                $('#userNameDisplay').text(`Welcome, ${name}`);
+                
+                // Fetch full profile data (like picture and email) if needed
+                $.ajax({
+                    url: `/api/profile?name=${name}`,  // Use the `name` query parameter to fetch profile data
+                    method: 'GET',
+                    success: function (data) {
+                        console.log("Profile data retrieved:", data);  // Log the data received from the server
+                        
+                        if (data.picture) {
+                            $('#profileImage').attr('src', data.picture);
+                        }
+                        $('#userNameDisplay').text(`Welcome, ${data.name}`);
+                        $('#userEmail').text(data.email);  // Display email if needed
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching profile:', error);
+                        alert('Failed to load profile data.');
                     }
-                    $('#userEmail').text(data.email);  // Optionally show email if needed
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error fetching profile:', error);
-                    alert('Failed to load profile data.');
-                }
-            });
+                });
+            } else {
+                // Redirect to login page if no name is found in local storage
+                console.log("No name found in local storage. Redirecting to login.");
+                window.location.href = 'login.html';
+            }
         });
     </script>
+      
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

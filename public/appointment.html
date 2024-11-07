@@ -79,10 +79,12 @@
                                 </select>
                             </div>
 
+                            
                             <div class="col-md-12">
                                 <label for="vehicle">Vehicle:</label>
                                 <input type="text" id="vehicle" name="vehicle" class="col-md-6" style="width: fit-content;" placeholder="Enter Vehicle Information">
                             </div>      
+                            
                             
                             
                             <br><br>
@@ -135,6 +137,7 @@
                             <p>Service Estimation: Php ####</p>
                             <p>Towing Fee: Php ####</p>
                             <p>Reservation Fee: Php 500.00 (Non-Refundable)</p>
+                            <input class="form-check-input" type="checkbox" name="terms" required style="display: inline-block !important;">
                             <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link">Terms and Conditions</a></label>
                             <br><br>
                         </div>
@@ -309,6 +312,7 @@ $(document).ready(function () {
             vehicle: $('#vehicle').val(),
             carfunc: $('input[name="carfunc"]:checked').val(),
             platenum: $('#platenum').val(),
+            suggestions: $('#suggestions').val(),
             datetime: datetimepicker,
             slot: selectedSlot // Add the selected slot here
         };
@@ -323,7 +327,12 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 console.log('Success:', response);
-                $('#success-message').show().delay(3000).fadeOut();
+                $('#success-message').show().delay(3000).fadeOut(function() {
+        // Redirect to payment page using the URL from the response
+            if (response.redirectUrl) {
+            window.location.href = response.redirectUrl;
+            }
+        });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error:', textStatus, errorThrown);
@@ -333,8 +342,45 @@ $(document).ready(function () {
         });
     });
 
+    $.ajax({
+        url: '/getUserData',
+        type: 'GET',
+        success: function (response) {
+            const { customer, vehicles } = response;
 
-    // Other form/modal functions remain the same...
+            // Populate the form fields with customer information
+            $('#name').val(customer.name);
+            $('#phonenumber').val(customer.phonenumber);
+            $('#email').val(customer.email);
+            $('#city').val(customer.city);
+
+            // Populate the vehicle dropdown with the user's vehicles
+            const vehicleSelect = $('#vehicle');
+            vehicleSelect.empty(); // Clear any existing options
+            vehicleSelect.append('<option value="" disabled selected>Select Vehicle:</option>');
+
+            vehicles.forEach(vehicle => {
+                const vehicleOption = `
+                    <option value="${vehicle._id}">
+                        ${vehicle.brandModel} - ${vehicle.color} - ${vehicle.yearModel}
+                    </option>`;
+                vehicleSelect.append(vehicleOption);
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching user data:', textStatus, errorThrown);
+            alert('An error occurred while fetching your data. Please try again.');
+        }
+    });
+      // Handle Terms & Conditions Modal
+      $('#terms-link').on('click', function (event) {
+                event.preventDefault();
+                $('#terms-modal').show();
+            });
+
+            $('.close-btn').on('click', function () {
+                $('#terms-modal').hide();
+            });
 });
 
     </script>     

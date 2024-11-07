@@ -67,48 +67,37 @@ input:-moz-autofill {
     <script src="https://apis.google.com/js/platform.js?onload=initializeGoogleAuth" async defer></script>
 
     <script>
-        function initializeGoogleAuth() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init({
-                    client_id: '365553005446-ki1vomn0pnkcp909utn6bjv2te1ib8nq.apps.googleusercontent.com'
-                });
-            });
-        }
-
-        function onSignIn(googleUser) {
-            const id_token = googleUser.getAuthResponse().id_token;
-
-            // AJAX call to the back end for login
-            $.ajax({
-                type: 'POST',
-                url: '/loginroute',
-                data: JSON.stringify({ email: $('#gmailEmail').val(), googleApiKey: id_token }),
-                contentType: 'application/json',
-                success: function(response) {
-                    if (response.message === 'Login successfully') {
-                        window.location.href = 'homepage.html';
-                    } else {
-                        $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
-                    }
-                },
-                error: function(xhr) {
-                    $('#loginMessage').html('<div class="alert alert-danger">Error: ' + xhr.responseText + '</div>');
-                }
-            });
-        }
-
-        // Trigger Google Sign-in on button click
         $(document).ready(function() {
             $('#loginButton').click(function() {
-                const email = $('#gmailEmail').val();
-                if (email) {
-                    gapi.auth2.getAuthInstance().signIn().then(onSignIn);
+                const email = $('#Email').val();
+                const password = $('#Password').val();
+    
+                if (email && password) {
+                    // AJAX call to the backend for login
+                    $.ajax({
+                        type: 'POST',
+                        url: '/loginroute',
+                        data: JSON.stringify({ email: email, password: password }),
+                        contentType: 'application/json',
+                        success: function(response) {
+                            if (response.message === 'Login successful') {
+                                localStorage.setItem('name', response.name);     // Store name in local storage
+                                localStorage.setItem('email', response.email); 
+                                window.location.href = response.redirectUrl;
+                            } else {
+                                $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#loginMessage').html('<div class="alert alert-danger">Error: ' + xhr.responseText + '</div>');
+                        }
+                    });
                 } else {
-                    $('#loginMessage').html('<div class="alert alert-danger">Please enter your Gmail account.</div>');
+                    $('#loginMessage').html('<div class="alert alert-danger">Please enter both email and password.</div>');
                 }
             });
         });
-    </script>
+    </script>    
 </body>
 
 </html>
