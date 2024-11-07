@@ -31,10 +31,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 /*------------------------ROUTES-----------------------*/
 app.use(session({
-  secret: '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',
+  secret: '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',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true } // Set to true if using HTTPS
+  cookie: { secure: false } // Set to true if using HTTPS
 }));
 app.use(cors());
 app.use(express.json());
@@ -178,13 +178,18 @@ app.post('/send-code', async (req, res) => {
 
 /*----------------LOGIN AN ACCOUNT FOR USERS--------------*/
 app.post('/loginroute', async (req, res) => {
-  const { email, password } = req.body;
+  
   try {
       // Find the customer by email
-      const user = await customer.findOne({ email });
+      const { email, password } = req.body;
+      const user = await customer.findOne({ email, password });
       
       // Check if the email is registered
-      if (!user) {
+      if (user) {
+
+      // Set the session with the user's email
+      req.session.email = email;
+        console.log('Session email set:', req.session.email);
         return res.status(401).json({ message: 'Invalid email or password' });
       }
       
@@ -199,9 +204,6 @@ app.post('/loginroute', async (req, res) => {
           return res.status(400).json({ message: 'Please verify your email before logging in' });
       }
 
-      // Set the session with the user's email
-      req.session.email = user.email;
-      
       // Login successful, return the homepage
       res.status(200).json({ 
         message: 'Login successful', 
@@ -579,20 +581,29 @@ app.post('/appointment', async (req, res) => {
 app.get('/getUserData', async (req, res) => {
   try {
       const email = req.session.email; // Ensure session is properly set
-      if (!email) return res.status(401).json({ message: 'Unauthorized' });
+      console.log('Session email:', email);
+
+      if (!email){
+        return res.status(401).json({ message: 'Unauthorized' });
+      } 
 
       // Find customer by email
-      const customer = await Customer.findOne({ email }); // Adjusted to lowercase 'customer' variable
-      if (!customer) return res.status(404).json({ message: 'User not found' });
+      const Customer = await customer.findOne({ email });
+      console.log('Customer data:', customer); 
+      
+      if (!Customer){
+        return res.status(404).json({ message: 'User not found' });
+      }
 
       // Find vehicles linked to the customer
       const vehicles = await Vehicle.find({ customerId: customer._id });
+      console.log('Vehicles data:', vehicles);
 
       // Respond with customer and vehicle data
       res.status(200).json({ customer, vehicles });
   } catch (error) {
       console.error('Error fetching user data:', error);
-      res.status(500).json({ message: 'Error fetching user data' });
+      res.status(500).json({ message: 'Error fetching user data', error: error.message });
   }
 });
 
