@@ -18,7 +18,25 @@
     <link rel="stylesheet" href="assets/css/hover_button.css">
     <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
 
+    <style>
+        .modal-body {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header{
+            background-color: darkred;
+            color: white;
+        }
+
+        .modal-header .btn-close{
+            background-color: rgb(255, 255, 255);
+        }
+
+    </style>
+    
 </head>
+
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
@@ -140,7 +158,7 @@
                                         </div>
                                         <div class="product-info">
                                           <div class="details-column">
-                                            <p class="product-name">Select a Panel</p>
+                                            <p class="product-name">Select a Panel <br>(CAR)</p>
                                             <div class="product-specs">
                                               <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
                                               <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
@@ -150,10 +168,53 @@
                                             <div class="col-12">
                                               <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tokenModal">Select Panel and Tokens</button>
                                             </div>
-                                            <div class="price"><span class="price-per-item">₱ 1,000.00-5,000.00</span></div>
+                                            <div class="price"><span class="price-per-item">₱ 1,000.00-7,000.00</span></div>
                                           </div>
                                         </div>   
-                                      </div>
+                                    </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                          <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                          <div class="details-column">
+                                            <p class="product-name">Select a Panel <br> (PICKUP TRUCK)</p>
+                                            <div class="product-specs">
+                                              <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                              <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                              <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                            <!-- Button to trigger the modal -->
+                                            <div class="col-12">
+                                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#pickupTruckModal">Select Panel and Tokens</button>
+                                            </div>
+                                            <div class="price"><span class="price-per-item">₱ 1,000.00-10,000.00</span></div>
+                                          </div>
+                                        </div>   
+                                    </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                            <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="details-column">
+                                                <p class="product-name">Select a Panel <br>(SUV)</p>
+                                                <div class="product-specs">
+                                                    <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                    <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                    <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                                </div>
+                                                <!-- Button to trigger the SUV modal -->
+                                                <div class="col-12">
+                                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suvModal">Select Panel and Tokens</button>
+                                                </div>
+                                                <div class="price"><span class="price-per-item">₱ 1,000.00-5,000.00</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     
                                                                                                   
                                 </div>
@@ -180,54 +241,149 @@
         </section>
     </main>
 
-    <!-- Modal for Token Selection -->
-<div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tokenModalLabel">Select Tokens for Panel Repairs</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tokenModalLabel">Select Tokens for Panel Repairs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="slider-container col-md-12">
+                        <div class="image-slider">
+                            <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
+                        </div>
+                        <div class="row">
+                            <!-- Token Set 1 -->
+                            <div class="toggle-tokens" id="token-set-1" style="display: block;">
+                                <label>
+                                    <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Car Front Bumper', 500)">
+                                    <span id="token1" class="token">Car Front Bumper - ₱ 500.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token2-checkbox" onclick="toggleToken(2, 'Car Rear Bumper', 600)">
+                                    <span id="token2" class="token">Car Rear Bumper - ₱ 600.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token5-checkbox" onclick="toggleToken(5, 'Car Left Fender', 700)">
+                                    <span id="token5" class="token">Car Left Fender - ₱ 700.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token6-checkbox" onclick="toggleToken(6, 'Car Right Fender', 800)">
+                                    <span id="token6" class="token">Car Right Fender - ₱ 800.00</span>
+                                </label>
+                            </div>
+    
+                            <!-- Token Set 2 -->
+                            <div class="toggle-tokens" id="token-set-2" style="display: none;">
+                                <label>
+                                    <input type="checkbox" id="token3-checkbox" onclick="toggleToken(3, 'Car Left Door', 700)">
+                                    <span id="token3" class="token">Car Left Door - ₱ 700.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token4-checkbox" onclick="toggleToken(4, 'Car Right Door', 800)">
+                                    <span id="token4" class="token">Car Right Door - ₱ 800.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token7-checkbox" onclick="toggleToken(7, 'Car Hood', 1000)">
+                                    <span id="token7" class="token">Car Hood - ₱ 1000.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token8-checkbox" onclick="toggleToken(8, 'Car Trunk', 1100)">
+                                    <span id="token8" class="token">Car Trunk - ₱ 1100.00</span>
+                                </label>
+                            </div>
+                        </div>
+    
+                        <!-- Navigation Buttons for Tokens -->
+                        <div class="controls">
+                            <button onclick="prevTokenSet()">Previous</button>
+                            <button onclick="nextTokenSet()">Next</button>
+                        </div>
+    
+                        <!-- Add to Cart Button -->
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <div class="slider-container col-md-12">
-            <div class="image-slider">
-              <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
-            </div>
-            
-            <div class="toggle-tokens">
-                <label>
-                  <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Front Bumper', 500)">
-                  <span id="token1" class="token">Front Bumper - ₱ 500.00</span>
-                </label>
-                <label>
-                  <input type="checkbox" id="token2-checkbox" onclick="toggleToken(2, 'Rear Bumper', 600)">
-                  <span id="token2" class="token">Rear Bumper - ₱ 600.00</span>
-                </label>
-                <label>
-                  <input type="checkbox" id="token3-checkbox" onclick="toggleToken(3, 'Left Door', 700)">
-                  <span id="token3" class="token">Left Door - ₱ 700.00</span>
-                </label>
-                <label>
-                  <input type="checkbox" id="token4-checkbox" onclick="toggleToken(4, 'Right Door', 800)">
-                  <span id="token4" class="token">Right Door - ₱ 800.00</span>
-                </label>
-              </div>
-              
-  
-            <div class="controls">
-              <button onclick="prevImage()">Previous</button>
-              <button onclick="nextImage()">Next</button>
-            </div>
-  
-            <!-- Add to Cart Button -->
-            <div class="col-12 mt-3">
-              <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+    
+    
+<!-- Pickup Truck Body Panels Modal -->
+<div class="modal fade" id="pickupTruckModal" tabindex="-1" aria-labelledby="pickupTruckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pickupTruckModalLabel">Select Tokens for Pickup Truck Body Panels</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="slider-container col-md-12">
+                    <div class="image-slider">
+                        <img id="pickup-slider-image" src="assets/img/bodypanels/pickuptruckbodypanels.png" style="width: auto; height: 500px;" alt="Pickup Truck Panel Image">
+                    </div>
+                    <div class="row">
+                        <!-- Pickup Truck Token Set 1 -->
+                        <div class="toggle-tokens" id="pickup-token-set-1" style="display: block;">
+                            <label>
+                                <input type="checkbox" id="pickup-token1-checkbox" onclick="togglePickupToken(1, 'Pickup Front Panel', 700)">
+                                <span id="pickup-token1" class="token">Pickup Front Panel - ₱ 700.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token2-checkbox" onclick="togglePickupToken(2, 'Pickup Rear Panel', 800)">
+                                <span id="pickup-token2" class="token">Pickup Rear Panel - ₱ 800.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token3-checkbox" onclick="togglePickupToken(3, 'Pickup Left Door', 900)">
+                                <span id="pickup-token3" class="token">Pickup Left Door - ₱ 900.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token4-checkbox" onclick="togglePickupToken(4, 'Pickup Right Door', 1000)">
+                                <span id="pickup-token4" class="token">Pickup Right Door - ₱ 1000.00</span>
+                            </label>
+                        </div>
+
+                        <!-- Pickup Truck Token Set 2 -->
+                        <div class="toggle-tokens" id="pickup-token-set-2" style="display: none;">
+                            <label>
+                                <input type="checkbox" id="pickup-token5-checkbox" onclick="togglePickupToken(5, 'Pickup Hood', 1100)">
+                                <span id="pickup-token5" class="token">Pickup Hood - ₱ 1100.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token6-checkbox" onclick="togglePickupToken(6, 'Pickup Trunk', 1200)">
+                                <span id="pickup-token6" class="token">Pickup Trunk - ₱ 1200.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token7-checkbox" onclick="togglePickupToken(7, 'Pickup Bed', 1300)">
+                                <span id="pickup-token7" class="token">Pickup Bed - ₱ 1300.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token8-checkbox" onclick="togglePickupToken(8, 'Pickup Tailgate', 1400)">
+                                <span id="pickup-token8" class="token">Pickup Tailgate - ₱ 1400.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons for Pickup Truck Tokens -->
+                    <div class="controls">
+                        <button onclick="prevPickupTokenSet()">Previous</button>
+                        <button onclick="nextPickupTokenSet()">Next</button>
+                    </div>
+
+                    <!-- Add to Cart Button -->
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary" id="calculate-pickup-total" onclick="calculatePickupTotal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
     <footer class="page-footer dark">
         <div class="container">
@@ -273,9 +429,11 @@
     <script>
         let cartItems = [];
         let total = 500; // Start with the appointment fee of ₱500
-    
+        
         let selectedPanels = [];
         let panelTotal = 0; // Total for selected panels
+        let selectedPickupPanels = []; // Track selected pickup truck tokens
+        let currentPickupTokenSet = 1;
     
         function filterProducts(category) {
             const products = document.querySelectorAll('.product');
@@ -286,33 +444,27 @@
                 }
             });
     
-            // Change category button background color
             const categoryButtons = document.querySelectorAll('.category-button');
             categoryButtons.forEach(button => {
-                button.style.backgroundColor = ''; // Reset all buttons' background color
+                button.style.backgroundColor = '';
             });
-            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)'; // Highlight active category
+            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)';
         }
     
         function toggleToken(tokenId, panelName, price) {
             const checkbox = document.getElementById(`token${tokenId}-checkbox`);
-
             if (checkbox.checked) {
-                selectedPanels.push({ panelName, price, tokenId }); // Store tokenId
-                addPanelToCart(panelName, price, tokenId); // Pass tokenId to cart
+                selectedPanels.push({ panelName, price, tokenId });
+                addPanelToCart(panelName, price, tokenId);
             } else {
-                // Remove the deselected panel from the array
                 selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
-                removePanel(panelName); // Automatically remove from cart
+                removePanel(panelName);
             }
-
             updatePanelTotal();
         }
-
+    
         function addPanelToCart(panelName, price, tokenId) {
             const cartDetails = document.getElementById('cart-details');
-
-            // Check if the panel is already in the cart to avoid duplicates
             if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panelName))) {
                 const panelDetail = document.createElement('div');
                 panelDetail.className = 'cart-item d-flex align-items-center';
@@ -327,10 +479,8 @@
                 </div>`;
                 cartDetails.appendChild(panelDetail);
             }
-
-            updateTotal(); // Recalculate total after adding
+            updateTotal();
         }
-
     
         function updatePanelTotal() {
             panelTotal = selectedPanels.reduce((total, panel) => total + panel.price, 0);
@@ -342,7 +492,6 @@
             const cartDetails = document.getElementById('cart-details');
             
             selectedPanels.forEach(panel => {
-                // Check if the panel is already in the cart to avoid duplicates
                 if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
                     const panelDetail = document.createElement('div');
                     panelDetail.className = 'cart-item d-flex align-items-center';
@@ -355,212 +504,258 @@
                     cartDetails.appendChild(panelDetail);
                 }
             });
-
-            // After adding tokens, update total amount
+    
             updateTotal();
-            
-            // Close the modal
             document.querySelector('.btn-close').click();
         }
     
-     
         function removePanel(panelName, tokenId) {
             const cartDetails = document.getElementById('cart-details');
             const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(panelName));
-            
             if (itemToRemove) {
-                cartDetails.removeChild(itemToRemove); // Remove from cart display
+                cartDetails.removeChild(itemToRemove);
             }
-
-            // Uncheck the corresponding checkbox using tokenId
             const checkbox = document.getElementById(`token${tokenId}-checkbox`);
             if (checkbox) {
                 checkbox.checked = false;
             }
-
-            // Remove the deselected panel from the selectedPanels array
             selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
-
-            updateTotal(); // Recalculate total after removal
+            updateTotal();
         }
-
-
+    
+        function showPickupTokenSet(setNumber) {
+            document.getElementById('pickup-token-set-1').style.display = setNumber === 1 ? 'block' : 'none';
+            document.getElementById('pickup-token-set-2').style.display = setNumber === 2 ? 'block' : 'none';
+        }
+    
+        function nextPickupTokenSet() {
+            currentPickupTokenSet = (currentPickupTokenSet % 2) + 1;
+            showPickupTokenSet(currentPickupTokenSet);
+        }
+    
+        function prevPickupTokenSet() {
+            currentPickupTokenSet = (currentPickupTokenSet === 1) ? 2 : 1;
+            showPickupTokenSet(currentPickupTokenSet);
+        }
+    
+        function togglePickupToken(tokenId, panelName, price) {
+            const checkbox = document.getElementById(`pickup-token${tokenId}-checkbox`);
+            if (checkbox.checked) {
+                selectedPickupPanels.push({ panelName, price, tokenId });
+                addPickupPanelToCart(panelName, price, tokenId);
+            } else {
+                selectedPickupPanels = selectedPickupPanels.filter(panel => panel.panelName !== panelName);
+                removePickupPanel(panelName);
+            }
+            updatePickupPanelTotal();
+        }
+    
+        function addPickupPanelToCart(panelName, price, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panelName))) {
+                const panelDetail = document.createElement('div');
+                panelDetail.className = 'cart-item d-flex align-items-center';
+                panelDetail.innerHTML = `
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <span>${panelName} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="removePickupPanel('${panelName}', ${tokenId})">
+                            <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                        </button>
+                    </div>
+                </div>`;
+                cartDetails.appendChild(panelDetail);
+            }
+            updateTotal();
+        }
+    
+        function updatePickupPanelTotal() {
+            const pickupPanelTotal = selectedPickupPanels.reduce((total, panel) => total + panel.price, 0);
+            document.getElementById('subtotal').innerText = `₱ ${(pickupPanelTotal).toFixed(2)}`;
+        }
+    
+        function calculatePickupTotal() {
+            const cartDetails = document.getElementById('cart-details');
+            document.getElementById('cart-details').style.display = 'block';
+    
+            selectedPickupPanels.forEach(panel => {
+                if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
+                    const panelDetail = document.createElement('div');
+                    panelDetail.className = 'cart-item d-flex align-items-center';
+                    panelDetail.innerHTML = `
+                    <div class="cart-item-box">
+                        <div class="cart-item-content d-flex align-items-center">
+                            <span>${panel.panelName} <span class="product-price"> ₱ ${panel.price.toFixed(2)}</span></span>
+                            <button class="cancel-button" onclick="removePickupPanel('${panel.panelName}', ${panel.tokenId})">
+                                <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                            </button>
+                        </div>
+                    </div>`;
+                    cartDetails.appendChild(panelDetail);
+                }
+            });
+    
+            updateTotal();
+            document.querySelector('#pickupTruckModal .btn-close').click();
+        }
+    
+        function removePickupPanel(panelName, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(panelName));
+            if (itemToRemove) {
+                cartDetails.removeChild(itemToRemove);
+            }
+            const checkbox = document.getElementById(`pickup-token${tokenId}-checkbox`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            selectedPickupPanels = selectedPickupPanels.filter(panel => panel.panelName !== panelName);
+            updateTotal();
+        }
+    
         function addToCart(button) {
             const product = button.closest('.product');
             const name = product.querySelector('.product-name').innerText;
             const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-            const imageSrc = product.querySelector('.product-image img').src; // Get image source
-
-            // Check if the item is already in the cart to avoid duplicates
+            const imageSrc = product.querySelector('.product-image img').src;
+    
             if (cartItems.some(item => item.name === name)) {
                 alert('This product is already in the cart.');
                 return;
             }
-
-            // Add to cart array
+    
             cartItems.push({ name, price, imageSrc });
-
             document.getElementById('cart-details').style.display = 'block';
-
-            // Update the cart display
+    
             const cartDetails = document.getElementById('cart-details');
             const productDetail = document.createElement('div');
             productDetail.className = 'cart-item d-flex align-items-center';
             productDetail.innerHTML = `
-                <div class="cart-item-box"><div class="cart-item-content d-flex align-items-center">
-                    <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;"> 
-                    <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
-                    <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
-                </div></div>
-            `;
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;">
+                        <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>
+                </div>`;
             cartDetails.appendChild(productDetail);
-
-            // Recalculate the total after adding the item
+    
             updateTotal();
-
-            // Hide the "Add to Cart" button after adding
             button.style.display = 'none';
         }
-
+    
         function updateTotal() {
             let subtotal = 0;
-
-            // Calculate subtotal by summing up the price of each product in the cart
+    
             cartItems.forEach(item => {
                 subtotal += item.price;
             });
-
-            // Add the selected panels/tokens to the subtotal
+    
             selectedPanels.forEach(panel => {
                 subtotal += panel.price;
             });
-
-            // Update subtotal and total display
+            selectedPickupPanels.forEach(panel => {
+                subtotal += panel.price;
+            });
+    
             document.getElementById('subtotal').innerText = `₱ ${(subtotal).toFixed(2)}`;
-            document.getElementById('total').innerText = `₱ ${(subtotal + 500).toFixed(2)}`; // Add the ₱500 appointment fee
+            document.getElementById('total').innerText = `₱ ${(subtotal + 500).toFixed(2)}`;
         }
-
-            
+    
         function cancelItem(name) {
             const productIndex = cartItems.findIndex(item => item.name === name);
             if (productIndex !== -1) {
-                cartItems.splice(productIndex, 1); // Remove from cartItems array
+                cartItems.splice(productIndex, 1);
             }
-
-            // Remove from the cart display
+    
             const cartDetails = document.getElementById('cart-details');
             const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(name));
             if (itemToRemove) {
                 cartDetails.removeChild(itemToRemove);
             }
-
+    
             if (cartItems.length === 0 && selectedPanels.length === 0) {
                 document.getElementById('cart-details').style.display = 'none';
             }
-
-            // Recalculate the total after removing the item
+    
             updateTotal();
-
-            // Show the "Add to Cart" button again
             const productElement = Array.from(document.querySelectorAll('.product')).find(product => product.querySelector('.product-name').innerText === name);
             if (productElement) {
                 productElement.querySelector('.add-to-cart').style.display = 'block';
             }
         }
-
     
         function clearCart() {
             cartItems = [];
             selectedPanels = [];
-            total = 500; // Reset to the appointment fee only
-
+            selectedPickupPanels = [];
+            total = 500;
+    
             document.getElementById('cart-details').innerHTML = '';
             document.getElementById('cart-details').style.display = 'none';
-            updateTotal(); // Reset subtotal and total
-
-            // Show all "Add to Cart" buttons again
+            updateTotal();
+    
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.style.display = 'block';
             });
-
-            const tokenCheckboxes = document.querySelectorAll('.toggle-tokens input[type="checkbox"]');
-            tokenCheckboxes.forEach(checkbox => {
-                checkbox.checked = false; // Uncheck all token checkboxes
+    
+            document.querySelectorAll('.toggle-tokens input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
             });
-            
         }
     
         document.querySelector('.search-input').addEventListener('focus', showAllProducts);
     
         function showAllProducts() {
-            const products = document.querySelectorAll('.product');
-    
-            // Show all products and reset any filters
-            products.forEach(product => {
-                product.style.display = 'block'; // Show all products
+            document.querySelectorAll('.product').forEach(product => {
+                product.style.display = 'block';
             });
-    
-            // Remove the active background from category buttons when search is clicked
-            const categoryButtons = document.querySelectorAll('.category-button');
-            categoryButtons.forEach(button => {
-                button.style.backgroundColor = ''; // Reset all buttons' background color
+            document.querySelectorAll('.category-button').forEach(button => {
+                button.style.backgroundColor = '';
             });
         }
     
         function searchProducts() {
             const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-            const products = document.querySelectorAll('.product');
-
-            products.forEach(product => {
+            document.querySelectorAll('.product').forEach(product => {
                 const productName = product.querySelector('.product-name').innerText.toLowerCase();
-
-                if (productName.includes(searchTerm)) {
-                    product.style.display = 'block';  // Show products that match the search term
-                } else {
-                    product.style.display = 'none';  // Hide products that don't match
-                }
+                product.style.display = productName.includes(searchTerm) ? 'block' : 'none';
             });
         }
     
         document.querySelector('.search-input').addEventListener('input', searchProducts);
     
-    
         function filterByCategory(category) {
-            console.log("Filtering category: ", category);  // Check if the correct category is being passed
-            
-            const products = document.querySelectorAll('.product');  // Select all product elements
-            
-            products.forEach(product => {
-                // If 'all' is selected, or the product matches the selected category, show the product
-                if (category === 'all' || product.classList.contains(category)) {
-                    product.style.display = 'block';  // Show the product
-                } else {
-                    product.style.display = 'none';   // Hide non-matching products
-                }
+            document.querySelectorAll('.product').forEach(product => {
+                product.style.display = category === 'all' || product.classList.contains(category) ? 'block' : 'none';
             });
         }
-
-
     
         window.onload = function() {
-            // Set the default category on page load
-            filterByCategory('all');  // Or 'mechanical' if that's the default
-
-            // Add search functionality
-            const searchInput = document.querySelector('.search-input');
-            if (searchInput) {
-                searchInput.addEventListener('input', searchProducts);
-            }
-
-            // Add functionality for dropdown
-            const dropdown = document.getElementById('category-dropdown');
-            if (dropdown) {
-                dropdown.addEventListener('change', function() {
-                    filterByCategory(this.value);
-                });
-            }
+            filterByCategory('all');
+            document.querySelector('.search-input').addEventListener('input', searchProducts);
+            document.getElementById('category-dropdown').addEventListener('change', function() {
+                filterByCategory(this.value);
+            });
         }
     
+        let currentTokenSet = 1;
+        function showTokenSet(setNumber) {
+            document.getElementById('token-set-1').style.display = setNumber === 1 ? 'block' : 'none';
+            document.getElementById('token-set-2').style.display = setNumber === 2 ? 'block' : 'none';
+        }
+    
+        function nextTokenSet() {
+            currentTokenSet = (currentTokenSet % 2) + 1;
+            showTokenSet(currentTokenSet);
+        }
+    
+        function prevTokenSet() {
+            currentTokenSet = (currentTokenSet === 1) ? 2 : 1;
+            showTokenSet(currentTokenSet);
+        }
     </script>
+    
+    
 </body>
 </html>
