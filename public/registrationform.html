@@ -96,6 +96,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <h3 class="mt-4">Customer Information</h3>
+                        
                         <div class="col-md-6">
                             <label for="name">Name: <input type="text" placeholder="Name" name="Type your name here.. " id="name" required></label>
                         </div>
@@ -352,7 +353,7 @@
         // Remove image button click handler
         $('#removeImageButton').on('click', removeImage);
 
-        // Registration form submission
+        //Registration form submission
         $('#registrationForm').submit(function (event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -380,7 +381,7 @@
                 contentType: 'application/json',
                 success: function (response) {
                     alert(response.message); // Display success message from the backend
-                    if (response.message === 'Account created successfully') {
+                    if (response.message) {
                         window.location.href = '/homepage.html'; // Redirect to login page on success
                     }
                 },
@@ -390,6 +391,7 @@
                 }
             });
         });
+       
 
         // Get verification code button
         $('#getCodeButton').click(function () {

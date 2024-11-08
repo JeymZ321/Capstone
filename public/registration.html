@@ -25,17 +25,23 @@
             <div class="content">
                 <h2>Registration</h2>
                 <div class="form" id="createAccForm">
+                
                     <div class="inputBox">
                         <input type="text" id="email" required>
                         <i>Email</i> 
-                    </div>
+                    </div>    
                     <div class="inputBox">
-                        <input type="submit" id="submit" value="Create Account">
+                        <input type="submit" id="submit" value="Submit">
                     </div>
 
                     <div class="links">
                         <a href="login.html" style="margin: auto; color: rgb(255, 161, 161)">Already Have an Account?</a> | 
                     </div>
+                    <!-- New container for the note -->
+            <div class="notification" style="margin-top: 10px; text-align: center; font-size: 14px; color: #6c757d;">
+                NOTE:
+                Once you input your Gmail account, you will receive a message with instructions to complete your registration.
+            </div>
                 </div>
             </div>
         </div>
@@ -43,29 +49,58 @@
       
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script>
         $(document).ready(function () {
+    
             $('#submit').click(function (e) {
                 e.preventDefault();
+               
                 const email = $('#email').val();
-                if (!email) {
-                    alert('Please enter a valid email.');
-                    return;
-                }
+    
+                
                 $.ajax({
                     url: '/send-registration-email',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ email: email }),
+                    data: JSON.stringify({
+                        email:email
+                    }),
                     success: function (response) {
-                        alert('Registration email sent! Please check your email to complete the registration.');
+                        alert('Congratulations! You may now check your email for registration instructions.');
                     },
                     error: function () {
-                        alert('Error sending registration email.');
+                        alert('Error confirming registration. Please check your code and try again.');
                     }
                 });
             });
+
+            // Get verification code button
+        $('#getCodeButton').click(function () {
+            const email = $('#email').val();
+            
+            if (!email) {
+                alert('Please enter your email.');
+                return;
+            }
+
+            // Send code request
+            $.ajax({
+                type: 'POST',
+                url: '/send-code',
+                data: JSON.stringify({ email }),
+                contentType: 'application/json',
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
+                }
+            });
         });
+    });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

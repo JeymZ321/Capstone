@@ -66,6 +66,7 @@ app.get('/', (req, res) => {
             /*------------------------------CUSTOMER ROUTES------------------------------*/
 
 /*----------CREATING AN ACCOUNT FOR USERS/ REGISTRATION FORM--------------*/
+
 app.post('/registration', async (req, res) => {
   const { name, phonenumber, email, city, password, vehicles, code } = req.body; 
   
@@ -92,6 +93,7 @@ app.post('/registration', async (req, res) => {
 
       // Create a new customer with provided information
       const newUser = new customer({
+      
           name,
           phonenumber,
           email,
@@ -125,7 +127,7 @@ app.post('/registration', async (req, res) => {
       // Set the session with the user's email
       req.session.email = newUser.email;
 
-      res.status(200).json({ message: 'Account created successfully' });
+      res.status(200).json({ message: 'Welcome to Reynaldos Car Care!, Thankyou for you registration' });
   } catch (error) {
       console.log('Account creation failed:', error);
       res.status(500).json({ message: 'Account creation failed' });
@@ -609,90 +611,99 @@ app.get('/getUserData', async (req, res) => {
 
 
 /*---------------------------CHANGE INTO /create-account---------------*/
-// const secretKey = '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';
-// const jwt = require('jsonwebtoken');
-// const { userInfo } = require('os');
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   host: 'smtp.gmail.com',
-//   port: 587,
-//   secure: false,
-//   auth: {
-//       user: 'caynojames07@gmail.com',
-//       pass: 'fddz jopx zhia rffr',  // Consider using app passwords for Gmail
-//   },
-// });
+const secretKey = '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';
+const jwt = require('jsonwebtoken');
+//const { userInfo } = require('os');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+      user: 'caynojames07@gmail.com',
+      pass: 'fddz jopx zhia rffr',  
+  },
+});
 
-// app.post('/send-registration-email', async (req, res) => {
-//     const { email } = req.body;
-//     if (!email) {
-//         return res.status(400).send({ message: 'Email is required' });
-//     }
+app.post('/send-registration-email', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+      return res.status(400).send({ message: 'Email is required' });
+  }
 
-//     try {
-//         // Generate a token for registration confirmation
-//         const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
+  try {
 
-//         const registrationLink = `http://127.0.0.1:3000/public/registrationform.html?token=${token}`;
+    const existingCustomer = await customer.findOne({ email });
+    if (existingCustomer) {
+        return res.status(200).send({ message: 'Your Gmail account is already registered.' });
+    }
+      // Generate a token for registration confirmation
+      const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
 
-//         /*---------Sending email------------*/
-//         const mailOptions = {
-//             from: {
-//                 name: "Reynaldo's Car Care",
-//                 address: 'caynojames07@gmail.com'
-//             },
-//             to: email,
-//             subject: 'Complete Your Registration',
-//             text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
-//         };
+      const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
 
-//         transporter.sendMail(mailOptions, (error, info) => {
-//             if (error) {
-//                 console.log('Error sending email:', error);
-//                 return res.status(500).send('Error sending email.');
-//             }
-//             console.log('Email sent: ' + info.response);
-//             res.status(200).send('Registration email sent.');
-//         });
-//     } catch (error) {
-//         console.log('Error in registration email:', error);
-//         res.status(500).send('An error occurred while sending the registration email.');
-//     }
-// });
+      /*---------Sending email------------*/
+      const mailOptions = {
+          from: {
+              name: "Reynaldo's Car Care",
+              address: 'caynojames07@gmail.com'
+          },
+          to: email,
+          subject: 'Complete Your Registration',
+          text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
+      };
 
-// app.get('/confirm-registration', async (req, res) => {
-//   const { token } = req.query;
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              console.log('Error sending email:', error);
+              return res.status(500).send('Error sending email.');
+          }
+          console.log('Email sent: ' + info.response);
+          res.status(200).send('Registration email sent.');
+      });
+  } catch (error) {
+      console.log('Error in registration email:', error);
+      res.status(500).send('An error occurred while sending the registration email.');
+  }
+});
 
-//   if (!token) {
-//       return res.status(400).send({ message: 'Invalid token' });
-//   }
 
-//   try {
-//       // Verify the token
-//       const decoded = jwt.verify(token, secretKey);
-//       const { email } = decoded;
 
-//       // Find the user by email
-//       let customer = await Customer.findOne({ email });
-//       if (!customer) {
-//           return res.status(400).send({ message: 'Email not found. Please register first.' });
-//       }
+app.get('/confirm-registration', async (req, res) => {
+const { token } = req.query;
 
-//       // Check if the user is already verified
-//       if (customer.isVerified) {
-//           return res.status(400).send({ message: 'Email is already verified' });
-//       }
+if (!token) {
+    return res.status(400).send({ message: 'Invalid token' });
+}
 
-//       // Update the user's verification status
-//       customer.isVerified = true;
-//       await customer.save();
+try {
+    // Verify the token
+    const decoded = jwt.verify(token, secretKey);
+    const { email } = decoded;
 
-//       res.status(200).send('Registration confirmed. You can now log in using your Gmail account.');
-//   } catch (error) {
-//       console.log('Error confirming registration:', error);
-//       res.status(500).send('Error confirming registration.');
-//   }
-// });
+    // Find the user by email
+    let Customer = await customer.findOne({ email });
+    if (!Customer) {
+        return res.status(400).send({ message: 'Email not found. Please register first.' });
+    }
+
+    // Check if the user is already verified
+    if (customer.isVerified) {
+        return res.status(400).send({ message: 'Email is already verified' });
+    }
+
+    // Update the user's verification status
+    customer.isVerified = true;
+    await customer.save();
+
+    res.status(200).send('Registration confirmed. You can now log in using your Gmail account.');
+} catch (error) {
+    console.log('Error confirming registration:', error);
+    res.status(500).send('Error confirming registration.');
+}
+});
+
+
 
 
 /*------------------------CONNECTING TO THE PORT----------------------*/
