@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>User Dashboard - My Profile</title>
+    <link rel="stylesheet" href="/admin/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
+    <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="/assets/css/vanilla-zoom.min.css">
+
+    <style>
+        .parallelogram {
+            position: absolute;
+            top: 90px;
+            left: -20px;
+            background-color: rgb(199, 6, 6);
+            color: white;
+            padding: 10px 40px;
+            transform: skew(-20deg);
+            width: 350px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 1px 4px rgb(0, 0, 0);
+            font-size: 25px;
+            font-family: "Montserrat";
+            
+        }
+
+        .parallelogram::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 0;
+            height: 0;
+            border-top: 30px solid transparent;
+            border-bottom: 30px solid transparent;
+        }
+
+        .notice{
+            font-style: italic;
+            color: rgb(85, 86, 87);
+        }
+
+        #vehicleForm input[type="text"],select{
+            width: 100%; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .image-preview {
+            width: 200px; /* Set fixed width */
+            height: 200px; /* Set fixed height */
+            border: 1px solid #ccc; /* Optional: add a border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure content does not overflow */
+        }
+        .image-preview img {
+            max-width: 100%; /* Ensure the image fits within the container */
+            max-height: 100%; /* Ensure the image fits within the container */
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .parallelogram{
+                width: 350px;
+            }
+        }
+
+        
+    </style>
+</head>
+
+<body id="page-top">
+    
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #051129;max-width: none;width: 120px;">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#" style="background: url('assets/img/reynaldoslogo.png') no-repeat;background-size: contain;border-radius: 40px;width: 120px;height: 120px;">
+                    <div class="sidebar-brand-icon rotate-n-15"></div>
+                    <div class="sidebar-brand-text mx-3"></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" id="dashboard-item">
+                        <a class="nav-link" href="userdashboard-profile.html">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="dashboard-item">
+                        <a class="nav-link active" href="userdashboard-myvehicle.html">
+                            <i class="fas fa-car"></i>
+                            <span>My Vehicles</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                
+                <div class="text-center d-none d-md-inline">
+                    <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+                </div>
+            </div>
+        </nav>
+        
+        
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand shadow mb-4 topbar static-top" style="background:#051129;">
+                    <div class="container">
+                        <div class="parallelogram">My Vehicles</div>
+                        <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        
+                        <div class="collapse navbar-collapse" id="navcol-1">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                                <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
+                                <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </nav>
+
+                <!-- Main Content Area -->
+                
+                <div class="container" style="margin-top: 100px;">
+                    <div class="row justify-content-center">
+                        <!-- Appointment Table -->
+                        <div class="appointment-container" style="margin: 50px;">
+                            <h1>Appointments</h1>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Slots</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentTableBody">
+                                    <!-- Rows will be injected here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+
+</div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+
+
+<!--V E H I C L E    M O D A L-->
+
+<div class="modal fade" id="vehicleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: darkred; color: white;" >
+                <h5 class="modal-title" >Add Vehicle Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: rgb(255, 255, 255);"></button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <div class="row">
+                        <div class="col-md-6">                    
+                            <label for="brandModel">Brand Model: <input type="text" placeholder="Example: Toyota Avanza" name="BrandModel" id="brandModel" required></label>
+                        </div>
+                        <div class="col-md-6">                    
+                            <label for="color">Color: <input type="text" placeholder="Example: Candy Red" name="Color" id="color" required></label>
+                        </div>
+                        <div class="col-md-4">                    
+                            <label for="platenum">Plate #: <input type="text" placeholder="ABC 1234" maxlength="8" name="PlateNumber" id="platenum" required></label>
+                        </div>
+                        <div class="col-md-4">                    
+                            <label for="yearmodel">Year Model: <input type="text" placeholder="2024" minlength="4" maxlength="4" name="YearModel" id="yearmodel" required></label>
+                        </div>
+                        
+                        <div class="col-md-4"> 
+                            <label for="transmission">Transmission: 
+                                <select id="transmission" required>
+                                    <option disabled selected>Select Transmission</option>
+                                    <option>Automatic</option>
+                                    <option>Manual</option>
+                                    <option>CVT</option>
+                                    <option>Dual Clutch</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vehicleImage" class="mb-3">Vehicle Image (optional): 
+                                <input type="file" accept="image/*" name="VehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
+                            </label>
+                            <div id="imagePreview" class="image-preview">
+                                <img id="preview" src="#" alt="Image Preview" style="display: none;">
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-2" id="removeImageButton" onclick="removeImage()" style="display: none;">
+                                Remove Image
+                            </button>
+                        </div>
+                        <div class="col-md-6 mt-5">
+                            <br>
+                            <p style="opacity: .5; font-size: 14px;"><i>Note: Reynaldo's Car Care Center doesn't accomodate Electric Vehicles.</i></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveVehicleButton" style="background-color: rgb(0, 0, 0); color: white;">Save Vehicle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: darkred; color: white;">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this vehicle?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/js/bs-init.js"></script>
+    <script src="/admin/assets/js/theme.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let vehicles = [];  // Global array to store all vehicle information
+        let vehicleCount = 0;
+        let isEditing = false;
+        let currentItem = null; // Store the item being edited
+        let itemToDelete = null;
+    
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("minimized");
+        }
+    
+        $(document).ready(function () {
+            // Function to preview the selected image
+            function previewImage(event) {
+                const preview = document.getElementById('preview');
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                const removeButton = document.getElementById('removeImageButton');
+    
+                reader.onload = function() {
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                    removeButton.style.display = 'inline-block'; // Show Remove Image button
+                };
+    
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                    removeButton.style.display = 'none'; // Hide Remove Image button if no file
+                }
+            }
+    
+            // Function to remove the selected image
+            function removeImage() {
+                document.getElementById('vehicleImage').value = ''; // Clear file input
+                document.getElementById('preview').src = ''; // Clear preview
+                document.getElementById('preview').style.display = 'none'; // Hide preview
+                document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
+            }
+    
+            // Click event for #saveVehicleButton
+            $('#saveVehicleButton').click(function () {
+                // Collect values from vehicle modal fields
+                const brandModel = $('#brandModel').val().trim();
+                const color = $('#color').val().trim();
+                const plateNumber = $('#platenum').val().trim();
+                const yearModel = $('#yearmodel').val().trim();
+                const transmission = $('#transmission').val();
+                const previewSrc = $('#preview').attr('src');  // Get image preview src if it exists
+    
+                // Validate required fields
+                if (!brandModel || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
+                    alert('Please fill out all required vehicle fields.');
+                    return;
+                }
+    
+                // Add vehicle data to the global vehicles array
+                vehicles.push({
+                    brandModel: brandModel,
+                    color: color,
+                    plateNumber: plateNumber,
+                    yearModel: yearModel,
+                    transmission: transmission
+                });
+    
+                // Create a new vehicle item and append it to the vehicle list
+                const vehicleItem = document.createElement('div');
+                vehicleItem.className = 'alert alert-info mt-2';
+                vehicleItem.innerHTML = `
+                    <div style="background-color: white; padding: 10px; border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Vehicle ${vehicles.length}:</strong><br><br>
+                                <strong>Brand Model:</strong> ${brandModel} <br>
+                                <strong>Color:</strong> ${color} <br>
+                                <strong>Plate #:</strong> ${plateNumber} <br>
+                                <strong>Year Model:</strong> ${yearModel} <br>
+                                <strong>Transmission:</strong> ${transmission}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="image-preview mt-2">
+                                    ${previewSrc && previewSrc !== '#' ? `<img src="${previewSrc}" alt="Vehicle Image" style="max-width:100%; max-height:100%; object-fit: cover;">` : ''}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+    
+                document.getElementById('vehicleList').appendChild(vehicleItem);
+    
+                // Attach edit and delete event listeners to the new item
+                $(vehicleItem).find('.edit-btn').on('click', function () {
+                    editVehicle(vehicleItem, brandModel, color, plateNumber, yearModel, transmission, previewSrc);
+                });
+                $(vehicleItem).find('.delete-btn').on('click', function () {
+                    deleteVehicle(vehicleItem);
+                });
+    
+                // Reset the form fields and image preview in the modal after saving
+                document.getElementById('vehicleForm').reset();
+                removeImage();  // Clears image preview
+                bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+            });
+    
+            // Function to edit a vehicle entry
+            function editVehicle(item, brandModel, color, plateNumber, yearModel, transmission, previewSrc) {
+                $('#brandModel').val(brandModel);
+                $('#color').val(color);
+                $('#platenum').val(plateNumber);
+                $('#yearmodel').val(yearModel);
+                $('#transmission').val(transmission);
+                $('#preview').attr('src', previewSrc).css('display', previewSrc ? 'block' : 'none');
+                $('#removeImageButton').css('display', previewSrc ? 'inline-block' : 'none');
+                isEditing = true;
+                currentItem = item;
+                bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).show();
+            }
+    
+            // Function to delete a vehicle entry
+            function deleteVehicle(item) {
+                $(item).remove();
+                const index = $(item).index();
+                vehicles.splice(index, 1);
+                renumberVehicles();
+            }
+    
+            // Function to renumber vehicles after deletion
+            function renumberVehicles() {
+                $('#vehicleList .alert').each((index, vehicleItem) => {
+                    $(vehicleItem).find('strong').first().text(`Vehicle ${index + 1}:`);
+                });
+            }
+    
+            // Attach the previewImage function to the file input
+            $('#vehicleImage').on('change', previewImage);
+    
+            // Remove image button click handler
+            $('#removeImageButton').on('click', removeImage);
+
+            $(document).ready(function () {
+    // Function to delete a vehicle entry with a confirmation modal
+    function deleteVehicle(item) {
+        itemToDelete = item; // Store the item to be deleted
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+        deleteModal.show(); // Show the confirmation modal
+    }
+
+    // Event listener for the confirm delete button in the modal
+    $('#confirmDeleteButton').click(function () {
+        if (itemToDelete) {
+            $(itemToDelete).remove(); // Remove the item from the DOM
+            const index = $(itemToDelete).index();
+            vehicles.splice(index, 1); // Remove from the vehicles array
+            renumberVehicles(); // Update vehicle numbering
+            itemToDelete = null; // Clear the stored item
+        }
+        $('#deleteConfirmationModal').modal('hide'); // Hide the confirmation modal
+    });
+
+    // Attach deleteVehicle function to dynamically created delete buttons
+    $(document).on('click', '.delete-btn', function () {
+        deleteVehicle($(this).closest('.alert'));
+    });
+
+    // Other existing functions remain unchanged
+});
+                
+            // Registration form submission
+            $('#registrationForm').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+    
+                // Capture values from customer information fields
+                const name = $('#name').val().trim();
+                const phonenumber = $('#phonenumber').val().trim();
+                const email = $('#email').val().trim();
+                const city = $('#city').val().trim();
+                const password = $('#password').val().trim();
+                const code = $('#verificationCode').val().trim();
+    
+                // Send the captured data to the backend via AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/registration',
+                    data: JSON.stringify({
+                        name: name,
+                        phonenumber: phonenumber,
+                        email: email,
+                        city: city,
+                        password: password,
+                        vehicles: vehicles,
+                        code: code
+                    }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert(response.message); // Display success message from the backend
+                        if (response.message === 'Account created successfully') {
+                            window.location.href = '/homepage.html'; // Redirect to login page on success
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Display an error message if something goes wrong
+                        alert('An error occurred: ' + (xhr.responseText || status || error));
+                    }
+                });
+            });
+    
+            // Get verification code button
+            $('#getCodeButton').click(function () {
+                const email = $('#email').val();
+                
+                if (!email) {
+                    alert('Please enter your email.');
+                    return;
+                }
+    
+                // Send code request
+                $.ajax({
+                    type: 'POST',
+                    url: '/send-code',
+                    data: JSON.stringify({ email }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert(response.message);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
