@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
-    <link rel="stylesheet" href="./Appointment/appointment.css">
     <link rel="stylesheet" href="assets/css/parallelogram.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="assets/css/about_us_extra.css">
+    <link rel="stylesheet" href="assets/css/hover_button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
 
     <style>
          .modal-body {
@@ -18,8 +27,23 @@
             overflow-y: auto;
         }
 
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body{
+            background-image: url(assets/img/secondbackgroundindex.png);
+        }
+
         #addVehicleButton{
             background-color: black;
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;
         }
 
         .image-preview {
@@ -64,11 +88,51 @@
             margin: 0 auto;
             align-items: center;
         }
+
+        label{
+            font-family: Montserrat;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"], 
+        select{
+            width: 500px;
+            text-align: left; 
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .modal-body input[type="text"],
+        .modal-body input[type="email"],
+        .modal-body input[type="password"], 
+        .modal-body select{
+            width: 100%;
+            box-sizing: border-box; 
+        }
+       
+
         
         @media (max-width: 768px) {
-        .responsive-textbox {
-            column-width: 100%;   /* Ensures the textbox fills the entire width */
-            box-sizing: content-box;
+        
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"], 
+        select{
+            width: 400px;
+        }
+
+        .modal-body input[type="text"],
+        .modal-body input[type="email"],
+        .modal-body input[type="password"], 
+        .modal-body select{
+            width: 400px;
+            box-sizing: border-box; 
         }
         }
    
@@ -79,72 +143,67 @@
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
-            <a class="navbar-brand logo" href="index.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="70px" style="margin: 0px;padding: 0px;" href="index.html"></a>
-            <h3 style="color:white">Registration Form</h3>
+            <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html">
+            <a class="navbar-brand logo" href="index.html"></a>
+            <h3 style="color:white;">Registration Form</h3>
         </div>
+        
     </nav>
+   
     
     <main>
-        
-        <form id="registrationForm" class="form-container mt-4" >
-            <div class="row">
+        <div class="parallelogram ">Setting Up Your Account..</div>
+        <div class="container" style="margin-top: 200px; padding: 20px;">
+            <form id="registrationForm" class="form-container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="mt-4 text-center">Account Details</h3>
+                                <div>
+                                    <label for="name">Name: <br><input type="text" placeholder="Name" name="Type your name here.. " id="name" required></label>
+                                </div>
+                                <div>
+                                    <label for="name">Email: <br><input type="text" placeholder="Name" name="Type your email here.. " id="email" required></label>
+                                </div>
+                                <div>
+                                    <label for="phonenumber" >Phone #: <br><input type="text" placeholder="+63" name="Phonenumber" id="phonenumber" required></label>
+                                </div>
             
-                <div class="col-md-12 mb-4">
-                   
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="row">
-                        <h3 class="mt-4">Customer Information</h3>
-                        
-                        <div class="col-md-6">
-                            <label for="name">Name: <input type="text" placeholder="Name" name="Type your name here.. " id="name" required></label>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phonenumber" >Phone #: <input type="text" placeholder="+63" name="Phonenumber" id="phonenumber" required></label>
-                        </div>
-                        <div class="col-md-6 mt-3">
-                            <label for="email responsive-textbox">Email: <input type="email" placeholder="example@gmail.com" name="email" id="email" required></label>
-                        </div>
-                       
+                                <div>
+                                    <label for="password">Password: <br><input type="password" placeholder="*******"  name="Password" id="password" required></label>
+                                </div>
+                                <div>
+                                    <label for="confirmpassword">Confirm Password: <br><input type="password" placeholder="*******"  name="Password" id="confirmpassword" required></label>
+                                </div>
 
-                        <div class="container my-4 col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control mt-4" placeholder="Enter Code" id="verificationCode" required>
-                                <div class="input-group-append">
-                                    <button class="btn" type="button" id="getCodeButton">Get Code</button>
+                                <div>
+                                    <label for="city">City: <br><input type="text" placeholder="City"  name="City" id="city"></label>
+                                </div>
+    
+                                <div>
+                                    <h3 class="mt-4 text-center">Vehicle Information</h3>
+                                    <p style="opacity: .7; font-size: 14px;"><i>Note: We encourage you as our customer to add your vehicle details here for faster appointments. You can add as much as you want!</i></p>
+
+                                    <div class="vehicle-list" id="vehicleList"></div>
+                
+                                    <button type="button" class="btn btn-primary text-center" id="addVehicleButton" data-bs-toggle="modal" data-bs-target="#vehicleModal" style="margin: 0 auto;">
+                                        Add New Vehicle
+                                    </button>   
+                                    <hr style="width: 80%; height: 3px; background-color: darkred; border: none; margin: 20px auto;">
+                                    <div class="mt-4" style="display: flex; justify-content: center;">                                    
+                                        <button type="submit" class="btn btn-success mt-4" style="background-color: darkred;">Submit</button>
+                                    </div>
+                             
                                 </div>
                             </div>
                         </div>
-                        
-                       
-                        <div class="col-md-4 mb-2">
-                            <label for="city">City: <input type="text" placeholder="City"  name="City" id="city"></label>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="password">Password: <input type="password" placeholder="********"  name="Password" id="password" required></label>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="password">Confirm Password: <input type="password" placeholder="********"  name="Password" id="confirmpassword" required></label>
-                        </div>   
                     </div>
                 </div>
-                
-
-                <div class="col-md-6">
-                    <!--Dropdown list-->
-                    <h3 class="mt-4">Vehicle Information</h3>
-
-                    <div class="vehicle-list" id="vehicleList"></div>
-
-                    <button type="button" class="btn btn-primary" id="addVehicleButton" data-bs-toggle="modal" data-bs-target="#vehicleModal">
-                        Add New Vehicle
-                    </button>                    
-                </div>
-                <button type="submit" class="btn btn-success mt-4" style="background-color: darkred; width: 25%; margin:0 auto;">Submit</button>
-            </div>
-        </form>
-        <div class="parallelogram">Setting Up Your Account..</div>
+            </form>
+        </div>
+        
+   
     </main>
 
 <!-- Vehicle Modal -->
@@ -215,6 +274,10 @@
     let vehicleCount = 0;
     let isEditing = false;
     let currentItem = null; // Store the item being edited
+
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("minimized");
+    }
 
     $(document).ready(function () {
         // Function to preview the selected image
@@ -363,7 +426,7 @@
             const email = $('#email').val().trim();
             const city = $('#city').val().trim();
             const password = $('#password').val().trim();
-            const code = $('#verificationCode').val().trim();
+            //const code = $('#verificationCode').val().trim();
 
             // Send the captured data to the backend via AJAX
             $.ajax({
@@ -375,12 +438,12 @@
                     email: email,
                     city: city,
                     password: password,
-                    vehicles: vehicles,
-                    code: code
+                    vehicles: vehicles
+                    //code: code
                 }),
                 contentType: 'application/json',
                 success: function (response) {
-                    alert(response.message); // Display success message from the backend
+                    alert(response.message); 
                     if (response.message) {
                         window.location.href = '/homepage.html'; // Redirect to login page on success
                     }
@@ -394,28 +457,29 @@
        
 
         // Get verification code button
-        $('#getCodeButton').click(function () {
-            const email = $('#email').val();
+        // $('#getCodeButton').click(function () {
+        //     const email = $('#email').val();
             
-            if (!email) {
-                alert('Please enter your email.');
-                return;
-            }
+        //     if (!email) {
+        //         alert('Please enter your email.');
+        //         return;
+        //     }
 
-            // Send code request
-            $.ajax({
-                type: 'POST',
-                url: '/send-code',
-                data: JSON.stringify({ email }),
-                contentType: 'application/json',
-                success: function (response) {
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
-                }
-            });
-        });
+        //     // Send code request
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/send-code',
+        //         data: JSON.stringify({ email }),
+        //         contentType: 'application/json',
+        //         success: function (response) {
+        //             alert(response.message);
+ 
+        //         },
+        //         error: function (xhr, status, error) {
+        //             alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
+        //         }
+        //     });
+        // });
     });
 </script>
 
