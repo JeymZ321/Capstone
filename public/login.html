@@ -80,9 +80,7 @@ input:-moz-autofill {
                         data: JSON.stringify({ email: email, password: password }),
                         contentType: 'application/json',
                         success: function(response) {
-                            if (response.message === 'Login successful') {
-                                localStorage.setItem('name', response.name);     // Store name in local storage
-                                localStorage.setItem('email', response.email); 
+                            if (response.message === 'Login successful') { 
                                 window.location.href = response.redirectUrl;
                             } else {
                                 $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');

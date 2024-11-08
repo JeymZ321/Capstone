@@ -68,17 +68,17 @@ app.get('/', (req, res) => {
 /*----------CREATING AN ACCOUNT FOR USERS/ REGISTRATION FORM--------------*/
 
 app.post('/registration', async (req, res) => {
-  const { name, phonenumber, email, city, password, vehicles, code } = req.body; 
+  const { name, phonenumber, email, city, password, vehicles } = req.body; 
   
   if (!email) {
       return res.status(400).json({ message: 'Email is required' });
   }
 
   // Check if the code matches the one sent to the email
-  const storedCode = verificationCodes[email];
-  if (!storedCode || storedCode !== code) {
-      return res.status(400).json({ message: 'Verification code does not match' });
-  }
+  // const storedCode = verificationCodes[email];
+  // if (!storedCode || storedCode !== code) {
+  //     return res.status(400).json({ message: 'Verification code does not match' });
+  // }
 
   // Hash the password
   const saltRounds = 10;
@@ -137,62 +137,59 @@ app.post('/registration', async (req, res) => {
 // This will hold the code for each email temporarily (for demo purposes only)
 const verificationCodes = {};
 
-app.post('/send-code', async (req, res) => {
-    const { email } = req.body;
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required' });
-    }
+// app.post('/send-code', async (req, res) => {
+//     const { email } = req.body;
+//     if (!email) {
+//         return res.status(400).json({ message: 'Email is required' });
+//     }
 
-    // Generate a 6-digit random code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+//     // Generate a 6-digit random code
+//     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store the code for this email
-    verificationCodes[email] = code;
+//     // Store the code for this email
+//     verificationCodes[email] = code;
 
-    // Configure Nodemailer
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'caynojames07@gmail.com',
-        pass: 'fddz jopx zhia rffr',  
-    },
-    });
+//     // Configure Nodemailer
+//     const transporter = nodemailer.createTransport({
+//       service: 'gmail',
+//       host: 'smtp.gmail.com',
+//       port: 587,
+//       secure: false,
+//       auth: {
+//         user: 'caynojames07@gmail.com',
+//         pass: 'fddz jopx zhia rffr',  
+//     },
+//     });
 
-    // Email options
-    const mailOptions = {
-        from: 'Reynaldos Car Care',
-        to: email,
-        subject: 'Your Verification Code',
-        text: `Your verification code is: ${code}`
-    };
+//     // Email options
+//     const mailOptions = {
+//         from: 'Reynaldos Car Care',
+//         to: email,
+//         subject: 'Your Verification Code',
+//         text: `Your verification code is: ${code}`
+//     };
 
-    try {
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: 'Verification code sent to email.' });
-    } catch (error) {
-        console.log('Error sending email:', error);
-        res.status(500).json({ message: 'Failed to send verification code.' });
-    }
-});
+//     try {
+//         await transporter.sendMail(mailOptions);
+//         res.status(200).json({ message: 'Verification code sent to email.' });
+//     } catch (error) {
+//         console.log('Error sending email:', error);
+//         res.status(500).json({ message: 'Failed to send verification code.' });
+//     }
+// });
 
 /*----------------LOGIN AN ACCOUNT FOR USERS--------------*/
 app.post('/loginroute', async (req, res) => {
-  
   try {
-      // Find the customer by email
+      // Get email and password from the request body
       const { email, password } = req.body;
-      const user = await customer.findOne({ email, password });
-      
-      // Check if the email is registered
-      if (user) {
 
-      // Set the session with the user's email
-      req.session.email = email;
-        console.log('Session email set:', req.session.email);
-        return res.status(401).json({ message: 'Invalid email or password' });
+      // Find the user by email only
+      const user = await customer.findOne({ email });
+
+      // Check if the email is registered
+      if (!user) {
+          return res.status(401).json({ message: 'Invalid email or password' });
       }
       
       // Verify password (assuming the password is hashed)
@@ -206,6 +203,10 @@ app.post('/loginroute', async (req, res) => {
           return res.status(400).json({ message: 'Please verify your email before logging in' });
       }
 
+      // Set the session with the user's email
+      req.session.email = email;
+      console.log('Session email set:', req.session.email);
+
       // Login successful, return the homepage
       res.status(200).json({ 
         message: 'Login successful', 
@@ -217,6 +218,7 @@ app.post('/loginroute', async (req, res) => {
       res.status(500).json({ message: 'Error logging in' });
   }
 });
+
 
 /*------------------------Route to get the user's profile------------------------*/
 // app.get('/api/profile', async (req, res) => {
