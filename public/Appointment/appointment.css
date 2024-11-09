@@ -79,9 +79,8 @@ h3{
     max-width: 100%;
     width: 100%;
     background-color: rgb(230, 230, 230);
-    padding: 20px;
+    padding: 2rem;
     border-radius: 10px;
-    margin: 0 auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
