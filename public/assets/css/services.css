@@ -64,6 +64,16 @@
     transform: scale(1.1); 
 }
 
+.toggle-tokens label:hover .token {
+    background-color: #001995; /* Light grey background on hover */
+    color: #ffffff; /* Darker text on hover */
+    border: 1px solid #ddd; /* Optional border change */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 5px; /* Optional rounded corners */
+    transition: all 0.2s ease; /* Smooth transition effect */
+    transform: scale(1.1);
+}
+
 .search-bar {
     width: 90%;
     margin: 10px auto;
