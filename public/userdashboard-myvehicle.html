@@ -4,15 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>User Dashboard - My Profile</title>
-    <link rel="stylesheet" href="/admin/assets/bootstrap/css/bootstrap.min.css">
+    <title>User Dashboard - My Vehicles</title>
+    <link rel="stylesheet" href="admin/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
-    <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="/assets/css/vanilla-zoom.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
 
     <style>
         .parallelogram {
@@ -99,12 +99,18 @@
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #051129;max-width: none;width: 120px;">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#" style="background: url('assets/img/reynaldoslogo.png') no-repeat;background-size: contain;border-radius: 40px;width: 120px;height: 120px;">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="homepage.html" style="background: url('assets/img/reynaldoslogo.png') no-repeat;background-size: contain;border-radius: 40px;width: 120px;height: 120px;">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" id="dashboard-item">
+                        <a class="nav-link" href="userdashboard-request-tracking.html">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>My Appointment</span>
+                        </a>
+                    </li>
                     <li class="nav-item" id="dashboard-item">
                         <a class="nav-link" href="userdashboard-profile.html">
                             <i class="fas fa-user"></i>
@@ -168,8 +174,21 @@
                                         <th>Image</th>
                                     </tr>
                                 </thead>
+                                <!--EDIT THIS DAPAT KUNG ANO UNG DATA NA LALAMAN SA TABLES MISMO-->
                                 <tbody id="appointmentTableBody">
-                                    <!-- Rows will be injected here by JavaScript -->
+                                    <% appointments.forEach(appointment => { %>
+                                        <tr data-id="<%= appointment._id %>">
+                                            <td><%= appointment.email %></td>
+                                            <% const [date, time] = appointment.datetime.split(' '); %>
+                                            <td><%= date %></td>
+                                            <td><%= time %></td>
+                                            <td><%= appointment.slot %></td>
+                                            <td>
+                                                <button class="btn btn-primary viewDetails" data-id="<%= appointment._id %>">View</button>
+                                                <button class="btn btn-danger archive" data-id="<%= appointment._id %>">Archive</button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
                                 </tbody>
                             </table>
                         </div>
@@ -263,9 +282,9 @@
     </div>
 </div>
 
-    <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/admin/assets/js/bs-init.js"></script>
-    <script src="/admin/assets/js/theme.js"></script>
+    <script src="admin/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="admin/assets/js/bs-init.js"></script>
+    <script src="admin/assets/js/theme.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         let vehicles = [];  // Global array to store all vehicle information

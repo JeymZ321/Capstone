@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Services - Brand</title>
+    <title>Services - Reynaldo's Car Care Center</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
@@ -16,31 +16,50 @@
     <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
     <link rel="stylesheet" href="assets/css/services.css">
     <link rel="stylesheet" href="assets/css/hover_button.css">
+    <link rel="stylesheet" href="assets/css/imagesliderpanels.css">
+
+    <style>
+        .modal-body {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header{
+            background-color: darkred;
+            color: white;
+        }
+
+        .modal-header .btn-close{
+            background-color: rgb(255, 255, 255);
+        }
+
+    </style>
+    
 </head>
+
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
-            <img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html">
-            <a class="navbar-brand logo" href="index.html"></a>
+            
+            <a class="navbar-brand logo" href="homepage.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"></a>
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="user_services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="user_about-us.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="user_contact-us.html">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="user_services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="user_about-us.html">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="user_contact-us.html">Contact Us</a></li>
                 </ul>
             </div>
-             <!-- User Profile Dropdown -->
-             <div class="dropdown ms-auto me-3">
+            <!-- User Profile Dropdown -->
+            <div class="dropdown ms-auto me-3">
                 <a class="dropdown-toggle text-white" href="#" role="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <!-- <img id="profileImage" src="assets/img/default-user-icon.png" alt="Profile Image" width="30" height="30" class="rounded-circle me-2"> -->
                     <span id="userNameDisplay">Welcome, User</span>  <!-- Placeholder for username -->
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                    <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                    <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                    <li><a class="dropdown-item" href="userdashboard-profile.html">Profile</a></li>
                     <li><a class="dropdown-item" href="index.html">Logout</a></li>
                 </ul>
             </div>
@@ -64,19 +83,21 @@
                                 <div class="category-buttons text-center mb-4">
                                     <button class="category-button" onclick="filterProducts('mechanical')">Mechanical</button>
                                     <button class="category-button" onclick="filterProducts('ac-services')">AC Services</button>
-                                    <button class="category-button" onclick="filterProducts('painting')">Painting Services</button>
-                                    <button class="category-button" onclick="filterProducts('pms')">PMS Services</button>
+                                    <button class="category-button" onclick="filterProducts('paint-restoration')">Paint Restoration</button>
                                     <button class="category-button" onclick="filterProducts('electrical')">Electrical</button>
+                                    <button class="category-button" onclick="filterProducts('panels')">Panel Repairs</button>
+                                    <button class="category-button" onclick="filterProducts('packages-promos')">Packages and Promos</button>
                                     <!-- Add more buttons as needed -->
                                 </div>
                                 <select id="category-dropdown" class="mobile-dropdown" onchange="filterByCategory(this.value)">
                                     <option value="all">All Categories</option>
                                     <option value="mechanical">Mechanical</option>
                                     <option value="ac-services">AC Services</option>
-                                    <option value="painting-services">Painting Services</option>
-                                    <option value="pms-services">PMS Services</option>
+                                    <option value="paint-restoration">Paint Restoration</option>
                                     <option value="electrical">Electrical</option>
-                                  </select>
+                                    <option value="panels">Panel Repairs</option>
+                                    <option value="packages-promos">Packages and Promos</option>
+                                </select>                                
                                 <div class="row">
                                     <div class="product-grid">
                                     <div class="product mechanical product-container">
@@ -140,6 +161,70 @@
                                             </div>
                                         </div> 
                                     </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                          <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                          <div class="details-column">
+                                            <p class="product-name">Select a Panel <br>(CAR)</p>
+                                            <div class="product-specs">
+                                              <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                              <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                              <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                            <!-- Button to trigger the modal -->
+                                            <div class="col-12">
+                                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tokenModal">Select Panel and Tokens</button>
+                                            </div>
+                                            <div class="price"><span class="price-per-item">₱ 1,000.00-7,000.00</span></div>
+                                          </div>
+                                        </div>   
+                                    </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                          <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                          <div class="details-column">
+                                            <p class="product-name">Select a Panel <br> (PICKUP TRUCK)</p>
+                                            <div class="product-specs">
+                                              <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                              <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                              <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                            </div>
+                                            <!-- Button to trigger the modal -->
+                                            <div class="col-12">
+                                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#pickupTruckModal">Select Panel and Tokens</button>
+                                            </div>
+                                            <div class="price"><span class="price-per-item">₱ 1,000.00-10,000.00</span></div>
+                                          </div>
+                                        </div>   
+                                    </div>
+
+                                    <div class="product panels product-container">
+                                        <div class="product-image">
+                                            <img class="img-fluid d-block mx-auto image" src="assets/img/tech/CAR BODY PAINT (1).png">
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="details-column">
+                                                <p class="product-name">Select a Panel <br>(SUV)</p>
+                                                <div class="product-specs">
+                                                    <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
+                                                    <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
+                                                    <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
+                                                </div>
+                                                <!-- Button to trigger the SUV modal -->
+                                                <div class="col-12">
+                                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suvModal">Select Panel and Tokens</button>
+                                                </div>
+                                                <div class="price"><span class="price-per-item">₱ 1,000.00-5,000.00</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     
                                                                                                   
                                 </div>
@@ -150,12 +235,13 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="summary">
                                     <h3>Summary</h3>
-                                    <h4><span class="text">Service(s):</span><span class= "price" id="cart-details"></span></h4>
+                                    <h4><span class="text">Service(s):</span></h4>
+                                    <h4><span class= "price" id="cart-details" ></span></h4>
                                     <h4><span class="text">Subtotal</span><span class="price" id="subtotal">₱ 0</span></h4>
                                     <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">₱ 500.00</span></h4>
-                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 0</span></h4>
+                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 500.00</span></h4>
                                     <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
-                                    <a href="appointment.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
+                                    <a href="login.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
                                 </div>
                             </div>                         
                         </div>
@@ -164,6 +250,151 @@
             </div>
         </section>
     </main>
+
+    <div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tokenModalLabel">Select Tokens for Panel Repairs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="slider-container col-md-12">
+                        <div class="image-slider">
+                            <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
+                        </div>
+                        <div class="row">
+                            <!-- Token Set 1 -->
+                            <div class="toggle-tokens" id="token-set-1" style="display: block;">
+                                <label>
+                                    <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Car Front Bumper', 500)">
+                                    <span id="token1" class="token">Car Front Bumper - ₱ 500.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token2-checkbox" onclick="toggleToken(2, 'Car Rear Bumper', 600)">
+                                    <span id="token2" class="token">Car Rear Bumper - ₱ 600.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token5-checkbox" onclick="toggleToken(5, 'Car Left Fender', 700)">
+                                    <span id="token5" class="token">Car Left Fender - ₱ 700.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token6-checkbox" onclick="toggleToken(6, 'Car Right Fender', 800)">
+                                    <span id="token6" class="token">Car Right Fender - ₱ 800.00</span>
+                                </label>
+                            </div>
+    
+                            <!-- Token Set 2 -->
+                            <div class="toggle-tokens" id="token-set-2" style="display: none;">
+                                <label>
+                                    <input type="checkbox" id="token3-checkbox" onclick="toggleToken(3, 'Car Left Door', 700)">
+                                    <span id="token3" class="token">Car Left Door - ₱ 700.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token4-checkbox" onclick="toggleToken(4, 'Car Right Door', 800)">
+                                    <span id="token4" class="token">Car Right Door - ₱ 800.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token7-checkbox" onclick="toggleToken(7, 'Car Hood', 1000)">
+                                    <span id="token7" class="token">Car Hood - ₱ 1000.00</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="token8-checkbox" onclick="toggleToken(8, 'Car Trunk', 1100)">
+                                    <span id="token8" class="token">Car Trunk - ₱ 1100.00</span>
+                                </label>
+                            </div>
+                        </div>
+    
+                        <!-- Navigation Buttons for Tokens -->
+                        <div class="controls">
+                            <button onclick="prevTokenSet()">Previous</button>
+                            <button onclick="nextTokenSet()">Next</button>
+                        </div>
+    
+                        <!-- Add to Cart Button -->
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+<!-- Pickup Truck Body Panels Modal -->
+<div class="modal fade" id="pickupTruckModal" tabindex="-1" aria-labelledby="pickupTruckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pickupTruckModalLabel">Select Tokens for Pickup Truck Body Panels</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="slider-container col-md-12">
+                    <div class="image-slider">
+                        <img id="pickup-slider-image" src="assets/img/bodypanels/pickuptruckbodypanels.png" style="width: auto; height: 500px;" alt="Pickup Truck Panel Image">
+                    </div>
+                    <div class="row">
+                        <!-- Pickup Truck Token Set 1 -->
+                        <div class="toggle-tokens" id="pickup-token-set-1" style="display: block;">
+                            <label>
+                                <input type="checkbox" id="pickup-token1-checkbox" onclick="togglePickupToken(1, 'Pickup Front Panel', 700)">
+                                <span id="pickup-token1" class="token">Pickup Front Panel - ₱ 700.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token2-checkbox" onclick="togglePickupToken(2, 'Pickup Rear Panel', 800)">
+                                <span id="pickup-token2" class="token">Pickup Rear Panel - ₱ 800.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token3-checkbox" onclick="togglePickupToken(3, 'Pickup Left Door', 900)">
+                                <span id="pickup-token3" class="token">Pickup Left Door - ₱ 900.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token4-checkbox" onclick="togglePickupToken(4, 'Pickup Right Door', 1000)">
+                                <span id="pickup-token4" class="token">Pickup Right Door - ₱ 1000.00</span>
+                            </label>
+                        </div>
+
+                        <!-- Pickup Truck Token Set 2 -->
+                        <div class="toggle-tokens" id="pickup-token-set-2" style="display: none;">
+                            <label>
+                                <input type="checkbox" id="pickup-token5-checkbox" onclick="togglePickupToken(5, 'Pickup Hood', 1100)">
+                                <span id="pickup-token5" class="token">Pickup Hood - ₱ 1100.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token6-checkbox" onclick="togglePickupToken(6, 'Pickup Trunk', 1200)">
+                                <span id="pickup-token6" class="token">Pickup Trunk - ₱ 1200.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token7-checkbox" onclick="togglePickupToken(7, 'Pickup Bed', 1300)">
+                                <span id="pickup-token7" class="token">Pickup Bed - ₱ 1300.00</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="pickup-token8-checkbox" onclick="togglePickupToken(8, 'Pickup Tailgate', 1400)">
+                                <span id="pickup-token8" class="token">Pickup Tailgate - ₱ 1400.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons for Pickup Truck Tokens -->
+                    <div class="controls">
+                        <button onclick="prevPickupTokenSet()">Previous</button>
+                        <button onclick="nextPickupTokenSet()">Next</button>
+                    </div>
+
+                    <!-- Add to Cart Button -->
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary" id="calculate-pickup-total" onclick="calculatePickupTotal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -206,36 +437,28 @@
     <script src="assets/js/theme.js"></script>
     
     <script>
-    let cartItems = [];
-    let total = 500; // Start with the appointment fee of ₱500
-
-    function filterProducts(category) {
-        const products = document.querySelectorAll('.product');
-        products.forEach(product => {
-            product.style.display = 'none'; // Hide all products first
-            if (product.classList.contains(category)) {
-                product.style.display = 'block'; // Show only products in the selected category
-            }
-        });
-
-        // Change category button background color
-        const categoryButtons = document.querySelectorAll('.category-button');
-        categoryButtons.forEach(button => {
-            button.style.backgroundColor = ''; // Reset all buttons' background color
-        });
-        document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)'; // Highlight active category
-    }
-
-    function addToCart(button) {
-        const product = button.closest('.product');
-        const name = product.querySelector('.product-name').innerText;
-        const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-        const imageSrc = product.querySelector('.product-image img').src; // Get image source
-
-        // Prevent adding the same product again
-        if (cartItems.some(item => item.name === name)) {
-            alert('This product is already in the cart.');
-            return;
+        let cartItems = [];
+        let total = 500; // Start with the appointment fee of ₱500
+        
+        let selectedPanels = [];
+        let panelTotal = 0; // Total for selected panels
+        let selectedPickupPanels = []; // Track selected pickup truck tokens
+        let currentPickupTokenSet = 1;
+    
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products first
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
+    
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)';
         }
 
         // Add to cart array
@@ -260,100 +483,271 @@
                 <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
             </div>
             
-        `;
-        cartDetails.appendChild(productDetail);
-
-        // Hide the "Add to Cart" button after adding
-        button.style.display = 'none';
-    }
-
-    function cancelItem(name) {
-        const product = cartItems.find(item => item.name === name);
-        if (product) {
-            total -= product.price;
-            document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
-            document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
-
-            cartItems = cartItems.filter(item => item.name !== name);
-
-            // Remove from the cart display
+            selectedPanels.forEach(panel => {
+                if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
+                    const panelDetail = document.createElement('div');
+                    panelDetail.className = 'cart-item d-flex align-items-center';
+                    panelDetail.innerHTML = `
+                    <div class="cart-item-box"><div class="cart-item-content d-flex align-items-center">
+                            <span>${panel.panelName} <span class="product-price"> ₱ ${panel.price.toFixed(2)}</span></span>
+                            <button class="cancel-button" onclick="removePanel('${panel.panelName}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>
+                    `;
+                    cartDetails.appendChild(panelDetail);
+                }
+            });
+    
+            updateTotal();
+            document.querySelector('.btn-close').click();
+        }
+    
+        function removePanel(panelName, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(panelName));
+            if (itemToRemove) {
+                cartDetails.removeChild(itemToRemove);
+            }
+            const checkbox = document.getElementById(`token${tokenId}-checkbox`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
+            updateTotal();
+        }
+    
+        function showPickupTokenSet(setNumber) {
+            document.getElementById('pickup-token-set-1').style.display = setNumber === 1 ? 'block' : 'none';
+            document.getElementById('pickup-token-set-2').style.display = setNumber === 2 ? 'block' : 'none';
+        }
+    
+        function nextPickupTokenSet() {
+            currentPickupTokenSet = (currentPickupTokenSet % 2) + 1;
+            showPickupTokenSet(currentPickupTokenSet);
+        }
+    
+        function prevPickupTokenSet() {
+            currentPickupTokenSet = (currentPickupTokenSet === 1) ? 2 : 1;
+            showPickupTokenSet(currentPickupTokenSet);
+        }
+    
+        function togglePickupToken(tokenId, panelName, price) {
+            const checkbox = document.getElementById(`pickup-token${tokenId}-checkbox`);
+            if (checkbox.checked) {
+                selectedPickupPanels.push({ panelName, price, tokenId });
+                addPickupPanelToCart(panelName, price, tokenId);
+            } else {
+                selectedPickupPanels = selectedPickupPanels.filter(panel => panel.panelName !== panelName);
+                removePickupPanel(panelName);
+            }
+            updatePickupPanelTotal();
+        }
+    
+        function addPickupPanelToCart(panelName, price, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panelName))) {
+                const panelDetail = document.createElement('div');
+                panelDetail.className = 'cart-item d-flex align-items-center';
+                panelDetail.innerHTML = `
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <span>${panelName} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="removePickupPanel('${panelName}', ${tokenId})">
+                            <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                        </button>
+                    </div>
+                </div>`;
+                cartDetails.appendChild(panelDetail);
+            }
+            updateTotal();
+        }
+    
+        function updatePickupPanelTotal() {
+            const pickupPanelTotal = selectedPickupPanels.reduce((total, panel) => total + panel.price, 0);
+            document.getElementById('subtotal').innerText = `₱ ${(pickupPanelTotal).toFixed(2)}`;
+        }
+    
+        function calculatePickupTotal() {
+            const cartDetails = document.getElementById('cart-details');
+            document.getElementById('cart-details').style.display = 'block';
+    
+            selectedPickupPanels.forEach(panel => {
+                if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
+                    const panelDetail = document.createElement('div');
+                    panelDetail.className = 'cart-item d-flex align-items-center';
+                    panelDetail.innerHTML = `
+                    <div class="cart-item-box">
+                        <div class="cart-item-content d-flex align-items-center">
+                            <span>${panel.panelName} <span class="product-price"> ₱ ${panel.price.toFixed(2)}</span></span>
+                            <button class="cancel-button" onclick="removePickupPanel('${panel.panelName}', ${panel.tokenId})">
+                                <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                            </button>
+                        </div>
+                    </div>`;
+                    cartDetails.appendChild(panelDetail);
+                }
+            });
+    
+            updateTotal();
+            document.querySelector('#pickupTruckModal .btn-close').click();
+        }
+    
+        function removePickupPanel(panelName, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(panelName));
+            if (itemToRemove) {
+                cartDetails.removeChild(itemToRemove);
+            }
+            const checkbox = document.getElementById(`pickup-token${tokenId}-checkbox`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            selectedPickupPanels = selectedPickupPanels.filter(panel => panel.panelName !== panelName);
+            updateTotal();
+        }
+    
+        function addToCart(button) {
+            const product = button.closest('.product');
+            const name = product.querySelector('.product-name').innerText;
+            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+            const imageSrc = product.querySelector('.product-image img').src;
+    
+            if (cartItems.some(item => item.name === name)) {
+                alert('This product is already in the cart.');
+                return;
+            }
+    
+            cartItems.push({ name, price, imageSrc });
+            document.getElementById('cart-details').style.display = 'block';
+    
+            const cartDetails = document.getElementById('cart-details');
+            const productDetail = document.createElement('div');
+            productDetail.className = 'cart-item d-flex align-items-center';
+            productDetail.innerHTML = `
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;">
+                        <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>
+                </div>`;
+            cartDetails.appendChild(productDetail);
+    
+            updateTotal();
+            button.style.display = 'none';
+        }
+    
+        function updateTotal() {
+            let subtotal = 0;
+    
+            cartItems.forEach(item => {
+                subtotal += item.price;
+            });
+    
+            selectedPanels.forEach(panel => {
+                subtotal += panel.price;
+            });
+            selectedPickupPanels.forEach(panel => {
+                subtotal += panel.price;
+            });
+    
+            document.getElementById('subtotal').innerText = `₱ ${(subtotal).toFixed(2)}`;
+            document.getElementById('total').innerText = `₱ ${(subtotal + 500).toFixed(2)}`;
+        }
+    
+        function cancelItem(name) {
+            const productIndex = cartItems.findIndex(item => item.name === name);
+            if (productIndex !== -1) {
+                cartItems.splice(productIndex, 1);
+            }
+    
             const cartDetails = document.getElementById('cart-details');
             const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(name));
             if (itemToRemove) {
                 cartDetails.removeChild(itemToRemove);
             }
-
-            // Show the "Add to Cart" button again
+    
+            if (cartItems.length === 0 && selectedPanels.length === 0) {
+                document.getElementById('cart-details').style.display = 'none';
+            }
+    
+            updateTotal();
             const productElement = Array.from(document.querySelectorAll('.product')).find(product => product.querySelector('.product-name').innerText === name);
             if (productElement) {
                 productElement.querySelector('.add-to-cart').style.display = 'block';
             }
         }
-    }
-
-    function clearCart() {
-        cartItems = [];
-        total = 500; // Reset to the appointment fee only
-
-        document.getElementById('cart-details').innerHTML = '';
-        document.getElementById('subtotal').innerText = '₱ 0';
-        document.getElementById('total').innerText = '₱ 500';
-
-        // Show all "Add to Cart" buttons again
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.style.display = 'block';
-        });
-    }
-
-    document.querySelector('.search-input').addEventListener('focus', showAllProducts);
-
-    function showAllProducts() {
-        const products = document.querySelectorAll('.product');
-
-        // Show all products and reset any filters
-        products.forEach(product => {
-            product.style.display = 'block'; // Show all products
-        });
-
-        // Remove the active background from category buttons when search is clicked
-        const categoryButtons = document.querySelectorAll('.category-button');
-        categoryButtons.forEach(button => {
-            button.style.backgroundColor = ''; // Reset all buttons' background color
-        });
-    }
-
-    function searchProducts() {
-        const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-        const products = document.querySelectorAll('.product');
-
-        products.forEach(product => {
-            const productName = product.querySelector('.product-name').innerText.toLowerCase();
-
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block'; // Show products that match the search term
-            } else {
-                product.style.display = 'none'; // Hide products that don't match
-            }
-        });
-    }
-
-    document.querySelector('.search-input').addEventListener('input', searchProducts);
-
-
-    function filterByCategory(category) {
-    const products = document.querySelectorAll('.product');
-    products.forEach(product => {
-      if (category === 'all' || product.classList.contains(category)) {
-        product.style.display = 'block'; // Show matching category
-      } else {
-        product.style.display = 'none';  // Hide others
-      }
-    });
-  }
-
-    window.onload = function() {
-        filterProducts('mechanical'); // Automatically show Mechanical products on page load
-    };
+    
+        function clearCart() {
+            cartItems = [];
+            selectedPanels = [];
+            selectedPickupPanels = [];
+            total = 500;
+    
+            document.getElementById('cart-details').innerHTML = '';
+            document.getElementById('cart-details').style.display = 'none';
+            updateTotal();
+    
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.style.display = 'block';
+            });
+    
+            document.querySelectorAll('.toggle-tokens input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+    
+        document.querySelector('.search-input').addEventListener('focus', showAllProducts);
+    
+        function showAllProducts() {
+            document.querySelectorAll('.product').forEach(product => {
+                product.style.display = 'block';
+            });
+            document.querySelectorAll('.category-button').forEach(button => {
+                button.style.backgroundColor = '';
+            });
+        }
+    
+        function searchProducts() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            document.querySelectorAll('.product').forEach(product => {
+                const productName = product.querySelector('.product-name').innerText.toLowerCase();
+                product.style.display = productName.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+    
+        document.querySelector('.search-input').addEventListener('input', searchProducts);
+    
+        function filterByCategory(category) {
+            document.querySelectorAll('.product').forEach(product => {
+                product.style.display = category === 'all' || product.classList.contains(category) ? 'block' : 'none';
+            });
+        }
+    
+        window.onload = function() {
+            filterByCategory('all');
+            document.querySelector('.search-input').addEventListener('input', searchProducts);
+            document.getElementById('category-dropdown').addEventListener('change', function() {
+                filterByCategory(this.value);
+            });
+        }
+    
+        let currentTokenSet = 1;
+        function showTokenSet(setNumber) {
+            document.getElementById('token-set-1').style.display = setNumber === 1 ? 'block' : 'none';
+            document.getElementById('token-set-2').style.display = setNumber === 2 ? 'block' : 'none';
+        }
+    
+        function nextTokenSet() {
+            currentTokenSet = (currentTokenSet % 2) + 1;
+            showTokenSet(currentTokenSet);
+        }
+    
+        function prevTokenSet() {
+            currentTokenSet = (currentTokenSet === 1) ? 2 : 1;
+            showTokenSet(currentTokenSet);
+        }
     </script>
+    
+    
 </body>
 </html>

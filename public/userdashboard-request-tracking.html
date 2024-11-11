@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>User Dashboard - My Profile</title>
+    <title>User Dashboard - My Appointment</title>
     <link rel="stylesheet" href="admin/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -106,13 +106,13 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item" id="dashboard-item">
-                        <a class="nav-link" href="userdashboard-request-tracking.html">
+                        <a class="nav-link active" href="userdashboard-request-tracking.html">
                             <i class="fas fa-calendar-check"></i>
                             <span>My Appointment</span>
                         </a>
                     </li>
                     <li class="nav-item" id="dashboard-item">
-                        <a class="nav-link active" href="userdashboard-profile.html">
+                        <a class="nav-link" href="userdashboard-profile.html">
                             <i class="fas fa-user"></i>
                             <span>My Profile</span>
                         </a>
@@ -138,7 +138,7 @@
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand shadow mb-4 topbar static-top" style="background:#051129;">
                     <div class="container">
-                        <div class="parallelogram">My Profile</div>
+                        <div class="parallelogram">My Appointment</div>
                         <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
                             <i class="fas fa-bars"></i>
                         </button>
@@ -157,54 +157,40 @@
 
                 </nav>
 
-                <!-- Main Content Area -->
+                 <!-- Main Content Area -->
                 
-                <div class="container" style="margin-top: 100px;">
+                 <div class="container" style="margin-top: 100px;">
                     <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="text-center mb-1">Customer Information</h3>
-                                    <form id="profileForm">
-                                        <div class="m-0 text-center"><img class="rounded-circle mb-3 mt-1" src="assets/img/icon_default.png" width="160" height="160">
-                                            <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
-                                        </div>
-                                        <!-- UserName AUTO FILL FROM REGISTER-->
-                                        <div class="form-group mb-3">
-                                            <label for="name">Username:</label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
-                                        </div>
-                                        <!-- Name -->
-                                        <div class="form-group mb-3">
-                                            <label for="name">Full Name:</label>
-                                            <input type="text" class="form-control" id="name" placeholder="Enter your fullname" required>
-                                        </div>
-            
-                                        <!-- Phone# -->
-                                        <div class="form-group mb-3">
-                                            <label for="phonenumber">Phone Number:</label>
-                                            <input type="text" class="form-control" id="phonenumber" placeholder="Your Phone Number" value="+63">
-                                        </div>
-            
-                                        <!-- City -->
-                                        <div class="form-group mb-3">
-                                            <label for="city">City:</label>
-                                            <input type="text" class="form-control" id="city" placeholder="Confirm your new password">
-                                        </div>
-            
-                                        <!-- Buttons -->
-                                        <div class="d-flex justify-content-between">
-                                            <button type="submit" class="btn btn-success">Save Changes</button>
-                                            <button type="button" class="btn btn-secondary">Cancel</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <br>
-                            
+                        <!-- Vehicle Table -->
+                        <div class="appointment-container" style="margin: 50px;">
+                            <h1>My Appointment</h1>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr> <!--SHOULD HAVE A BUTTON NA VIEW para ang full details ng na fill-up-an na Appointment Form (DI DAPAT EDITABLE dito) 
+                                        THIS SHOULD ALSO SHOW THE STATUS OF THE APPOINTMENT, onti lang papakita sa table initially-->
+                                        <th>Name</th>
+                                        <th>Vehicle</th>
+                                        <th>Schedule</th>
+                                        <th>Status</th> <!--SASABIHIN DAPAT DITO KUNG NASAANG TABLE NA SIA SA DATABASE LIKE APPROVED, COMPLETED, ARCHIVED, or PENDING-->
+                                        <!--Siguro maganda kung may button din here na magredirect to a new tab para machat ung Reynaldo's via FB page for more details-->
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentTableBody">
+                                    <% appointments.forEach(appointment => { %>
+                                        <tr data-id="<%= appointment._id %>">
+                                            <td><%= appointment.email %></td>
+                                            <% const [date, time] = appointment.datetime.split(' '); %>
+                                            <td><%= date %></td>
+                                            <td><%= time %></td>
+                                            <td><%= appointment.slot %></td>
+                                            <td>
+                                                <button class="btn btn-primary viewDetails" data-id="<%= appointment._id %>">View</button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
                         </div>
-                        
-                        
                     </div>
                 </div>
                 
