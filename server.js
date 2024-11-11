@@ -36,7 +36,10 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Set to true if using HTTPS
 }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your frontend’s domain
+  credentials: true  // Allows cookies and other credentials to be sent
+}));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -74,11 +77,6 @@ app.post('/registration', async (req, res) => {
       return res.status(400).json({ message: 'Email is required' });
   }
 
-  // Check if the code matches the one sent to the email
-  // const storedCode = verificationCodes[email];
-  // if (!storedCode || storedCode !== code) {
-  //     return res.status(400).json({ message: 'Verification code does not match' });
-  // }
 
   // Hash the password
   const saltRounds = 10;
@@ -104,22 +102,25 @@ app.post('/registration', async (req, res) => {
 
       await newUser.save();
 
-      // Validate and save each vehicle associated with the new customer
+      // Validate and save each vehicle associated with the new customer, if vehicles are provided
+    
       for (let vehicle of vehicles) {
-        if (!vehicle.brandModel || !vehicle.color || !vehicle.plateNumber || !vehicle.yearModel || !vehicle.transmission) {
-            return res.status(400).json({ message: 'All vehicle fields are required.' });
-        }
-  
-          const newVehicle = new Vehicle({
-              customerId: newUser._id,
-              brandModel: vehicle.brandModel,
-              color: vehicle.color,
-              plateNumber: vehicle.plateNumber,
-              yearModel: vehicle.yearModel,
-              transmission: vehicle.transmission
-          });
-          await newVehicle.save();
+      if (!vehicle.brandModel || !vehicle.color || !vehicle.plateNumber || !vehicle.yearModel || !vehicle.transmission ) {
+          return res.status(400).json({ message: 'All vehicle fields are required.' });
       }
+
+      const newVehicle = new Vehicle({
+          customerId: newUser._id,
+          brandModel: vehicle.brandModel,
+          color: vehicle.color,
+          plateNumber: vehicle.plateNumber,
+          yearModel: vehicle.yearModel,
+          transmission: vehicle.transmission    
+      });
+      await newVehicle.save();
+  }
+
+
 
       // Remove the stored code after successful registration
       delete verificationCodes[email];
@@ -177,6 +178,7 @@ const verificationCodes = {};
 //         res.status(500).json({ message: 'Failed to send verification code.' });
 //     }
 // });
+
 
 /*----------------LOGIN AN ACCOUNT FOR USERS--------------*/
 app.post('/loginroute', async (req, res) => {
@@ -314,7 +316,7 @@ app.post('/adminregistration', async (req, res) => {
   }
 });
 
-/*------------------Verification Code Route------------------*/
+/*------------------Verification Code For Admin Registration Route------------------*/
 app.post('/verify-code', async (req, res) => {
     const { verificationCode } = req.body;
     
@@ -404,31 +406,91 @@ app.post('/resend-verification-code', async (req, res) => {
 });
 
 
-
 /*---------------ADMIN LOGIN ROUTE-----------*/
 app.post('/loginadmin', async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const admin = await Admin.findOne({ email });
     if (!admin) {
       return res.status(400).json({ message: 'Invalid username or password' });
     }
 
-    if (!admin.isVerified) { 
-      return res.status(403).json({ message: 'Please verify your account before logging in.' });
-    }
-    
     const isMatch = await bcrypt.compare(password, admin.password);
-    if (isMatch) {
-      res.status(200).json({ message: 'Login successful', redirectUrl: 'admindashboard.html' });
-    } else {
-      res.status(400).json({ message: 'Invalid username or password' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
-  } catch (error) { 
+
+    if (!admin.isVerified) {
+      return res.status(403).json({ message: 'Your account is not verified. Please contact support.' });
+    }
+
+    // Generate and store a new verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    admin.verificationCode = verificationCode;
+    await admin.save();
+
+    // Send email with verification code
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'caynojames07@gmail.com',
+        pass: 'fddz jopx zhia rffr', // Use an app-specific password
+      },
+    });
+
+    const mailOptions = {
+      from: 'Reynaldo\'s Car Care',
+      to: email,
+      subject: 'Admin Login Verification Code',
+      text: `Your verification code is: ${verificationCode}`,
+    };
+
+    transporter.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ message: 'Failed to send verification email' });
+      }
+
+      // Redirect to verification page after sending code
+      res.status(200).json({
+        message: 'Verification code sent to email. Please enter it to complete login.',
+        redirectUrl: 'loginverificationcode.html'
+      });
+    });
+  } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Error logging in' });
   }
 });
+
+
+/*------------------------Verification Code For Admin Login-----------------------*/
+app.post('/adminverifycode', async (req, res) => {
+  const { email, code } = req.body;
+
+  try {
+    const admin = await Admin.findOne({ email });
+
+    if (!admin || admin.verificationCode !== code) {
+      return res.status(400).json({ message: 'Invalid verification code' });
+    }
+
+    // Clear the verification code after successful verification
+    admin.verificationCode = null;
+    await admin.save();
+
+    // Redirect to admin dashboard
+    res.status(200).json({
+      message: 'Verification successful',
+      redirectUrl: 'admindashboard.html'
+    });
+  } catch (error) {
+    console.error('Error verifying code:', error);
+    res.status(500).json({ message: 'Verification failed' });
+  }
+});
+
 
 /*------------------------Admin Calendar-----------------------*/
 
@@ -452,20 +514,6 @@ app.post('/api/admin/availability', (req, res) => {
 app.get('/api/admin/availability', (req, res) => {
   res.status(200).json(availableAppointments);
 });
-
-/*----------------------APPOINTMENT ROUTE FOR ADMIN---------------*/
-// app.get('/api/appointments', async (req, res) => {
-//   try {
-//       const appointments = await Appointment.find({}, '-password -iv -key'); // Exclude sensitive fields
-//       res.status(200).json(appointments);
-//   } catch (error) {
-//       console.error('Error fetching appointments:', error);
-//       res.status(500).json({ message: 'Error fetching appointments' });
-//   }
-// });
-
-// Archive appointment and store it in 'archives' collection
-
 
 
 /*----------------------Getting database of appointments for admin---------------*/
@@ -582,34 +630,19 @@ app.post('/appointment', async (req, res) => {
   }
 });
 
-app.get('/getUserData', async (req, res) => {
-  try {
-      const email = req.session.email; // Ensure session is properly set
-      console.log('Session email:', email);
-
-      if (!email){
-        return res.status(401).json({ message: 'Unauthorized' });
-      } 
-
-      // Find customer by email
-      const Customer = await customer.findOne({ email });
-      console.log('Customer data:', customer); 
-      
-      if (!Customer){
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      // Find vehicles linked to the customer
-      const vehicles = await Vehicle.find({ customerId: customer._id });
-      console.log('Vehicles data:', vehicles);
-
-      // Respond with customer and vehicle data
-      res.status(200).json({ customer, vehicles });
-  } catch (error) {
-      console.error('Error fetching user data:', error);
-      res.status(500).json({ message: 'Error fetching user data', error: error.message });
-  }
-});
+// app.get('/getUserData', (req, res) => {
+//   // Assume `req.user` contains user info if authenticated
+//   if (req.user) {
+//       res.json({
+//           name: req.user.name,
+//           phonenumber: req.user.phonenumber,
+//           email: req.user.email,
+//           city: req.user.city,
+//       });
+//   } else {
+//       res.status(401).send('User not authenticated');
+//   }
+// });
 
 
 /*---------------------------CHANGE INTO /create-account---------------*/
@@ -634,42 +667,40 @@ app.post('/send-registration-email', async (req, res) => {
   }
 
   try {
-
     const existingCustomer = await customer.findOne({ email });
     if (existingCustomer) {
-        return res.status(200).send({ message: 'Your Gmail account is already registered.' });
+        // Send a 409 status for "Conflict" when email is already registered
+        return res.status(409).send({ message: 'Your Gmail account is already registered.' });
     }
-      // Generate a token for registration confirmation
-      const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
+    
+    // Generate a token for registration confirmation
+    const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
+    const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
 
-      const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
+    /*---------Sending email------------*/
+    const mailOptions = {
+        from: {
+            name: "Reynaldo's Car Care",
+            address: 'caynojames07@gmail.com'
+        },
+        to: email,
+        subject: 'Complete Your Registration',
+        text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
+    };
 
-      /*---------Sending email------------*/
-      const mailOptions = {
-          from: {
-              name: "Reynaldo's Car Care",
-              address: 'caynojames07@gmail.com'
-          },
-          to: email,
-          subject: 'Complete Your Registration',
-          text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-              console.log('Error sending email:', error);
-              return res.status(500).send('Error sending email.');
-          }
-          console.log('Email sent: ' + info.response);
-          res.status(200).send('Registration email sent.');
-      });
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+            return res.status(500).send('Error sending email.');
+        }
+        console.log('Email sent: ' + info.response);
+        res.status(200).send('Registration email sent.');
+    });
   } catch (error) {
       console.log('Error in registration email:', error);
       res.status(500).send('An error occurred while sending the registration email.');
   }
 });
-
-
 
 app.get('/confirm-registration', async (req, res) => {
 const { token } = req.query;

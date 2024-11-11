@@ -54,52 +54,52 @@
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script>
         $(document).ready(function () {
-    
             $('#submit').click(function (e) {
                 e.preventDefault();
                
                 const email = $('#email').val();
-    
                 
                 $.ajax({
                     url: '/send-registration-email',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({
-                        email:email
-                    }),
+                    data: JSON.stringify({ email: email }),
                     success: function (response) {
                         alert('Congratulations! You may now check your email for registration instructions.');
                     },
-                    error: function () {
-                        alert('Error confirming registration. Please check your code and try again.');
+                    error: function (xhr) {
+                        if (xhr.status === 409) {  // Check if status is 409 for "Conflict"
+                            alert('This email is already registered.');
+                        } else {
+                            alert('Error confirming registration. Please check your email and try again.');
+                        }
                     }
                 });
             });
-
             // Get verification code button
-        $('#getCodeButton').click(function () {
-            const email = $('#email').val();
+            //$('#getCodeButton').click(function () {
+            //    const email = $('#email').val();
             
-            if (!email) {
-                alert('Please enter your email.');
-                return;
-            }
+            //    if (!email) {
+            //        alert('Please enter your email.');
+            //        return;
+            //    }
 
-            // Send code request
-            $.ajax({
-                type: 'POST',
-                url: '/send-code',
-                data: JSON.stringify({ email }),
-                contentType: 'application/json',
-                success: function (response) {
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
-                }
-            });
-        });
+            //    // Send code request
+            //    $.ajax({
+            //        type: 'POST',
+            //        url: '/send-code',
+            //        data: JSON.stringify({ email }),
+            //        contentType: 'application/json',
+            //        success: function (response) {
+            //            alert(response.message);
+            //        },
+            //        error: function (xhr, status, error) {
+            //            alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
+            //        }
+            //    });
+            //});
+
     });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

@@ -92,7 +92,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
                                                 <div class="price">
                                                     <span class="price-per-item" data-price="1500">₱ 1,500.00</span>
                                                 </div>
@@ -115,7 +115,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
                                                 </div>
                                                 <div class="price"><span class="price-per-item" data-price="1000">₱ 1,000.00</span></div>
                                             </div>
@@ -240,12 +240,15 @@
 
         // Add to cart array
         cartItems.push({ name, price, imageSrc });
+        localStorage.setItem('selectedServices', JSON.stringify(cartItems));
+
+     
 
         // Update total price
         total += price;
         document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
         document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
-
+        updateCartDisplay(name, price, button);
         // Show in the cart summary
         const cartDetails = document.getElementById('cart-details');
         const productDetail = document.createElement('div');

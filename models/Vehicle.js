@@ -6,7 +6,7 @@ const VehicleSchema = new mongoose.Schema({
     color: { type: String, required: true },
     plateNumber: { type: String, required: true, unique: true },
     yearModel: { type: String, required: true },
-    transmission: { type: String, required: true },
+    transmission: { type: String, required: true }, 
     createdAt: { type: Date, default: Date.now }
 });
 

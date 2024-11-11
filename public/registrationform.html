@@ -327,6 +327,7 @@
             }
 
             // Add vehicle data to the global vehicles array
+            let vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
             vehicles.push({
                 brandModel: brandModel,
                 color: color,
@@ -334,6 +335,7 @@
                 yearModel: yearModel,
                 transmission: transmission
             });
+            localStorage.setItem('vehicles', JSON.stringify(vehicles));
 
             // Create a new vehicle item and append it to the vehicle list
             const vehicleItem = document.createElement('div');
@@ -416,45 +418,38 @@
         // Remove image button click handler
         $('#removeImageButton').on('click', removeImage);
 
-        //Registration form submission
         $('#registrationForm').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); // Prevent the default form submission
 
-            // Capture values from customer information fields
-            const name = $('#name').val().trim();
-            const phonenumber = $('#phonenumber').val().trim();
-            const email = $('#email').val().trim();
-            const city = $('#city').val().trim();
-            const password = $('#password').val().trim();
-            //const code = $('#verificationCode').val().trim();
+    // Capture values from customer information fields
+    const name = $('#name').val().trim();
+    const phonenumber = $('#phonenumber').val().trim();
+    const email = $('#email').val().trim();
+    const city = $('#city').val().trim();
+    const password = $('#password').val().trim();
 
-            // Send the captured data to the backend via AJAX
-            $.ajax({
-                type: 'POST',
-                url: '/registration',
-                data: JSON.stringify({
-                    name: name,
-                    phonenumber: phonenumber,
-                    email: email,
-                    city: city,
-                    password: password,
-                    vehicles: vehicles
-                    //code: code
-                }),
-                contentType: 'application/json',
-                success: function (response) {
-                    alert(response.message); 
-                    if (response.message) {
-                        window.location.href = '/homepage.html'; // Redirect to login page on success
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Display an error message if something goes wrong
-                    alert('An error occurred: ' + (xhr.responseText || status || error));
-                }
-            });
-        });
-       
+    // Store user data in local storage 
+    const userData = { name, phonenumber, email, city, password, vehicles };
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+    // Send the captured data to the backend via AJAX
+    $.ajax({
+        type: 'POST',
+        url: '/registration',
+        data: JSON.stringify(userData),
+        contentType: 'application/json',
+        success: function (response) {
+            alert(response.message);
+            if (response.message) {
+                window.location.href = '/homepage.html'; // Redirect on success
+            }
+        },
+        error: function (xhr, status, error) {
+            // Display an error message if something goes wrong
+            alert('An error occurred: ' + (xhr.responseText || status || error));
+        }
+    });
+});
 
         // Get verification code button
         // $('#getCodeButton').click(function () {

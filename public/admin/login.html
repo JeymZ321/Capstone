@@ -71,46 +71,38 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Capture the form submission event
-        $('#adminbtnlogin').click(function(e) {
-            e.preventDefault(); // Prevent the form from submitting the default way
-            
-            // Gather form data
-            const username = $('#InputUsername').val();
+    <script>
+        $(document).ready(function() {
+          $('#adminbtnlogin').click(function(e) {
+            e.preventDefault();
+      
+            const email = $('#InputEmail').val();
             const password = $('#InputPassword').val();
-            const email = $("#InputEmail").val();
-
-            // Prepare data to send via AJAX
-            const loginData = {
-                
-                password: password,
-                email: email
-            };
-
-            // Perform the AJAX request
+      
+            const loginData = { email, password };
+      
             $.ajax({
-                type: 'POST', // The request method
-                url: '/loginadmin', // Replace with your login API URL
-                data: JSON.stringify(loginData), // Send data as JSON
-                contentType: 'application/json', // Specify content type
-                success: function(response) {
-                    // Show success alert
-                    alert("Login successful!");
-
-                    // Redirect to another page
-                    window.location.href = 'admindashboard.html'; // Redirect on success
-                },
-                error: function(xhr, status, error) {
-                    // Handle error response
-                    console.log("Login failed:", error);
-                    alert("Invalid login credentials. Please try again.");
+              type: 'POST',
+              url: '/loginadmin',
+              data: JSON.stringify(loginData),
+              contentType: 'application/json',
+              success: function(response) {
+                alert(response.message);
+                if (response.redirectUrl) {
+                  localStorage.setItem('adminEmail', email); // Store email in localStorage
+                  window.location.href = response.redirectUrl;
                 }
+              },
+              error: function(xhr) {
+                const errorMessage = xhr.responseJSON?.message || "An error occurred.";
+                alert(errorMessage);
+                console.error("Login failed:", errorMessage);
+              }
             });
+          });
         });
-    });
-</script>
+      </script>           
+      
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
