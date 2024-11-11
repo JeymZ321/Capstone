@@ -113,7 +113,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
                                                 <div class="price">
                                                     <span class="price-per-item" data-price="1500">₱ 1,500.00</span>
                                                 </div>
@@ -155,7 +155,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
                                                 </div>
                                                 <div class="price"><span class="price-per-item" data-price="2000">₱ 2,000.00</span></div>
                                             </div>
@@ -241,7 +241,7 @@
                                     <h4><span class="text">Appointment Fee</span><span class="price" id="appointment">₱ 500.00</span></h4>
                                     <h4><span class="text">Total</span><span class="price" id="total">₱ 500.00</span></h4>
                                     <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
-                                    <a href="login.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
+                                    <a href="appointment.html"><button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color:  rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;"  type="button">Get Appointment</button></a>
                                 </div>
                             </div>                         
                         </div>
@@ -262,6 +262,8 @@
                     <div class="slider-container col-md-12">
                         <div class="image-slider">
                             <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
+                            <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
+
                         </div>
                         <div class="row">
                             <!-- Token Set 1 -->
@@ -313,7 +315,7 @@
     
                         <!-- Add to Cart Button -->
                         <div class="col-12 mt-3">
-                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
+                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add Service</button>
                         </div>
                     </div>
                 </div>
@@ -334,6 +336,8 @@
                 <div class="slider-container col-md-12">
                     <div class="image-slider">
                         <img id="pickup-slider-image" src="assets/img/bodypanels/pickuptruckbodypanels.png" style="width: auto; height: 500px;" alt="Pickup Truck Panel Image">
+                        <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
+
                     </div>
                     <div class="row">
                         <!-- Pickup Truck Token Set 1 -->
@@ -460,28 +464,46 @@
             });
             document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)';
         }
-
-        // Add to cart array
-        cartItems.push({ name, price, imageSrc });
-        localStorage.setItem('selectedServices', JSON.stringify(cartItems));
-
-     
-
-        // Update total price
-        total += price;
-        document.getElementById('subtotal').innerText = `₱ ${(total - 500).toFixed(2)}`;
-        document.getElementById('total').innerText = `₱ ${total.toFixed(2)}`;
-        updateCartDisplay(name, price, button);
-        // Show in the cart summary
-        const cartDetails = document.getElementById('cart-details');
-        const productDetail = document.createElement('div');
-        productDetail.className = 'cart-item d-flex align-items-center'; // Flexbox for image and details alignment
-        productDetail.innerHTML = `
-            <div class="cart-item-content d-flex align-items-center">
-                <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px;"> 
-                <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
-                <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
-            </div>
+    
+        function toggleToken(tokenId, panelName, price) {
+            const checkbox = document.getElementById(`token${tokenId}-checkbox`);
+            if (checkbox.checked) {
+                selectedPanels.push({ panelName, price, tokenId });
+                addPanelToCart(panelName, price, tokenId);
+            } else {
+                selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
+                removePanel(panelName);
+            }
+            updatePanelTotal();
+        }
+    
+        function addPanelToCart(panelName, price, tokenId) {
+            const cartDetails = document.getElementById('cart-details');
+            if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panelName))) {
+                const panelDetail = document.createElement('div');
+                panelDetail.className = 'cart-item d-flex align-items-center';
+                panelDetail.innerHTML = `
+                <div class="cart-item-box">
+                    <div class="cart-item-content d-flex align-items-center">
+                        <span>${panelName} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                        <button class="cancel-button" onclick="removePanel('${panelName}', ${tokenId})">
+                            <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+                        </button>
+                    </div>
+                </div>`;
+                cartDetails.appendChild(panelDetail);
+            }
+            updateTotal();
+        }
+    
+        function updatePanelTotal() {
+            panelTotal = selectedPanels.reduce((total, panel) => total + panel.price, 0);
+            document.getElementById('subtotal').innerText = `₱ ${(panelTotal).toFixed(2)}`;
+        }
+    
+        function calculateTotal() {
+            document.getElementById('cart-details').style.display = 'block';
+            const cartDetails = document.getElementById('cart-details');
             
             selectedPanels.forEach(panel => {
                 if (!Array.from(cartDetails.children).some(item => item.innerText.includes(panel.panelName))) {
@@ -618,6 +640,10 @@
     
             cartItems.push({ name, price, imageSrc });
             document.getElementById('cart-details').style.display = 'block';
+
+            localStorage.setItem('selectedServices', JSON.stringify(cartItems));
+            updateCartDisplay(name, price, button); 
+            
     
             const cartDetails = document.getElementById('cart-details');
             const productDetail = document.createElement('div');
