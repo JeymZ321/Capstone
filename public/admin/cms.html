@@ -25,7 +25,7 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item">
-                        <a class="nav-link" href="admindashboard.html">
+                        <a class="nav-link " href="admindashboard.html">
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
@@ -37,25 +37,26 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/display/appointment">
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentDropdown" aria-expanded="false" aria-controls="appointmentDropdown">
                             <i class="fas fa-table"></i>
                             <span>Appointments</span>
                         </a>
+                        <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="/display/appointment">Pending Request</a>
+                                <a class="collapse-item" href="/display/approved">Approved Request</a>
+                                <a class="collapse-item" href="/display/archives">Archive</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/display/archives">
-                            <i class="fa fa-archive"></i>
-                            <span>Archives</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
+                        <a class="nav-link" href="/admin/profile.html">
                             <i class="fas fa-user"></i>
                             <span>Profile</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="cms.html">
+                        <a class="nav-link active" href="/admin/cms.html">
                             <i class="fa fa-book"></i>
                             <span>CMS</span>
                         </a>

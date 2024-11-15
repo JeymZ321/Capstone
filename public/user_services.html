@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Services - Reynaldo's Car Care Center</title>
+    <title>Services - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
@@ -32,6 +32,8 @@
         .modal-header .btn-close{
             background-color: rgb(255, 255, 255);
         }
+
+        
 
     </style>
     
@@ -136,7 +138,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
                                                 </div>
                                                 <div class="price"><span class="price-per-item" data-price="1000">₱ 1,000.00</span></div>
                                             </div>
@@ -155,7 +157,7 @@
                                                     <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add Service</button>
+                                                    <button class="btn btn-primary add-to-cart btn-sm" onclick="addToCart(this)">Add to Cart</button>
                                                 </div>
                                                 <div class="price"><span class="price-per-item" data-price="2000">₱ 2,000.00</span></div>
                                             </div>
@@ -263,10 +265,11 @@
                         <div class="image-slider">
                             <img id="slider-image" src="assets/img/bodypanels/carbodypanels.png" style="width: auto; height: 500px;" alt="Image 1">
                             <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
-
                         </div>
+
                         <div class="row">
                             <!-- Token Set 1 -->
+
                             <div class="toggle-tokens" id="token-set-1" style="display: block;">
                                 <label>
                                     <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Car Front Bumper', 500)">
@@ -315,7 +318,7 @@
     
                         <!-- Add to Cart Button -->
                         <div class="col-12 mt-3">
-                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add Service</button>
+                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -628,39 +631,93 @@
         }
     
         function addToCart(button) {
-            const product = button.closest('.product');
-            const name = product.querySelector('.product-name').innerText;
-            const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
-            const imageSrc = product.querySelector('.product-image img').src;
-    
-            if (cartItems.some(item => item.name === name)) {
-                alert('This product is already in the cart.');
-                return;
-            }
-    
-            cartItems.push({ name, price, imageSrc });
-            document.getElementById('cart-details').style.display = 'block';
+    const product = button.closest('.product');
+    const name = product.querySelector('.product-name').innerText;
+    const price = parseFloat(product.querySelector('.price-per-item').getAttribute('data-price'));
+    const imageSrc = product.querySelector('.product-image img').src;
 
-            localStorage.setItem('selectedServices', JSON.stringify(cartItems));
-            updateCartDisplay(name, price, button); 
-            
-    
-            const cartDetails = document.getElementById('cart-details');
-            const productDetail = document.createElement('div');
-            productDetail.className = 'cart-item d-flex align-items-center';
-            productDetail.innerHTML = `
-                <div class="cart-item-box">
-                    <div class="cart-item-content d-flex align-items-center">
-                        <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;">
-                        <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
-                        <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
-                    </div>
-                </div>`;
-            cartDetails.appendChild(productDetail);
-    
-            updateTotal();
-            button.style.display = 'none';
-        }
+    // Initialize or retrieve selected services array from localStorage
+    let selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+
+    // Check if the service is already in the array to prevent duplicates
+    if (!selectedServices.some(service => service.name === name)) {
+        // Add the new service to the array
+        selectedServices.push({ name, price, imageSrc });
+        localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+    }
+
+    // Update the cart display in the summary section
+    displayServiceInSummary(name, price, imageSrc);
+
+    // Update the total cost
+    updateTotal();
+
+    // Hide the "Add to Cart" button for this item to avoid duplicates
+    button.style.display = 'none';
+}
+
+// Function to display the selected service in the summary section
+function displayServiceInSummary(name, price, imageSrc) {
+    const cartDetails = document.getElementById('cart-details');
+    cartDetails.style.display = 'block';
+
+    // Add the service as a new element in the summary
+    const productDetail = document.createElement('div');
+    productDetail.className = 'cart-item d-flex align-items-center';
+    productDetail.innerHTML = `
+        <div class="cart-item-box">
+            <div class="cart-item-content d-flex align-items-center">
+                <img src="${imageSrc}" alt="${name}" style="width: 30px; margin-right: 10px; margin-bottom: 1px;">
+                <span>${name} <span class="product-price"> ₱ ${price.toFixed(2)}</span></span>
+                <button class="cancel-button" onclick="cancelItem('${name}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+            </div>
+        </div>`;
+    cartDetails.appendChild(productDetail);
+}
+
+// Function to update the total in the summary
+function updateTotal() {
+    let subtotal = 0;
+
+    // Retrieve selected services from localStorage
+    const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+    selectedServices.forEach(service => {
+        subtotal += service.price;
+    });
+
+    document.getElementById('subtotal').innerText = `₱ ${(subtotal).toFixed(2)}`;
+    document.getElementById('total').innerText = `₱ ${(subtotal + 500).toFixed(2)}`;
+}
+
+// Function to cancel a selected service from the summary
+function cancelItem(name) {
+    // Remove item from localStorage
+    let selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+    selectedServices = selectedServices.filter(service => service.name !== name);
+    localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+
+    // Remove item from cart display
+    const cartDetails = document.getElementById('cart-details');
+    const itemToRemove = Array.from(cartDetails.children).find(item => item.innerText.includes(name));
+    if (itemToRemove) {
+        cartDetails.removeChild(itemToRemove);
+    }
+
+    // Show the "Add to Cart" button for this item again
+    const productElement = Array.from(document.querySelectorAll('.product')).find(product => product.querySelector('.product-name').innerText === name);
+    if (productElement) {
+        productElement.querySelector('.add-to-cart').style.display = 'block';
+    }
+
+    // Update the total after removing the item
+    updateTotal();
+
+    // Hide the cart display if no items remain
+    if (!selectedServices.length) {
+        cartDetails.style.display = 'none';
+    }
+}
+
     
         function updateTotal() {
             let subtotal = 0;

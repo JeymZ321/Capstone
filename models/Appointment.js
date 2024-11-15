@@ -10,7 +10,7 @@ const appointmentSchema = new mongoose.Schema({
     datetime: { type: String, unique: true },
     suggestions: { type: String },
     slot: { type: String },
-    status: { type: String, default:'active'}
+    status: { type: String, default:'pending'}
 }, {
     timestamps: true
 });

@@ -127,7 +127,7 @@
                                 <label for="phonenumber">Phone #: <br><input type="text" name="phonenumber" placeholder="+63" id="phonenumber" required></label>
                                 <label for="email">Email: <br><input type="text" name="email" placeholder="example@gmail.com" id="email" required></label>
                                 <label for="city">City: <br><input type="text" name="city" placeholder="City" id="city"></label>
-                                <label for="platenum">Plate Number: <br><input type="text" name="platenum" placeholder="Enter your plate number.." id="platenum" required></label>
+                                <!-- <label for="platenum">Plate Number: <br><input type="text" name="platenum" placeholder="Enter your plate number.." id="platenum" required></label> -->
                                 <div>
                                     <label for="vehicle">Vehicle:</label>
                                     <select name="Vehicle" id="vehicle" style="height: auto;" required>
@@ -188,7 +188,8 @@
                                         <div id="service-list"></div>
                                         <p>Service Estimation: <span id="service-estimation">₱ 0</span></p>
                                         <p>Towing Fee: Php <span id="towingFee">####</span></p>
-                                        <p>Processing Fee: Php 500.00 (Non-Refundable)</p><br>
+                                        <p>Processing Fee: Php 500.00 (Non-Refundable)</p><br>  
+                                        <p>Grand Total: <span id="grand-total">₱ 0</span></p>
                                         <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Price varies upon actual inspection of the vehicle. This is simply an estimation.</i></p>
 
                                     </div>
@@ -263,7 +264,7 @@ $(document).ready(function () {
     const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
     let serviceTotal = 0;
 
-    // Calculate total service estimation and display each service
+    // Populate the service list and calculate the total
     selectedServices.forEach(service => {
         serviceTotal += service.price;
         $('#service-list').append(`<p>${service.name}: ₱${service.price.toFixed(2)}</p>`);
@@ -272,7 +273,7 @@ $(document).ready(function () {
     // Display the total service estimation
     $('#service-estimation').text(`₱${serviceTotal.toFixed(2)}`);
 
-    // If needed, add any additional fees
+    // Add additional fees, such as the appointment fee
     const appointmentFee = 500;
     const grandTotal = serviceTotal + appointmentFee;
     $('#grand-total').text(`₱${grandTotal.toFixed(2)}`);
@@ -293,16 +294,16 @@ $(document).ready(function () {
     // Populate the dropdown with vehicle options
     const vehicleDropdown = $('#vehicle');
     vehicles.forEach(vehicle => {
-        const optionText = `${vehicle.brandModel} - ${vehicle.color} - ${vehicle.yearModel}`;
+        const optionText = `${vehicle.brandModel} (${vehicle.yearModel}) - ${vehicle.color}`;
         const option = $('<option></option>').text(optionText).val(vehicle.plateNumber); // Use plate number as the value
         vehicleDropdown.append(option);
-    });
+    }); 
 
 
     // Initialize DateTime Picker
     $('#datetimepicker').datetimepicker({
         dateFormat: 'dd/mm/yy',
-        timeFormat: 'HH:mm',
+        timeFormat: 'hh:mm tt', // 12-hour format with AM/PM
         minDate: 0, // Disable past dates
         controlType: 'select', // Shows dropdowns for hour and minute selection
         oneLine: true // Shows date and time on the same line
@@ -488,34 +489,7 @@ $(document).ready(function () {
 
     </script> 
     
-    <!--
-    <script>
-    -->
-        document.addEventListener('DOMContentLoaded', function() {
-            // Make an AJAX request to get user data
-            $.ajax({
-                url: '/getUserData',
-                type: 'GET',
-                xhrFields: {
-                    withCredentials: true  // Sends cookies and other credentials with the request
-                },
-                success: function(data) {
-                    $('#name').val(data.name || '');
-                    $('#phonenumber').val(data.phonenumber || '');
-                    $('#email').val(data.email || '');
-                    $('#city').val(data.city || '');
-                },
-                error: function(xhr, status, error) {
-                    if (xhr.status === 401) {
-                        window.location.href = 'error';  // Redirect to login page
-                    } else {
-                        console.error('Error fetching user data:', error);
-                        alert('Unable to fetch user data. Please try again.');
-                    }
-                }
-            });
-        });
-    </script>
+
     
         
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

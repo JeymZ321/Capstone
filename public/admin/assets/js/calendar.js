@@ -19,6 +19,9 @@ const calendar = document.querySelector(".calendar"),
     addEventTo = document.querySelector(".event-time-to"),
     addEventSubmit = document.querySelector(".add-event-btn"),
     eventCountDisplay = document.querySelector(".event-count");
+    
+
+
 
 let today = new Date();
 let activeDay;
@@ -316,6 +319,21 @@ document.addEventListener("click", (e) => {
         editingEventIndex = null;
     }
 });
+document.addEventListener("DOMContentLoaded", function() {
+    const dropdownElement = document.getElementById("appointmentDropdown");
+    const appointmentDropdown = new bootstrap.Collapse(dropdownElement, {
+        toggle: false
+    });
+    
+    // Optional: Add listener to close dropdown when clicked outside
+    document.addEventListener("click", (event) => {
+        if (!dropdownElement.contains(event.target) && !event.target.matches('[data-bs-toggle="collapse"]')) {
+            appointmentDropdown.hide();
+        }
+    });
+});
+
+
 
 addEventSubmit.addEventListener("click", () => {
     const eventTitle = addEventTitle.value;

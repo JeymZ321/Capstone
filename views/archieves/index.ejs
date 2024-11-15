@@ -24,29 +24,30 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" id="dashboard-item">
-                        <a class="nav-link" href="/admin/admindashboard.html">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/admindashboard.html">
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="calendar-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="/admin/calendar.html">
                             <i class="fa fa-calendar"></i>
                             <span>Calendar</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="appointment-item">
-                        <a class="nav-link" href="/display/appointment">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentDropdown" aria-expanded="false" aria-controls="appointmentDropdown">
                             <i class="fas fa-table"></i>
                             <span>Appointments</span>
                         </a>
-                    </li>
-                    <li class="nav-item" id="archives-item">
-                        <a class="nav-link active" href="/display/archives">
-                            <i class="fa fa-archive"></i>
-                            <span>Archives</span>
-                        </a>
+                        <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="/display/appointment">Pending Request</a>
+                                <a class="collapse-item" href="/display/approved">Approved Request</a>
+                                <a class="collapse-item" href="/display/archives">Archive</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item" id="profile-item">
                         <a class="nav-link" href="/admin/profile.html">
@@ -233,6 +234,7 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
     <script>
+
             $('.archive').on('click', function() {
             const appointmentId = $(this).data('id');
             if (confirm("Are you sure you want to delete this appointment?")) {
@@ -252,7 +254,19 @@
         });
     </script>
     <script>
-  
+        document.addEventListener("DOMContentLoaded", function() {
+    const dropdownElement = document.getElementById("appointmentDropdown");
+    const appointmentDropdown = new bootstrap.Collapse(dropdownElement, {
+        toggle: false
+    });
+    
+    // Optional: Add listener to close dropdown when clicked outside
+    document.addEventListener("click", (event) => {
+        if (!dropdownElement.contains(event.target) && !event.target.matches('[data-bs-toggle="collapse"]')) {
+            appointmentDropdown.hide();
+        }
+    });
+});
       
     </script>
 </body>

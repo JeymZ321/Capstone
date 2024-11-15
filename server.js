@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads')); // Serve static files from the uploads directory
 
-const uri = "mongodb://localhost:27017/UsersDB";
+const uri = "mongodb+srv://capstone:capstone@cluster0.jl0q03o.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Cluster0";
 
 // app.get('/appointment', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'appointment.html'));
@@ -119,9 +119,6 @@ app.post('/registration', async (req, res) => {
       });
       await newVehicle.save();
   }
-
-
-
       // Remove the stored code after successful registration
       delete verificationCodes[email];
 
@@ -519,7 +516,7 @@ app.get('/api/admin/availability', (req, res) => {
 /*----------------------Getting database of appointments for admin---------------*/
 app.get('/display/appointment', async (req, res) => {
   try {
-    const appointments = await Appointment.find({status: 'active'});
+    const appointments = await Appointment.find({status: 'pending'});
     console.log('Appointments', appointments);
     res.render('appointment/index', { appointments });
   } catch (err) {
@@ -551,10 +548,6 @@ app.patch('/appointments/:id/archive', async (req, res) => {
       res.status(500).json({ message: 'Failed to archive appointment.' });
   }
 });
-
-
-
-/*----------------------Getting database of archives for admin---------------*/
 app.get('/display/archives', async (req, res) => {
   try {
     const arcappointments = await Appointment.find({status: 'archived'});
@@ -573,6 +566,7 @@ app.get('/display/archives', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 app.patch('/appointments/:id/delete', async (req, res) => {
     try {
         const appointmentId = req.params.id;
@@ -594,6 +588,48 @@ app.patch('/appointments/:id/delete', async (req, res) => {
         res.status(500).json({ message: 'Failed to adelete  appointment.' });
     }
 });
+
+// Accept appointment and store it with 'accept' status
+app.patch('/appointments/:id/accept', async (req, res) => {
+  try {
+      const appointmentId = req.params.id;
+
+      // Update the status to 'accept'
+      const updatedAppointment = await Appointment.findByIdAndUpdate(
+          appointmentId,
+          { status: 'accept' },
+          { new: true } // Return the updated document
+      );
+
+      if (updatedAppointment) {
+          res.json({ message: 'Appointment accepted successfully!' });
+      } else {
+          res.status(404).json({ message: 'Appointment not found.' });
+      }
+  } catch (error) {
+      console.error('Error accepting appointment:', error);
+      res.status(500).json({ message: 'Failed to accept appointment.' });
+  }
+});
+app.get('/display/approved', async (req, res) => {
+  try {
+    const acceptedAppointments = await Appointment.find({ status: 'accept' });
+    res.render('accept/index', { acceptedAppointments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+app.get('/display/approved', async (req, res) => {
+  try {
+    res.render('accept/index');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 
 
 

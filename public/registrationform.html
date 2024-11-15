@@ -327,7 +327,7 @@
             }
 
             // Add vehicle data to the global vehicles array
-            let vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
+     let vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
             vehicles.push({
                 brandModel: brandModel,
                 color: color,
@@ -335,7 +335,6 @@
                 yearModel: yearModel,
                 transmission: transmission
             });
-            localStorage.setItem('vehicles', JSON.stringify(vehicles));
 
             // Create a new vehicle item and append it to the vehicle list
             const vehicleItem = document.createElement('div');
@@ -428,6 +427,7 @@
     const city = $('#city').val().trim();
     const password = $('#password').val().trim();
 
+
     // Store user data in local storage 
     const userData = { name, phonenumber, email, city, password, vehicles };
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -477,6 +477,7 @@
         // });
     });
 </script>
+<script
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
@@ -484,6 +485,8 @@
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </body>
 

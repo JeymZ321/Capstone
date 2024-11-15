@@ -35,17 +35,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/display/appointment">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentDropdown" aria-expanded="false" aria-controls="appointmentDropdown">
                             <i class="fas fa-table"></i>
                             <span>Appointments</span>
                         </a>
+                        <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="/display/appointment">Pending Request</a>
+                                <a class="collapse-item" href="/display/approved">Approved Request</a>
+                                <a class="collapse-item" href="/display/archives">Archive</a>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/display/archives">
-                            <i class="fa fa-archive"></i>
-                            <span>Archives</span>
-                        </a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="profile.html">
                             <i class="fas fa-user"></i>
