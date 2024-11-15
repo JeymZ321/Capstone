@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - Admin</title>
+    <title>Calendar - Admin</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/reynaldoslogo.png">
+
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -41,9 +43,9 @@
                     </a>                    
                       <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
                           <div class="bg-white py-2 collapse-inner rounded">
-                              <a class="collapse-item" href="/display/appointment">Pending Request</a>
-                              <a class="collapse-item" href="/display/approved">Approved Request</a>
-                              <a class="collapse-item" href="/display/archives">Archive</a>
+                              <a class="collapse-item" href="/display/appointment">Pending Requests</a>
+                              <a class="collapse-item" href="/display/approved">Approved Requests</a>
+                              <a class="collapse-item" href="/display/archives">Archives</a>
                           </div>
                       </div>
                   </li>
@@ -56,18 +58,19 @@
                             <span>Profile</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="cms-item">
-                        <a class="nav-link" href="cms.html">
-                            <i class="fa fa-book"></i>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#cmsDropdown" aria-expanded="false" aria-controls="cmsDropdown">
+                            <i class="fas fa-book"></i>
                             <span>CMS</span>
                         </a>
+                        <div id="cmsDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner">
+                                <a class="collapse-item" href="/display/gallery">Gallery</a>
+                                <a class="collapse-item" href="/display/servicemanagement">Service Management</a>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item" id="logout-item">
-                        <a class="nav-link" href="login.html">
-                            <i class="far fa-user-circle"></i>
-                            <span>Logout</span>
-                        </a>
-                    </li>
+                    
                 </ul>
                 
                 <div class="text-center d-none d-md-inline">
@@ -143,7 +146,11 @@
             </button>
         </div>
     </div>
-    <script src="assets/js/calendar.js"></script>           
+    <script src="assets/js/calendar.js"></script>       
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/theme.js"></script>    
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../admin/assets/bootstrap/js/bootstrap.min.js"></script>

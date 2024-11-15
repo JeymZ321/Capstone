@@ -471,12 +471,15 @@
         function toggleToken(tokenId, panelName, price) {
             const checkbox = document.getElementById(`token${tokenId}-checkbox`);
             if (checkbox.checked) {
-                selectedPanels.push({ panelName, price, tokenId });
-                addPanelToCart(panelName, price, tokenId);
-            } else {
-                selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
-                removePanel(panelName);
+                if (!selectedPanels.some(panel => panel.panelName === panelName)) {
+                    selectedPanels.push({ panelName, price, tokenId });
+                    addServiceToSummary(panelName, price, tokenId);
+                } else {
+                    selectedPanels = selectedPanels.filter(panel => panel.panelName !== panelName);
+                    removePanel(panelName, tokenId);
+                }
             }
+            
             updatePanelTotal();
         }
     
@@ -499,10 +502,38 @@
             updateTotal();
         }
     
-        function updatePanelTotal() {
-            panelTotal = selectedPanels.reduce((total, panel) => total + panel.price, 0);
-            document.getElementById('subtotal').innerText = `₱ ${(panelTotal).toFixed(2)}`;
-        }
+        function updateTotal() {
+        let subtotal = 0;
+
+    // Retrieve the summary container
+    const summaryContainer = document.getElementById('cart-details');
+    summaryContainer.innerHTML = ''; // Clear the previous items
+
+    // Add regular services to the summary
+    cartItems.forEach(item => {
+        subtotal += item.price;
+        
+    });
+
+    // Add panels to the summary
+    selectedPanels.forEach(panel => {
+        subtotal += panel.price;
+        
+    });
+
+    // Add pickup truck panels to the summary
+    selectedPickupPanels.forEach(panel => {
+        subtotal += panel.price;
+        
+    });
+
+    // Update the subtotal and total display
+    document.getElementById('subtotal').innerText = `₱ ${(subtotal).toFixed(2)}`;
+    const appointmentFee = 500;
+    document.getElementById('total').innerText = `₱ ${(subtotal + appointmentFee).toFixed(2)}`;
+}
+        
+
     
         function calculateTotal() {
             document.getElementById('cart-details').style.display = 'block';
@@ -638,6 +669,11 @@
 
     // Initialize or retrieve selected services array from localStorage
     let selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+    
+    if (!cartItems.some(item => item.name === name)) {
+        cartItems.push({ name, price });
+        displayServiceInSummary(name, price, imageSrc); // Add service to summary
+    }
 
     // Check if the service is already in the array to prevent duplicates
     if (!selectedServices.some(service => service.name === name)) {
@@ -646,14 +682,13 @@
         localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
     }
 
-    // Update the cart display in the summary section
-    displayServiceInSummary(name, price, imageSrc);
+    // Hide the "Add to Cart" button for this item to avoid duplicates
+    button.style.display = 'none';
 
     // Update the total cost
     updateTotal();
 
-    // Hide the "Add to Cart" button for this item to avoid duplicates
-    button.style.display = 'none';
+    
 }
 
 // Function to display the selected service in the summary section

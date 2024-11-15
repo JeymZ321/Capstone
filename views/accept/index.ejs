@@ -36,17 +36,18 @@
                             <span>Calendar</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="appointment-item">
-                        <a class="nav-link" href="/display/appointment">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentDropdown" aria-expanded="false" aria-controls="appointmentDropdown">
                             <i class="fas fa-table"></i>
                             <span>Appointments</span>
                         </a>
-                    </li>
-                    <li class="nav-item" id="archives-item">
-                        <a class="nav-link active" href="/display/archives">
-                            <i class="fa fa-archive"></i>
-                            <span>Archives</span>
-                        </a>
+                        <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="/display/appointment">Pending Request</a>
+                                <a class="collapse-item" href="/display/approved">Approved Request</a>
+                                <a class="collapse-item" href="/display/archives">Archive</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item" id="profile-item">
                         <a class="nav-link" href="/admin/profile.html">
@@ -188,20 +189,20 @@
                     </div>
                 </nav>
 
-                <!-- Main Content Area -->
-                <div class="table-responsive table mt-2" id="archiveTable">
-                    <table class="table tabler-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                                <th>Actions</th> 
-                            </tr>
-                        </thead>
+                <!-- Appointment Table -->
+                <div class="appointment-container">
+                <h1>Pending Appointments</h1>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                    <th>Email</th>
+                    <th>Phonenumber#</th>
+                    <th>City</th>
+                    <th>PlateNumber</th>
+                    <th>PlateNumber</th>
+                    <th>Car functionality</th>
+                    </tr>
+                    </thead>
                         <tbody id="archiveBody">
                             <% acceptedAppointments.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
@@ -221,7 +222,7 @@
                            
                     </table>
                 </div>
-<footer class="bg-white sticky-footer">
+<footer class="bg-white sticky-footer" style="margin-top: 30%;">
     <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
     </div>
@@ -229,13 +230,12 @@
 </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/js/bs-init.js"></script>
+    <script src="/admin/assets/js/theme.js"></script>
     <script>
         $(document).ready(function() {
-
-            
+         
             // Archive Button Click Handler
             $('.archive-btn').on('click', function() {
                 const appointmentId = $(this).data('id');

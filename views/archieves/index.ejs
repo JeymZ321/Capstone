@@ -194,12 +194,10 @@
                     <table class="table tabler-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Email</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Slot</th>
                                 <th>Actions</th> <!-- New column for Remove button -->
                             </tr>
                         </thead>
@@ -218,11 +216,9 @@
                             <% }) %>
                 
                         </tbody>
-
-                        
                     </table>
                 </div>
-<footer class="bg-white sticky-footer">
+<footer class="bg-white sticky-footer" style="margin-top: 30%;">
     <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
     </div>
@@ -230,9 +226,9 @@
 </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/js/bs-init.js"></script>
+    <script src="/admin/assets/js/theme.js"></script>
     <script>
 
             $('.archive').on('click', function() {
@@ -252,22 +248,6 @@
                 });
             }
         });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    const dropdownElement = document.getElementById("appointmentDropdown");
-    const appointmentDropdown = new bootstrap.Collapse(dropdownElement, {
-        toggle: false
-    });
-    
-    // Optional: Add listener to close dropdown when clicked outside
-    document.addEventListener("click", (event) => {
-        if (!dropdownElement.contains(event.target) && !event.target.matches('[data-bs-toggle="collapse"]')) {
-            appointmentDropdown.hide();
-        }
-    });
-});
-      
     </script>
 </body>
 
