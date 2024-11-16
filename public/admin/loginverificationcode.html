@@ -5,16 +5,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Verification</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/reynaldoslogo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+
+  <style>
+    body{
+      background-image: url(assets/img/bg_trianglescircle.png);
+      background-position: right;
+      background-repeat: no-repeat;
+      background-size: auto;
+      background-color: rgb(215, 215, 215);
+    }
+
+    .parallelogram {
+            position: absolute;
+            top: 90px;
+            left: -20px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+            padding: 10px 40px;
+            transform: skew(-20deg);
+            width: 350px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 1px 4px rgb(255, 0, 0);
+            font-size: 25px;
+            font-family: "Montserrat";
+            
+        }
+
+
+    .parallelogram::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 0;
+            height: 0;
+            border-top: 30px solid transparent;
+            border-bottom: 30px solid transparent;
+        }
+      
+      .container{
+        margin-top: 150px;
+      }
+</style>
 </head>
 
+
 <body>
+  <div class="parallelogram">Verification</div>
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card mt-5">
           <div class="card-body">
-            <h4 class="card-title text-center">Enter Verification Code</h4>
+            <h4 class="card-title text-center text-black"><strong>Enter Verification Code</strong> </h4>
             <form id="verificationForm">
               <div class="mb-3">
                 <input class="form-control" type="text" id="verificationCode" placeholder="Enter verification code" required>

@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - Logo</title>
+    <title>Approved Requests - Appointment</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/reynaldoslogo.png">
     <link rel="stylesheet" href="/admin/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/admin/assets/fonts/fontawesome-all.min.css">
@@ -12,6 +13,44 @@
     <link rel="stylesheet" href="/admin/assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="/admin/assets/css/admin.css">
     <link rel="stylesheet" href="/admin/assets/css/untitled.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        input[type="text"],
+        input[type="email"],
+        input[type="password"]{
+            width: 100%;
+            text-align: left; 
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .image-preview {
+            width: 200px; /* Set fixed width */
+            height: 200px; /* Set fixed height */
+            border: 1px solid #ccc; /* Optional: add a border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure content does not overflow */
+        }
+        .image-preview img {
+            max-width: 100%; /* Ensure the image fits within the container */
+            max-height: 100%; /* Ensure the image fits within the container */
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        label{
+            color: black;
+            font-weight: bold;
+        }
+
+     
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -42,10 +81,17 @@
                             <span>Appointments</span>
                         </a>
                         <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+<<<<<<< Updated upstream
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <a class="collapse-item" href="/display/appointment">Pending Request</a>
                                 <a class="collapse-item" href="/display/approved">Approved Request</a>
                                 <a class="collapse-item" href="/display/archives">Archive</a>
+=======
+                            <div class="bg-white py-2 collapse-inner">
+                                <a class="collapse-item" href="/display/appointment">Pending Requests</a>
+                                <a class="collapse-item active" href="/display/approved">Approved Requests</a>
+                                <a class="collapse-item" href="/display/archives">Archives</a>
+>>>>>>> Stashed changes
                             </div>
                         </div>
                     </li>
@@ -59,12 +105,6 @@
                         <a class="nav-link" href="/admin/cms.html">
                             <i class="fa fa-book"></i>
                             <span>CMS</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" id="logout-item">
-                        <a class="nav-link" href="/admin/login.html">
-                            <i class="far fa-user-circle"></i>
-                            <span>Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -82,106 +122,16 @@
                         <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                <button class="btn btn-primary py-0" type="button" style="background: darkred;">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
 
                         <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow">
-                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                                    <i class="fas fa-search"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                    <form class="me-auto navbar-search w-100">
-                                        <div class="input-group">
-                                            <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary py-0" type="button">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
-                            </li>
+
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Valerie Luna</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Admin Name Here</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <a class="dropdown-item" href="/admin/profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/admin/login.html"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -189,6 +139,7 @@
                     </div>
                 </nav>
 
+<<<<<<< Updated upstream
                 <!-- Appointment Table -->
                 <div class="appointment-container">
                 <h1>Pending Appointments</h1>
@@ -204,6 +155,33 @@
                     </tr>
                     </thead>
                         <tbody id="archiveBody">
+=======
+                <!-- Main Content Area -->
+                <div class="appointment-container" style="margin: 50px;" id="approvedTable">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Heading -->
+                        <h1 style="color: black;">
+                            Appointments || 
+                            <span style="font-size: 23px; font-weight: bold; color: rgb(5, 131, 9);">Approved Requests</span>
+                        </h1>
+                        <!-- Add Button -->
+                        <button class="btn btn-primary" style="height: fit-content;" id="addNewCustomerButton" data-bs-toggle="modal" data-bs-target="#customerModal">Add New Customer</button>
+                         
+                    </div>
+                    <table class="table tabler-bordered">
+                        <thead style="color: rgb(0, 0, 0);">
+                            <tr>
+                                <th>Email</th>
+                                <th>Phone No.</th>
+                                <th>City</th>
+                                <th>---</th>
+                                <th>Vehicle</th>
+                                <th>Car Functionality</th>
+                                <th>Actions</th> 
+                            </tr>
+                        </thead>
+                        <tbody id="approvedBody" style="color: black;">
+>>>>>>> Stashed changes
                             <% acceptedAppointments.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
                                     <td><%= appointment.email %></td>
@@ -222,20 +200,110 @@
                            
                     </table>
                 </div>
+<<<<<<< Updated upstream
 <footer class="bg-white sticky-footer" style="margin-top: 30%;">
+=======
+
+               
+<footer class="bg-white sticky-footer">
+>>>>>>> Stashed changes
     <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
     </div>
 </footer>
 </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
+
+
+
+<div class="modal fade" id="customerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: darkred; color: white;" >
+                <h5 class="modal-title" >Add New Customer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: rgb(255, 255, 255);"></button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <div class="row">
+                        <div class="col-md-6">                    
+                            <label for="">Customer Name: <input type="text" placeholder="Enter name here.." name="name" id="" required></label>
+                        </div>
+                        <div class="col-md-6">                    
+                            <label for="">Phone #: <input type="text" placeholder="+63" name="Color" id="" required></label>
+                        </div>
+                        <div class="col-md-12">                    
+                            <label for="platenum">Email:</label> <input type="text" class="form-control" placeholder="example@gmail.com" name="PlateNumber" id="platenum" required>
+                        </div>
+                        <div class="col-md-12">                    
+                            <label for="yearmodel">City/Address:</label> <input type="text"  class="form-control" placeholder="Marikina City" name="YearModel" id="yearmodel" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="yearmodel">Vehicle:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   placeholder="Toyota Avanza (2022) -- Black - Automatic - ABC 1234" 
+                                   name="YearModel" 
+                                   id="yearmodel" 
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="datetimepicker ">Check In Time:</label>
+                            <input type="text" name="datetimepicker" id="datetimepicker" placeholder="MM/DD/YYYY HH:MM" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="mb-2">Is the car functional?</label><br>
+                            <label class="ms-3 me-5" for="yesBtn" style="color: black;"><input type="radio" id="yesBtn" name="carfunc" value="yes" >Yes</label>
+                            <label for="noBtn" style="color: black;"><input type="radio" id="noBtn" name="carfunc" value="no" >No</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Services:</label><br>
+                            <textarea class="col-md-12 mt-2" id="suggestions" name="suggestions" rows="4" style="width: 100%;" placeholder="Enter your suggestions or comments here..."></textarea>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vehicleImage" class="mb-3">Vehicle Image (optional): 
+                                <input type="file" accept="image/*" name="VehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
+                            </label>
+                            <div id="imagePreview" class="image-preview">
+                                <img id="preview" src="#" alt="Image Preview" style="display: none;">
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-2" id="removeImageButton" onclick="removeImage()" style="display: none;">
+                                Remove Image
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <br>
+                            <p style="opacity: .5; font-size: 14px;"><i>Note: The Add New Customer Button is recommmended for adding Walk-In Customers to measure whether the shop's at maximum capacity.</i></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveVehicleButton" style="background-color: rgb(0, 0, 0); color: white;">Add Customer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<<<<<<< Updated upstream
     <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="/admin/assets/js/bs-init.js"></script>
     <script src="/admin/assets/js/theme.js"></script>
     <script>
         $(document).ready(function() {
          
+=======
+<script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/admin/assets/js/bs-init.js"></script>
+<script src="/admin/assets/js/theme.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+>>>>>>> Stashed changes
             // Archive Button Click Handler
             $('.archive-btn').on('click', function() {
                 const appointmentId = $(this).data('id');
@@ -256,6 +324,74 @@ if (confirm("Are you sure you want to archive this appointment?")) {
 }
             });
         });
+
+
+        
+ // Function to preview the selected image
+ function previewImage(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const removeButton = document.getElementById('removeImageButton');
+
+            reader.onload = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+                removeButton.style.display = 'inline-block'; // Show Remove Image button
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                removeButton.style.display = 'none'; // Hide Remove Image button if no file
+            }
+        }
+
+        // Function to remove the selected image
+        function removeImage() {
+            document.getElementById('vehicleImage').value = ''; // Clear file input
+            document.getElementById('preview').src = ''; // Clear preview
+            document.getElementById('preview').style.display = 'none'; // Hide preview
+            document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
+        }
+
+
+    //DI MAWAWALA UNG NASA DROPDOWN
+document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.getElementById("appointmentDropdown");
+
+        // Check and set the state on page load
+        if (localStorage.getItem("dropdownState") === "open") {
+            dropdown.classList.add("show"); // Bootstrap's class to keep it open
+        }
+
+        // Save the state when the dropdown toggles
+        dropdown.addEventListener("shown.bs.collapse", function () {
+            localStorage.setItem("dropdownState", "open");
+        });
+
+        dropdown.addEventListener("hidden.bs.collapse", function () {
+            localStorage.setItem("dropdownState", "closed");
+        });
+    });
+
+
+    //MAG HIDE NG DROPDOWN IF NAGCLICK OUTSIDE
+    document.addEventListener("DOMContentLoaded", function() {
+    const dropdownElement = document.getElementById("appointmentDropdown");
+    const appointmentDropdown = new bootstrap.Collapse(dropdownElement, {
+        toggle: false
+    });
+    
+    // Optional: Add listener to close dropdown when clicked outside
+    document.addEventListener("click", (event) => {
+        if (!dropdownElement.contains(event.target) && !event.target.matches('[data-bs-toggle="collapse"]')) {
+            appointmentDropdown.hide();
+        }
+        });
+    });
     </script>
     <script>
   
