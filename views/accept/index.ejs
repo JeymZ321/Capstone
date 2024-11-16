@@ -81,17 +81,10 @@
                             <span>Appointments</span>
                         </a>
                         <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
-<<<<<<< Updated upstream
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" href="/display/appointment">Pending Request</a>
-                                <a class="collapse-item" href="/display/approved">Approved Request</a>
-                                <a class="collapse-item" href="/display/archives">Archive</a>
-=======
                             <div class="bg-white py-2 collapse-inner">
                                 <a class="collapse-item" href="/display/appointment">Pending Requests</a>
                                 <a class="collapse-item active" href="/display/approved">Approved Requests</a>
                                 <a class="collapse-item" href="/display/archives">Archives</a>
->>>>>>> Stashed changes
                             </div>
                         </div>
                     </li>
@@ -139,23 +132,6 @@
                     </div>
                 </nav>
 
-<<<<<<< Updated upstream
-                <!-- Appointment Table -->
-                <div class="appointment-container">
-                <h1>Pending Appointments</h1>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                    <th>Email</th>
-                    <th>Phonenumber#</th>
-                    <th>City</th>
-                    <th>PlateNumber</th>
-                    <th>PlateNumber</th>
-                    <th>Car functionality</th>
-                    </tr>
-                    </thead>
-                        <tbody id="archiveBody">
-=======
                 <!-- Main Content Area -->
                 <div class="appointment-container" style="margin: 50px;" id="approvedTable">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -181,7 +157,6 @@
                             </tr>
                         </thead>
                         <tbody id="approvedBody" style="color: black;">
->>>>>>> Stashed changes
                             <% acceptedAppointments.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
                                     <td><%= appointment.email %></td>
@@ -200,13 +175,9 @@
                            
                     </table>
                 </div>
-<<<<<<< Updated upstream
-<footer class="bg-white sticky-footer" style="margin-top: 30%;">
-=======
 
                
 <footer class="bg-white sticky-footer">
->>>>>>> Stashed changes
     <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
     </div>
@@ -289,21 +260,12 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<<<<<<< Updated upstream
-    <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/admin/assets/js/bs-init.js"></script>
-    <script src="/admin/assets/js/theme.js"></script>
-    <script>
-        $(document).ready(function() {
-         
-=======
 <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/admin/assets/js/bs-init.js"></script>
 <script src="/admin/assets/js/theme.js"></script>
     <script>
         $(document).ready(function() {
             
->>>>>>> Stashed changes
             // Archive Button Click Handler
             $('.archive-btn').on('click', function() {
                 const appointmentId = $(this).data('id');
