@@ -1,3 +1,5 @@
+/*HATDOOOGGG*/
+
 const calendar = document.querySelector(".calendar"),
     date = document.querySelector(".date"),
     daysContainer = document.querySelector(".days"),
@@ -94,6 +96,7 @@ function initCalendar() {
 
 // Check if a date is within a range
 function isDateWithinRange(date, startDate, endDate) {
+ 
     const currentDate = new Date(Date.UTC(...date.split('-')));
     const start = new Date(Date.UTC(...startDate.split('-')));
     const end = new Date(Date.UTC(...endDate.split('-')));
