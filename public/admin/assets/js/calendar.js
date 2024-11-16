@@ -71,7 +71,7 @@ function initCalendar() {
     for (let i = 1; i <= lastDate; i++) {
         let event = false;
         eventsArr.forEach((eventObj) => {
-            if (isDateWithinRange(`${year}-${month + 1}-${i}`, eventObj.startDate, eventObj.endDate)) {
+            if (eventObj.startDate && eventObj.endDate && isDateWithinRange(`${year}-${month + 1}-${i}`, eventObj.startDate, eventObj.endDate)) {
                 event = true;
             }
         });
@@ -94,15 +94,31 @@ function initCalendar() {
     addListener();
 }
 
+
 // Check if a date is within a range
 function isDateWithinRange(date, startDate, endDate) {
- 
-    const currentDate = new Date(Date.UTC(...date.split('-')));
-    const start = new Date(Date.UTC(...startDate.split('-')));
-    const end = new Date(Date.UTC(...endDate.split('-')));
+    if (!date || !startDate || !endDate) {
+        console.error("Undefined or invalid dates:", { date, startDate, endDate });
+        return false;
+    }
 
-    return start <= currentDate && currentDate <= end;
+    try {
+        const currentDate = new Date(Date.UTC(...date.split('-').map(Number)));
+        const start = new Date(Date.UTC(...startDate.split('-').map(Number)));
+        const end = new Date(Date.UTC(...endDate.split('-').map(Number)));
+
+        if (isNaN(currentDate.getTime()) || isNaN(start.getTime()) || isNaN(end.getTime())) {
+            console.error("Invalid date format:", { date, startDate, endDate });
+            return false;
+        }
+
+        return start <= currentDate && currentDate <= end;
+    } catch (error) {
+        console.error("Error processing dates:", { date, startDate, endDate, error });
+        return false;
+    }
 }
+
 
 function prevMonth() {
     month--;
@@ -406,8 +422,23 @@ function saveEvents() {
 
 function getEvents() {
     if (localStorage.getItem("events")) {
-        eventsArr.push(...JSON.parse(localStorage.getItem("events")));
+        try {
+            const events = JSON.parse(localStorage.getItem("events"));
+            eventsArr.forEach((eventObj) => {
+                if (eventObj.startDate && eventObj.endDate) {
+                    if (isDateWithinRange(`${year}-${month + 1}-${i}`, eventObj.startDate, eventObj.endDate)) {
+                        event = true;
+                    }
+                } else {
+                    console.warn("Event has missing dates:", eventObj);
+                }
+            });
+        } catch (error) {
+            console.error("Error parsing events from localStorage:", error);
+        }
     }
 }
 
+
 initCalendar();
+
