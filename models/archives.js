@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
-const ArchiveSchema = new mongoose.Schema({
-    email: {type: String, required: true},
-    datepicker: {type: String, required: true}, 
-    timepicker: {type: String},
-    slots: [String],
-}, { timestamps: true });
+const ArchivedCustomerSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String },
+    city: { type: String },
+    createdAt: { type: Date, default: Date.now },
+});
 
-const Archive = mongoose.model('Archive', ArchiveSchema);
-module.exports = Archive;
+const ArchivedCustomers = mongoose.model('ArchivedCustomers', ArchivedCustomerSchema);
+module.exports = ArchivedCustomers;

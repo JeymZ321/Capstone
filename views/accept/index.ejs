@@ -195,49 +195,48 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: rgb(255, 255, 255);"></button>
             </div>
             <div class="modal-body">
-                <form id="vehicleForm">
+                <form id="vehicleForm" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-6">                    
-                            <label for="">Customer Name: <input type="text" placeholder="Enter name here.." name="name" id="" required></label>
+                        <div class="col-md-6">
+                            <label for="name">Customer Name:</label>
+                            <input type="text" placeholder="Enter name here.." name="name" id="name" required>
                         </div>
-                        <div class="col-md-6">                    
-                            <label for="">Phone #: <input type="text" placeholder="+63" name="Color" id="" required></label>
-                        </div>
-                        <div class="col-md-12">                    
-                            <label for="platenum">Email:</label> <input type="text" class="form-control" placeholder="example@gmail.com" name="PlateNumber" id="platenum" required>
-                        </div>
-                        <div class="col-md-12">                    
-                            <label for="yearmodel">City/Address:</label> <input type="text"  class="form-control" placeholder="Marikina City" name="YearModel" id="yearmodel" required>
+                        <div class="col-md-6">
+                            <label for="phone">Phone #:</label>
+                            <input type="text" placeholder="+63" name="phone" id="phone" required>
                         </div>
                         <div class="col-md-12">
-                            <label for="yearmodel">Vehicle:</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   placeholder="Toyota Avanza (2022) -- Black - Automatic - ABC 1234" 
-                                   name="YearModel" 
-                                   id="yearmodel" 
-                                   required>
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" placeholder="example@gmail.com" name="email" id="email" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="datetimepicker ">Check In Time:</label>
-                            <input type="text" name="datetimepicker" id="datetimepicker" placeholder="MM/DD/YYYY HH:MM" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="mb-2">Is the car functional?</label><br>
-                            <label class="ms-3 me-5" for="yesBtn" style="color: black;"><input type="radio" id="yesBtn" name="carfunc" value="yes" >Yes</label>
-                            <label for="noBtn" style="color: black;"><input type="radio" id="noBtn" name="carfunc" value="no" >No</label>
-                        </div>
-
                         <div class="col-md-12">
-                            <label>Services:</label><br>
-                            <textarea class="col-md-12 mt-2" id="suggestions" name="suggestions" rows="4" style="width: 100%;" placeholder="Enter your suggestions or comments here..."></textarea>
-
+                            <label for="city">City/Address:</label>
+                            <input type="text" class="form-control" placeholder="Marikina City" name="city" id="city" required>
                         </div>
-
+                        <div class="col-md-12">
+                            <label for="vehicle">Vehicle:</label>
+                            <input type="text" class="form-control" placeholder="Toyota Avanza (2022) -- Black - Automatic - ABC 1234" name="vehicle" id="vehicle" required>
+                        </div>
                         <div class="col-md-6">
-                            <label for="vehicleImage" class="mb-3">Vehicle Image (optional): 
-                                <input type="file" accept="image/*" name="VehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
+                            <label for="checkInTime">Check In Time:</label>
+                            <input type="text" name="checkInTime" id="checkInTime" placeholder="MM/DD/YYYY HH:MM" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Is the car functional?</label><br>
+                            <label class="ms-3 me-5" for="yesBtn" style="color: black;">
+                                <input type="radio" id="yesBtn" name="carFunctionality" value="yes"> Yes
                             </label>
+                            <label for="noBtn" style="color: black;">
+                                <input type="radio" id="noBtn" name="carFunctionality" value="no"> No
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="services">Services:</label><br>
+                            <textarea id="services" name="services" rows="4" class="form-control" placeholder="Enter your suggestions or comments here..."></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="vehicleImage" class="mb-3">Vehicle Image (optional):</label>
+                            <input type="file" accept="image/*" name="vehicleImage" id="vehicleImage" class="form-control" onchange="previewImage(event)">
                             <div id="imagePreview" class="image-preview">
                                 <img id="preview" src="#" alt="Image Preview" style="display: none;">
                             </div>
@@ -245,12 +244,8 @@
                                 Remove Image
                             </button>
                         </div>
-                        <div class="col-md-6">
-                            <br>
-                            <p style="opacity: .5; font-size: 14px;"><i>Note: The Add New Customer Button is recommmended for adding Walk-In Customers to measure whether the shop's at maximum capacity.</i></p>
-                        </div>
                     </div>
-                </form>
+                </form>                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="saveVehicleButton" style="background-color: rgb(0, 0, 0); color: white;">Add Customer</button>
@@ -264,31 +259,78 @@
 <script src="/admin/assets/js/bs-init.js"></script>
 <script src="/admin/assets/js/theme.js"></script>
     <script>
-        $(document).ready(function() {
-            
-            // Archive Button Click Handler
-            $('.archive-btn').on('click', function() {
-                const appointmentId = $(this).data('id');
+        $(document).ready(function () {
+    // Archive Button Click Handler for Appointments
+    $('.archive-btn').on('click', function () {
+        const appointmentId = $(this).data('id');
 
-if (confirm("Are you sure you want to archive this appointment?")) {
-    $.ajax({
-        url: `/appointments/${appointmentId}/archive`,
-        type: 'PATCH',
-        success: function(response) {
-            alert(response.message);
-            location.reload(); // Reload page to reflect changes
-        },
-        error: function(error) {
-            console.error("Error archiving appointment:", error);
-            alert("Failed to archive the appointment. Please try again.");
+        if (confirm("Are you sure you want to archive this appointment?")) {
+            $.ajax({
+                url: `/appointments/${appointmentId}/archive`,
+                type: 'PATCH',
+                success: function (response) {
+                    alert(response.message);
+                    location.reload(); // Reload to reflect archived appointments
+                },
+                error: function (error) {
+                    console.error("Error archiving appointment:", error);
+                    alert("Failed to archive the appointment. Please try again.");
+                }
+            });
         }
     });
-}
-            });
+});
+
+    // Archive Button Click Handler for Customers
+$('#approvedBody').on('click', '.archive-btn', function () {
+    const customerId = $(this).data('id');
+
+    if (confirm("Are you sure you want to archive this customer?")) {
+        $.ajax({
+            url: `/customer/${customerId}/archive`,
+            type: 'PATCH',
+            success: function (response) {
+                alert(response.message);
+
+                // Remove the archived customer row dynamically
+                $(`tr[data-id="${customerId}"]`).remove();
+            },
+            error: function (error) {
+                console.error("Error archiving customer:", error);
+                alert("Failed to archive the customer. Please try again.");
+            }
         });
+    }
+});
+
+    // Save Vehicle Button Handler
+    $('#saveVehicleButton').on('click', function () {
+        const formData = new FormData($('#vehicleForm')[0]); // Use FormData for file uploads
+
+        $.ajax({
+            url: '/Newcustomers', // Backend POST route
+            type: 'POST',
+            data: formData,
+            contentType: false, // Required for FormData
+            processData: false, // Prevent jQuery from processing data
+            success: function (response) {
+                if (response.success) {
+                    alert('Customer added successfully!');
+
+                    $('#customerModal').modal('hide'); // Close the modal
+                } else {
+                    alert(`Error: ${response.message}`);
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+                alert('Failed to add customer. Please try again.');
+            }
+        });
+    });
 
 
-        
+    
  // Function to preview the selected image
  function previewImage(event) {
             const preview = document.getElementById('preview');
@@ -354,10 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         });
     });
-    </script>
-    <script>
-  
-      
+
     </script>
 </body>
 

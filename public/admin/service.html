@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin CMS - Manage Services</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(0,0,0);max-width: none;width: 120px;">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#" style="background: url(&quot;assets/img/reynaldoslogo.png&quot;) no-repeat;background-size: contain;border-radius: 40px;width: 120px;height: 120px;">
+                    <div class="sidebar-brand-icon rotate-n-15"></div>
+                    <div class="sidebar-brand-text mx-3"></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item">
+                        <a class="nav-link" href="admindashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendar.html">
+                            <i class="fa fa-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentDropdown" aria-expanded="false" aria-controls="appointmentDropdown">
+                            <i class="fas fa-table"></i>
+                            <span>Appointments</span>
+                        </a>
+                        <div id="appointmentDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="/display/appointment">Pending Requests</a>
+                                <a class="collapse-item" href="/display/approved">Approved Requests</a>
+                                <a class="collapse-item" href="/display/archives">Archives</a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-bs-toggle="collapse" data-bs-target="#cmsDropdown" aria-expanded="false" aria-controls="cmsDropdown">
+                            <i class="fas fa-book"></i>
+                            <span>CMS</span>
+                        </a>
+                        <div id="cmsDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner">
+                                <a class="collapse-item" href=" ">Gallery</a>
+                                <a class="collapse-item" href="service.html">Service Management</a>
+                            </div>
+                        </div>
+                    </li>
+                   
+                </ul>
+                <div class="text-center d-none d-md-inline">
+                    <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+                </div>
+            </div>
+        </nav>
+    <div class="container my-5">
+        <h1 class="text-center">Services Management</h1>
+        <form id="serviceForm" class="my-4" enctype="multipart/form-data">
+            <input type="hidden" id="serviceId">
+            <div class="mb-3">
+                <label for="serviceName" class="form-label">Service Name</label>
+                <input type="text" id="serviceName" class="form-control" placeholder="Enter service name" required>
+            </div>
+            <div class="mb-3">
+                <label for="servicePrice" class="form-label">Service Price</label>
+                <input type="number" id="servicePrice" class="form-control" placeholder="Enter service price" required>
+            </div>
+            <div class="mb-3">
+                <label for="serviceImage" class="form-label">Service Image</label>
+                <input type="file" id="serviceImage" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="serviceCategory" class="form-label">Category</label>
+                <select id="serviceCategory" class="form-control">
+                    <option value="mechanical">Mechanical</option>
+                    <option value="ac-services">AC Services</option>
+                    <option value="paint-restoration">Paint Restoration</option>
+                    <option value="electrical">Electrical</option>
+                    <option value="panels">Panel Repairs</option>
+                    <option value="packages-promos">Packages and Promos</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="serviceDescription" class="form-label">Description</label>
+                <textarea id="serviceDescription" class="form-control" placeholder="Enter description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Service</button>
+        </form>        
+        <h2 class="my-4">Existing Services</h2>
+        <div id="servicesList" class="row"></div>
+    </div>
+ </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> <!-- Popper.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+    <script>
+    let selectedServices = []; // Track selected services for the summary
+
+    async function fetchServices() {
+        const response = await fetch('/api/services');
+        const services = await response.json();
+        const servicesList = document.getElementById('servicesList');
+        servicesList.innerHTML = '';
+
+        services.forEach(service => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-3';
+            col.innerHTML = `
+                <div class="card">
+                    <img src="${service.image}" class="card-img-top" alt="${service.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${service.name}</h5>
+                        <p class="card-text">Price: ₱${service.price}</p>
+                        <p class="card-text">Category: ${service.category}</p>
+                        <p class="card-text">${service.description || 'No description provided.'}</p>
+                        <button class="btn btn-warning btn-md" onclick="editService('${service._id}')">Edit</button>
+                        <button class="btn btn-danger btn-md" onclick="deleteService('${service._id}')">Delete</button>
+                    </div>
+                </div>`;
+            servicesList.appendChild(col);
+        });
+    }
+
+    // Add to Summary
+    function addToSummary(id, name, price) {
+        if (selectedServices.some(service => service.id === id)) {
+            alert('Service already added to summary!');
+            return;
+        }
+
+        selectedServices.push({ id, name, price });
+        updateSummary();
+    }
+
+
+    // Edit Service
+    async function editService(id) {
+        const response = await fetch(`/api/services/${id}`);
+        const service = await response.json();
+
+        // Populate form with service data
+        document.getElementById('serviceId').value = service._id;
+        document.getElementById('serviceName').value = service.name;
+        document.getElementById('servicePrice').value = service.price;
+        document.getElementById('serviceCategory').value = service.category;
+        document.getElementById('serviceDescription').value = service.description;
+    }
+
+    // Delete Service
+    async function deleteService(id) {
+        if (confirm('Are you sure you want to delete this service?')) {
+            await fetch(`/api/services/${id}`, { method: 'DELETE' });
+            fetchServices();
+        }
+    }
+
+    // Save Service (Add or Edit)
+    document.getElementById('serviceForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById('serviceId').value;
+        const name = document.getElementById('serviceName').value;
+        const price = document.getElementById('servicePrice').value;
+        const category = document.getElementById('serviceCategory').value;
+        const description = document.getElementById('serviceDescription').value;
+        const imageInput = document.getElementById('serviceImage');
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', price);
+        formData.append('category', category);
+        formData.append('description', description);
+        if (imageInput.files[0]) {
+            formData.append('image', imageInput.files[0]);
+        }
+
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/api/services/${id}` : '/api/services';
+
+        await fetch(url, { method, body: formData });
+
+        document.getElementById('serviceForm').reset();
+        fetchServices();
+    });
+
+    fetchServices(); // Initial fetch on page load
+</script>
+
+</body>
+
+</html>

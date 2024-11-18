@@ -3,22 +3,25 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const fs = require('fs');
 const multer = require('multer');
 const sharp = require('sharp');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
-const Appointment = require('./models/Appointment');  
+const bcrypt = require('bcrypt'); 
+const Service = require("./models/Service");
+const Appointment = require('./models/Appointment'); 
+const NewCustomers = require('./models/NewCustomers');
+const ArchivedCustomers = require('./models/archives');
 const customer = require('./models/Customer');
 const Vehicle = require('./models/Vehicle');
 const Admin = require('./models/Admin');
 const Archive = require('./models/archives');
 const UnverifiedAdmin = require('./models/UnverifiedAdmin'); 
 //const profileRoutes = require('./public/profile');
-const router = express.Router();
 const path = require('path');
-
+ 
 
 
 const port = 3000;
@@ -45,14 +48,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use('/profile', profileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('uploads')); // Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the uploads directory
 
 const uri = "mongodb+srv://capstone:capstone@cluster0.jl0q03o.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Cluster0";
-
-// app.get('/appointment', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public', 'appointment.html'));
-// });
-// app.use('/appointmentcss', express.static(path.join(__dirname, 'public', 'Appointment', 'appointment.css')));
 
 // CONNECT TO MONGODB 
 mongoose.connect(uri).then(() => {
@@ -65,6 +63,15 @@ mongoose.connect(uri).then(() => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html')); //LANDING PAGE
 });
+
+// Ensure the 'uploads' directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+
+
 
             /*------------------------------CUSTOMER ROUTES------------------------------*/
 
@@ -525,20 +532,18 @@ app.get('/display/appointment', async (req, res) => {
   }
 });
 
-
-// Archive appointment and store it in 'archives' collection
 app.patch('/appointments/:id/archive', async (req, res) => {
   try {
       const appointmentId = req.params.id;
 
       // Update the status to 'archived'
-      const updatedAppointment = await Appointment.findByIdAndUpdate(
+      const arcappointments = await Appointment.findByIdAndUpdate(
           appointmentId,
           { status: 'archived' },
           { new: true } // Return the updated document
       );
 
-      if (updatedAppointment) {
+      if (arcappointments) {
           res.json({ message: 'Appointment archived successfully!' });
       } else {
           res.status(404).json({ message: 'Appointment not found.' });
@@ -614,16 +619,22 @@ app.patch('/appointments/:id/accept', async (req, res) => {
 app.get('/display/approved', async (req, res) => {
   try {
     const acceptedAppointments = await Appointment.find({ status: 'accept' });
-    res.render('accept/index', { acceptedAppointments });
+    const newCustomers = await NewCustomers.find();
+
+    const combinedData = [...acceptedAppointments, ...newCustomers];
+
+    res.render('accept/index', { acceptedAppointments: combinedData });
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching approved data:', err);
     res.status(500).send('Server error');
   }
 });
 
 app.get('/display/approved', async (req, res) => {
   try {
-    res.render('accept/index');
+    const approvedAppointments = await Appointment.find({ status: 'accept' });
+    const newCustomers = await NewCustomers.find(); 
+    res.render('accept/index', { acceptedAppointments: [...approvedAppointments, ...newCustomers] });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -772,6 +783,166 @@ try {
 }
 });
 
+
+// Multer configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Directory to save images
+  },
+  filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+
+
+// POST route for adding a new customer
+app.post('/Newcustomers', upload.single('vehicleImage'), async (req, res) => {
+  try {
+      const requiredFields = ['name', 'phone', 'email', 'city', 'vehicle', 'checkInTime'];
+      for (const field of requiredFields) {
+          if (!req.body[field]) {
+              return res.status(400).json({ success: false, message: `${field} is required.` });
+          }
+      }
+
+      const newCustomer = new NewCustomers({
+          ...req.body,
+          checkInTime: new Date(req.body.checkInTime),
+          vehicleImage: req.file ? req.file.path : null
+      });
+
+      await newCustomer.save();
+      res.status(201).json({ success: true, message: 'Customer added successfully!', customer: newCustomer });
+  } catch (error) {
+      console.error('Error adding customer:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+app.patch('/customer/:id/archive', async (req, res) => {
+  try {
+      const customerId = req.params.id;
+
+      const arcappointments = await NewCustomers.findByIdAndUpdate(
+        customerId, 
+        { status: 'accept' },
+        { new: true } // Return the updated document
+    );
+
+    if (arcappointments) {
+        res.json({ message: 'Customer archived successfully!' });
+    } else {
+        res.status(404).json({ message: 'Appointment not found.' });
+    }
+} catch (error) {
+    console.error('Error archiving appointment:', error);
+    res.status(500).json({ message: 'Failed to archive appointment.' });
+}
+});
+
+
+app.get('/display/archives', async (req, res) => {
+  try {
+      // Retrieve customers from the archive collection
+      const arcappointments = await NewCustomers.find({status: 'archived'});
+      console.log('Appointments', arcappointments);
+      // Render the archive page with the retrieved customers
+      res.render('archives/index', { arcappointments});
+  } catch (err) {
+      console.error('Error fetching archived customers:', err);
+      res.status(500).send('Server error');
+  }
+});
+
+app.get('/display/archives', async (req, res) => {
+  try {
+      res.render('archives/index');
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+  }
+});
+
+
+
+// GET: Fetch all services
+app.get('/api/services', async (req, res) => {
+  try {
+      const services = await Service.find();
+      res.json(services);
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch services' });
+  }
+});
+
+// POST: Add a new service
+app.post('/api/services', upload.single('image'), async (req, res) => {
+  try {
+      const { name, price, category, description } = req.body;
+      const imagePath = req.file ? `/uploads/${req.file.filename}` : ''; // Save file path if an image is uploaded
+
+      const service = new Service({
+          name,
+          price,
+          category,
+          description,
+          image: imagePath,
+      });
+
+      await service.save();
+      res.status(201).json(service);
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to add service' });
+  }
+});
+
+// PUT: Update an existing service
+app.put('/api/services/:id', upload.single('image'), async (req, res) => {
+  try {
+      const { name, price, category, description } = req.body;
+      const service = await Service.findById(req.params.id);
+
+      if (!service) {
+          return res.status(404).json({ error: 'Service not found' });
+      }
+
+      // Update fields
+      service.name = name || service.name;
+      service.price = price || service.price;
+      service.category = category || service.category;
+      service.description = description || service.description;
+
+      // Update the image if a new file is uploaded
+      if (req.file) {
+          service.image = `/uploads/${req.file.filename}`;
+      }
+
+      await service.save();
+      res.json(service);
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to update service' });
+  }
+});
+
+// DELETE: Remove a service
+app.delete('/api/services/:id', async (req, res) => {
+  try {
+      const service = await Service.findById(req.params.id);
+
+      if (!service) {
+          return res.status(404).json({ error: 'Service not found' });
+      }
+
+      // Delete service record
+      await service.deleteOne();
+      res.sendStatus(200);
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to delete service' });
+  }
+});
 
 
 
