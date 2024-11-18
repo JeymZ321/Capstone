@@ -263,7 +263,9 @@ function addToSummary(id, name, price) {
         return;
     }
 
+    // Add the service to the summary
     selectedServices.push({ id, name, price });
+    localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
     alert(`${name} has been added to the SUMMARY.`);
     updateSummary();
 }
@@ -278,17 +280,13 @@ function cancelFromSummary(id) {
     }
 }
 
-// Clear All Services from Summary
+// Clear All Services
 function clearCart() {
-    if (selectedServices.length === 0) {
-        alert('No services to clear.');
-        return;
-    }
-
     if (confirm('Are you sure you want to clear all selected services?')) {
         selectedServices = [];
-        alert('All services have been cleared from the SUMMARY.');
+        localStorage.removeItem('selectedServices'); // Clear localStorage
         updateSummary();
+        alert('All services have been cleared from the SUMMARY.');
     }
 }
 
