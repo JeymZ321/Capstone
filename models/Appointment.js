@@ -9,7 +9,7 @@ const appointmentSchema = new mongoose.Schema({
     carfunc: { type: String },
     datetime: { type: String, unique: true },
     suggestions: { type: String },
-    slot: { type: String },
+    //slot: { type: String },
     status: { type: String, default:'pending'}
 }, {
     timestamps: true

@@ -456,6 +456,9 @@ app.post('/loginadmin', async (req, res) => {
         return res.status(500).json({ message: 'Failed to send verification email' });
       }
 
+      // Store the admin's ObjectId in the session
+    req.session.adminId = admin._id.toString();
+    console.log('Session adminId:', req.session.adminId);
       // Redirect to verification page after sending code
       res.status(200).json({
         message: 'Verification code sent to email. Please enter it to complete login.',
@@ -468,7 +471,58 @@ app.post('/loginadmin', async (req, res) => {
   }
 });
 
+// Authentication Middleware
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    return next(); // User is authenticated
+  }
+  res.status(401).json({ message: "Unauthorized access. Please log in." });
+};
 
+app.post("/admin/update", isAuthenticated, async (req, res) => {
+  try {
+    const adminId = new mongoose.Types.ObjectId(req.session.adminId);
+    const { username, email, currentPassword, newPassword, fullname, contact } = req.body;
+
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, admin.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    let updatedFields = { username, email, fullname, contact };
+    if (newPassword) {
+      updatedFields.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    const updatedAdmin = await Admin.findByIdAndUpdate(adminId, updatedFields, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({ message: "Profile updated successfully", admin: updatedAdmin });
+  } catch (error) {
+    console.error("Error updating admin:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+  
+app.post('/logoutadmin', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error logging out:', err);
+        return res.status(500).json({ message: 'Failed to log out' });
+      }
+      res.status(200).json({ message: 'Logged out successfully' });
+    });
+  });
+  
+  
 /*------------------------Verification Code For Admin Login-----------------------*/
 app.post('/adminverifycode', async (req, res) => {
   const { email, code } = req.body;
@@ -497,27 +551,6 @@ app.post('/adminverifycode', async (req, res) => {
 
 
 /*------------------------Admin Calendar-----------------------*/
-
-// POST route to handle admin availability submission
-app.post('/api/admin/availability', (req, res) => {
-  const { date, time, availableSlots } = req.body;
-
-  // Check if the required fields are provided
-  if (!date || !time || !availableSlots) {
-      return res.status(400).json({ message: 'Date, time, and available slots are required.' });
-  }
-
-  // Save the availability
-  availableAppointments.push({ date, time, availableSlots });
-  console.log('Availability submitted:', { date, time, availableSlots });
-
-  res.status(201).json({ message: 'Availability submitted successfully!' });
-});
-
-// GET route to retrieve all available appointments
-app.get('/api/admin/availability', (req, res) => {
-  res.status(200).json(availableAppointments);
-});
 
 
 /*----------------------Getting database of appointments for admin---------------*/
@@ -650,7 +683,7 @@ app.post('/appointment', async (req, res) => {
   try {
       console.log('Received request data:', req.body);
 
-      const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, suggestions, slot } = req.body;
+      const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, suggestions } = req.body;
 
       // Create a new appointment instance with the provided data
       const newAppointment = new Appointment({
@@ -661,8 +694,8 @@ app.post('/appointment', async (req, res) => {
           carfunc,
           platenum,
           suggestions,
-          datetime, // Combined DateTime field
-          slot // Selected slot
+          datetime 
+         // slot  Selected slot
       });
 
       // Save the appointment to the database
