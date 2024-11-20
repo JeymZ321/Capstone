@@ -8,6 +8,18 @@
     box-sizing: border-box;   
 }
 
+.product-info .see-more {
+    float: right; /* Align the button to the right */
+    color: #007bff; /* Change the text color (e.g., Bootstrap blue) */
+    text-decoration: none; /* Remove the underline */
+    font-weight: bold; /* Make the text bold for emphasis */
+    cursor: pointer; /* Add a pointer cursor to indicate interactivity */
+    margin-top: -5px; /* Adjust the spacing to align properly */
+}
+
+.product-info .see-more:hover {
+    color: #0056b3; /* Darker blue on hover for better contrast */
+}
 
 
 .clean-block.clean-cart .items .product{
@@ -49,12 +61,12 @@
 .category-button {
     flex: 1;
     background-color: #000000;
-    padding: 10px;
+    padding: 7px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     color: #ffffff;
-    margin: 0 5px;
+    margin: 0 2px;
     border-radius: 8px;
 }
 
@@ -230,6 +242,8 @@
         
     }
 
+    
+
     .product {
         flex-direction: column; /* Keep content stacked */
         align-items: center;
@@ -240,8 +254,9 @@
     }
 
     .product-image img {
-        width: 150px; /* Adjust the width as needed */
-        height: auto;
+        width: auto; /* Adjust the width as needed */
+        height: 150px !important;
+        object-fit: fill;
         
     }
 

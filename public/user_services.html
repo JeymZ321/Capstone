@@ -33,34 +33,13 @@
         .modal-header .btn-close{
             background-color: rgb(255, 255, 255);
         }
-        .summary {
-    position: sticky; /* Keeps it in view while scrolling */
-    top: 20px; /* Adds spacing from the top when scrolling */
-    background: #f8f9fa; /* Light background to distinguish */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.product-grid .product-container {
-    width: 100%; /* Adjust this for responsiveness */
-    max-width: 48%; /* Two items per row in large view */
-}
+       
 
         
 
     </style>
     
 </head>
-
-
-<body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
         <div class="container">
             
@@ -93,25 +72,25 @@
                 <div class="block-heading">
                     <h2 style="color: rgb(112,18,18);font-weight: bold;">Services</h2>
                 </div>
-                
                 <div class="content">
-                    
                     <div class="row g-0">
+                        <!-- Service Selection Section -->
                         <div class="col-md-12 col-lg-8">
+                            <!-- Search Bar -->
                             <div class="search-bar">
                                 <input type="text" placeholder="Search service..." class="search-input" id="search-input" />
                             </div>
+                            <!-- Category Buttons and Dropdown -->
                             <div class="items" id="cart-items">
                                 <div class="category-buttons text-center mb-4">
-                                    <button class="category-button" onclick="filterServices('all')">All Categories</button>
-                                    <button class="category-button" onclick="filterServices('mechanical')">Mechanical</button>
-                                    <button class="category-button" onclick="filterServices('ac-services')">AC Services</button>
-                                    <button class="category-button" onclick="filterServices('paint-restoration')">Paint Restoration</button>
-                                    <button class="category-button" onclick="filterServices('electrical')">Electrical</button>
-                                    <button class="category-button" onclick="filterServices('panels')">Panel Repairs</button>
-                                    <button class="category-button" onclick="filterServices('packages-promos')">Packages and Promos</button>
+                                    <button class="category-button" onclick="filterProducts('all')">All</button>
+                                    <button class="category-button" onclick="filterProducts('mechanical')">Mechanical</button>
+                                    <button class="category-button" onclick="filterProducts('ac-services')">AC Services</button>
+                                    <button class="category-button" onclick="filterProducts('paint-restoration')">Paint Restoration</button>
+                                    <button class="category-button" onclick="filterProducts('electrical')">Electrical</button>
+                                    <button class="category-button" onclick="filterProducts('panels')">Panel Repaints</button>
+                                    <button class="category-button" onclick="filterProducts('packages-promos')">Packages and Promos</button>
                                 </div>
-            
                                 <select id="category-dropdown" class="mobile-dropdown" onchange="filterByCategory(this.value)">
                                     <option value="all">All Categories</option>
                                     <option value="mechanical">Mechanical</option>
@@ -120,41 +99,40 @@
                                     <option value="electrical">Electrical</option>
                                     <option value="panels">Panel Repaints</option>
                                     <option value="packages-promos">Packages and Promos</option>
-                                </select>                                
-
-
+                                </select>
+                                <!-- Products -->
                                 <div class="row">
-                                <div class="product-grid">
-
-
+                                    <div class="product-grid">
+                                        
+                                        <!-- Add more products as needed -->
+                                    </div>
+                                </div>
                             </div>
-                            </div>   
-                            <br>
-                             <!-- Summary Section -->
-    <div class="col-md-12 col-lg-4">
-        <div class="summary">
-            <h3>Summary</h3>
-            <h4><span class="text">Service(s):</span></h4>
-            <h4><span class="price" id="cart-details"></span></h4>
-            <h4><span class="text">Subtotal:</span><span class="price" id="subtotal">₱ 0</span></h4>
-            <h4><span class="text">Processing Fee:</span><span class="price" id="appointment">₱ 500.00</span></h4>
-            <h4><span class="text">Total:</span><span class="price" id="total">₱ 500.00</span></h4>
-            <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
-            <a href="appointment.html">
-                <button class="btn btn-primary btn-lg d-block w-100 btn-estimate" 
-                    style="background-color: rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;" 
-                    type="button">
-                    Get Appointment
-                </button>
-            </a>
-        </div>
-    </div>
-</div>
+                        </div>
+                        <!-- Summary Section -->
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <h4><span class="text">Service(s):</span></h4>
+                                <h4><span class="price" id="cart-details"></span></h4>
+                                <h4><span class="text">Subtotal:</span><span class="price" id="subtotal">₱ 0.00</span></h4>
+                                <h4><span class="text">Total:</span><span class="price" id="total">₱ 0.00</span></h4>
+                                <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
+                                <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;">
+                                    <i><strong>Note:</strong> Proceeding with the Appointment will require you to pay a processing fee of 
+                                    <strong style="color: red;">₱ 500.00</strong>. Prices of services may vary upon actual inspection. This fee is consumable for the actual execution of services.</i>
+                                </p>
+                                <a href="appointment.html">
+                                    <button class="btn btn-primary btn-lg d-block w-100 btn-estimate" style="background-color: rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;" type="button">Get Appointment</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+    
 
     <footer class="page-footer dark">
         <div class="container">
@@ -198,24 +176,87 @@
     <script src="assets/js/theme.js"></script>
     
     
-<script>
-       let allServices = []; // To hold all services fetched from the backend
-let selectedServices = []; // To track services added to the summary
-const appointmentFee = 500; // Fixed appointment fee
+    <script>
+        let allServices = []; // To hold all services fetched from the backend
+        let selectedServices = []; // To track services added to the summary
+        
+        //FILTER BY CATEGORY BUTTONS
+        function filterProducts(category) {   
 
-// Fetch Services from Backend (Admin CMS)
-async function fetchServices() {
-    try {
-        const response = await fetch('/api/services'); // Replace this with your actual API endpoint
-        allServices = await response.json();
-        displayServices(allServices);
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        alert('Unable to load services. Please try again later.');
-    }
-}
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products first
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
 
-// Display Services on the Page
+            if (category === 'all') {
+                displayServices(allServices); // Show all services if "all" is selected
+            } else {
+                const filteredServices = allServices.filter(service => service.category === category);
+                displayServices(filteredServices); // Show only filtered services
+            }
+    
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)';
+        }
+
+        //FILTER BY CATEGORY DROPDOWN (MEDIA QUERY)
+        function filterByCategory(category) {
+            // Hide all products first
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; 
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
+
+            // Filter services based on selected category
+            if (category === 'all') {
+                displayServices(allServices); // Show all services if "all" is selected
+            } else {
+                const filteredServices = allServices.filter(service => service.category === category);
+                displayServices(filteredServices); // Show only filtered services
+            }
+
+            // Reset background color for category buttons
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+
+            // If the category is "all", no button is highlighted
+            if (category !== 'all') {
+                // Assuming category buttons have corresponding `onclick` handlers to filter by category
+                const activeButton = document.querySelector(`[onclick="filterProducts('${category}')"]`);
+                if (activeButton) {
+                    activeButton.style.backgroundColor = 'rgb(169, 11, 11)'; // Set active color
+                }
+            }
+        }
+
+
+        
+
+
+        // Fetch Services from Backend (Admin CMS)
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services'); // Replace this with your actual API endpoint
+                allServices = await response.json();
+                displayServices(allServices);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+                alert('Unable to load services. Please try again later.');
+            }
+        }
+    
+        // Display Services on the Page
 function displayServices(services) {
     const container = document.querySelector('.product-grid');
     container.innerHTML = '';
@@ -228,106 +269,182 @@ function displayServices(services) {
     services.forEach(service => {
         const product = document.createElement('div');
         product.className = `product ${service.category} product-container`;
+
+        // Limit for description
+        const charLimit = 70;
+        const shortDesc = service.description.length > charLimit 
+            ? service.description.substring(0, charLimit) + '...' 
+            : service.description;
+
         product.innerHTML = `
             <div class="product-image">
-                <img class="img-fluid d-block mx-auto image" src="${service.image}" alt="${service.name}">
+                <img class="img-fluid d-block mx-auto image" style="width: auto; height: 200px;" 
+                     src="${service.image}" alt="${service.name}" />
             </div>
             <div class="product-info">
                 <div class="details-column">
                     <p class="product-name">${service.name}</p>
+                    <p class="desc">
+                        <span class="short-desc">${shortDesc}</span>
+                        <span class="full-desc" style="display: none;">${service.description}</span>
+                        ${service.description.length > charLimit 
+                            ? '<button class="see-more btn btn-link btn-sm">See more</button>' 
+                            : ''}
+                    </p>
+                    <br>
                     <div class="price">
                         <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
                     </div>
                     <button class="btn btn-primary add-to-summary btn-sm" 
-                        onclick="addToSummary('${service.id}', '${service.name}', ${service.price})">Add Service</button>
+                        onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.image}')">
+                        Add Service
+                    </button>
                 </div>
             </div>`;
+
         container.appendChild(product);
+
+        // Add event listener for "See more" button
+        const seeMoreBtn = product.querySelector('.see-more');
+        if (seeMoreBtn) {
+            seeMoreBtn.addEventListener('click', () => {
+                const fullDesc = product.querySelector('.full-desc');
+                const shortDesc = product.querySelector('.short-desc');
+                if (fullDesc.style.display === 'none') {
+                    fullDesc.style.display = 'inline';
+                    shortDesc.style.display = 'none';
+                    seeMoreBtn.textContent = 'See less';
+                    
+                } else {
+                    fullDesc.style.display = 'none';
+                    shortDesc.style.display = 'inline';
+                    seeMoreBtn.textContent = 'See more';
+                }
+            });
+        }
     });
 }
 
-// Filter Services by Category
-function filterServices(category) {
-    if (category === 'all') {
-        displayServices(allServices);
-    } else {
-        const filteredServices = allServices.filter(service => service.category === category);
-        displayServices(filteredServices);
-    }
-}
+        // Add Service to Summary
+        function addToSummary(_id, name, price, image) {
+            if (selectedServices.find(service => service._id === _id)) { // Change some() to find()
+                alert(`${name} is already in the summary!`);
+                return;
+            }
+            selectedServices.push({ _id, name, price, image });
+            localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
+            
+            updateSummary();
 
-// Add Service to Summary
-function addToSummary(id, name, price) {
-    if (selectedServices.some(service => service.id === id)) {
-        alert(`${name} is already in the summary!`);
-        return;
-    }
-
-    // Add the service to the summary
-    selectedServices.push({ id, name, price });
-    localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
-    alert(`${name} has been added to the SUMMARY.`);
-    updateSummary();
-}
-
-// Cancel Service from Summary
-function cancelFromSummary(id) {
-    const service = selectedServices.find(service => service.id === id);
-    if (service) {
-        alert(`${service.name} has been removed from the SUMMARY.`);
-        selectedServices = selectedServices.filter(service => service.id !== id);
-        updateSummary();
-    }
-}
-
-// Clear All Services
-function clearCart() {
-    if (confirm('Are you sure you want to clear all selected services?')) {
-        selectedServices = [];
-        localStorage.removeItem('selectedServices'); // Clear localStorage
-        updateSummary();
-        alert('All services have been cleared from the SUMMARY.');
-    }
-}
-
-// Update the Summary Section
-function updateSummary() {
-    const summaryContainer = document.getElementById('cart-details');
-    const subtotalElement = document.getElementById('subtotal');
-    const totalElement = document.getElementById('total');
+            const button = document.querySelector(`button[onclick*="${_id}"]`);
+            if (button) {
+                button.disabled = true;
+                button.textContent = "Added";
+                button.style.backgroundColor = "red";
+                button.style.borderColor = "red";
+            }
+        }
     
-    // Clear previous summary
-    summaryContainer.innerHTML = '';
+        // Cancel Service from Summary
+        function cancelFromSummary(_id) {
+            const service = selectedServices.find(service => service._id === _id);
+            if (service) {
+                
+                localStorage.removeItem('selectedServices'); // Clear localStorage
+                selectedServices = selectedServices.filter(service => service._id !== _id);
+                updateSummary();
 
-    if (selectedServices.length === 0) {
-        summaryContainer.innerHTML = '<p>No services selected yet.</p>';
-        subtotalElement.textContent = '₱ 0';
-        totalElement.textContent = '₱ 500.00';
-        return;
-    }
-    let subtotal = 0;
+                const button = document.querySelector(`button[onclick*="${_id}"]`);
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = "Add Service";
+                    button.style.backgroundColor = "#0d6efd";
+                    button.style.borderColor = "#0d6efd";
+                }
+            }
+        }
+    
+        // Clear All Services from Summary
+        function clearCart() {
+            if (selectedServices.length === 0) {
+                alert('No services to clear.');
+                return;
+            }
+    
+            if (confirm('Are you sure you want to clear all selected services?')) {
+                selectedServices = [];
+                alert('All services have been cleared from the SUMMARY.');
 
-    selectedServices.forEach(service => {
-        subtotal += service.price;
-        const summaryItem = document.createElement('div');
-        summaryItem.className = 'summary-item';
-        summaryItem.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <span>${service.name}</span>
-                <span>₱ ${service.price.toFixed(2)}</span>
-                <button class="btn btn-danger btn-sm" onclick="cancelFromSummary('${service.id}')">Cancel</button>
-            </div>`;
-        summaryContainer.appendChild(summaryItem);
-    });
+                const buttons = document.querySelectorAll('button[onclick*="addToSummary"]');
+        buttons.forEach(button => {
+            button.disabled = false;
+            button.textContent = "Add Service";
+            button.style.backgroundColor = "#0d6efd";
+            button.style.borderColor = "#0d6efd";
+        });
 
-    subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
-    totalElement.textContent = `₱ ${(subtotal + appointmentFee).toFixed(2)}`;
-}
+                updateSummary();
+            }
+            
+        }
+    
+        // Update the Summary Section
+        function updateSummary() {
+            const summaryContainer = document.getElementById('cart-details');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            
+            // Clear previous summary
+            summaryContainer.innerHTML = '';
 
-// Initial Fetch of Services on Page Load
-fetchServices();
+            if (selectedServices.length === 0) {
+                summaryContainer.innerHTML = '<p>No services selected yet.</p>';
+                subtotalElement.textContent = '₱ 0.00';
+                totalElement.textContent = '₱ 0.00'; 
+                return;
+            }
 
+            let subtotal = 0;
+            document.getElementById('cart-details').style.display = 'block';
+            
+            // Loop through selected services and add them to the summary
+            selectedServices.forEach(service => {
+                subtotal += service.price;
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'cart-item d-flex align-items-center';
+                summaryItem.innerHTML = `
+                    <div class="cart-item-box d-flex align-items-center">
+                        <img src="${service.image}" alt="${service.name}" style="width: 40px; margin-right: 10px; margin-left: 10px; margin-bottom: 1px;">
+                        <span style="flex: 1; margin-right: 10px;">${service.name}</span>
+                        <span style="margin-right: 0px; ">₱ ${service.price.toFixed(2)}</span>
+                        <button class="btn cancel-button" onclick="cancelFromSummary('${service._id}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>`;
+                summaryContainer.appendChild(summaryItem);
+                
+            });
+
+            subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
+            totalElement.textContent = `₱ ${(subtotal).toFixed(2)}`; 
+        }
+
+    
+        // Search Services
+        function searchServices() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            const filteredServices = allServices.filter(service =>
+                service.name.toLowerCase().includes(searchTerm)
+            );
+            displayServices(filteredServices);
+        }
+
+        
+    
+        // Event Listener for Search
+        document.querySelector('.search-input').addEventListener('input', searchServices);
+    
+        // Initial Fetch of Services on Page Load
+        fetchServices();
     </script>
-       
+    
 </body>
 </html>

@@ -64,23 +64,24 @@
                 <div class="block-heading">
                     <h2 style="color: rgb(112,18,18);font-weight: bold;">Services</h2>
                 </div>
-                
                 <div class="content">
-                    
                     <div class="row g-0">
+                        <!-- Service Selection Section -->
                         <div class="col-md-12 col-lg-8">
+                            <!-- Search Bar -->
                             <div class="search-bar">
                                 <input type="text" placeholder="Search service..." class="search-input" id="search-input" />
                             </div>
+                            <!-- Category Buttons and Dropdown -->
                             <div class="items" id="cart-items">
                                 <div class="category-buttons text-center mb-4">
+                                    <button class="category-button" onclick="filterProducts('all')">All</button>
                                     <button class="category-button" onclick="filterProducts('mechanical')">Mechanical</button>
                                     <button class="category-button" onclick="filterProducts('ac-services')">AC Services</button>
                                     <button class="category-button" onclick="filterProducts('paint-restoration')">Paint Restoration</button>
                                     <button class="category-button" onclick="filterProducts('electrical')">Electrical</button>
                                     <button class="category-button" onclick="filterProducts('panels')">Panel Repaints</button>
                                     <button class="category-button" onclick="filterProducts('packages-promos')">Packages and Promos</button>
-                                    <!-- Add more buttons as needed -->
                                 </div>
                                 <select id="category-dropdown" class="mobile-dropdown" onchange="filterByCategory(this.value)">
                                     <option value="all">All Categories</option>
@@ -90,394 +91,43 @@
                                     <option value="electrical">Electrical</option>
                                     <option value="panels">Panel Repaints</option>
                                     <option value="packages-promos">Packages and Promos</option>
-                                </select>   
+                                </select>
+                                <!-- Products -->
                                 <div class="row">
-
                                     <div class="product-grid">
-                                    
-                                    
-                            </div>
-                            </div>   
-                            <br>
-                            <div class="col-md-12 col-lg-4">
-                                <div class="summary">
-                                    <h3>Summary</h3>
-                                    <h4><span class="text">Service(s):</span></h4>
-                                    <h4><span class= "price" id="cart-details" ></span></h4>
-                                    <h4><span class="text">Subtotal</span><span class="price" id="subtotal">₱ 0.00</span></h4>
-                                    <h4><span class="text">Total</span><span class="price" id="total">₱ 0.00</span></h4>
-                                    <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
-                                    <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note:</strong> Proceeding with the Appointment will require you to pay a processing fee of <strong style="color: red;"> P500.00. </strong>Prices of services may vary upon actual inspection.<br><br> This fee is consumable for the actual execution of services.</i></p>
-                                    <a href="login.html" onclick="alertLoginRequired(event);">
-                                        <button class="btn btn-primary btn-lg d-block w-100 btn-estimate" 
-                                            style="background-color: rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;" 
-                                            type="button">
-                                            Get Appointment
-                                        </button>
-                                    </a>
+                                        
+                                        <!-- Add more products as needed -->
+                                    </div>
                                 </div>
-                            </div>                         
+                            </div>
+                        </div>
+                        <!-- Summary Section -->
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <h4><span class="text">Service(s):</span></h4>
+                                <h4><span class="price" id="cart-details"></span></h4>
+                                <h4><span class="text">Subtotal:</span><span class="price" id="subtotal">₱ 0.00</span></h4>
+                                <h4><span class="text">Total:</span><span class="price" id="total">₱ 0.00</span></h4>
+                                <button id="clear-all" class="btn btn-primary btn-sm" onclick="clearCart()">Clear All</button>
+                                <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;">
+                                    <i><strong>Note:</strong> Proceeding with the Appointment will require you to pay a processing fee of 
+                                    <strong style="color: red;">₱ 500.00</strong>. Prices of services may vary upon actual inspection. This fee is consumable for the actual execution of services.</i>
+                                </p>
+                                <a href="login.html" id="login-link">
+                                    <button class="btn btn-primary btn-lg d-block w-100 btn-estimate" 
+                                        style="background-color: rgb(255, 255, 255); text-decoration:none; color: rgb(0, 0, 0); border:1px solid black;" 
+                                        type="button">Get Appointment
+                                    </button>
+                                </a>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tokenModalLabel">Select Tokens for Panel Repairs</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="slider-container col-md-12">
-                        <div class="image-slider">
-                            <img id="slider-image" src="assets/img/bodypanels/car_panel.png" style="width: auto; height: auto;" alt="Image 1">
-                            <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
-                        </div>
-
-                        <div class="row">
-                            <!-- Car Token Set 1 -->
-                        
-                            <div class="toggle-tokens" id="token-set-1" style="display: block;">
-                                <label>
-                                    <input type="checkbox" id="token1-checkbox" onclick="toggleToken(1, 'Car FR Grille', 1500)">
-                                    <span id="token1" class="token">FR Grille - ₱ 1500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token2-checkbox" onclick="toggleToken(2, 'Car Engine Bay', 4000)">
-                                    <span id="token2" class="token">Engine Bay - ₱ 4000.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token3-checkbox" onclick="toggleToken(3, 'Car Underhood', 4500)">
-                                    <span id="token3" class="token">Underhood - ₱ 4500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token4-checkbox" onclick="toggleToken(4, 'Car Hood', 4500)">
-                                    <span id="token4" class="token">Hood - ₱ 4500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token5-checkbox" onclick="toggleToken(5, 'Car Roof Rail', 2500)">
-                                    <span id="token5" class="token">Roof Rail - ₱ 2500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token6-checkbox" onclick="toggleToken(6, 'Car Roof', 6500)">
-                                    <span id="token6" class="token">Roof - ₱ 6500.00</span>
-                                </label>
-                            </div>
-                        
-                            <!-- Car Token Set 2 -->
-                            <div class="toggle-tokens" id="token-set-2" style="display: none;">
-                        
-                                <label>
-                                    <input type="checkbox" id="token7-checkbox" onclick="toggleToken(7, ' Car Right Side Mirror', 1500)">
-                                    <span id="token7" class="token">Right Side Mirror - ₱ 1500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token8-checkbox" onclick="toggleToken(8, 'Car Left Side Mirror', 1500)">
-                                    <span id="token8" class="token">Left Side Mirror - ₱ 1500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token9-checkbox" onclick="toggleToken(9, 'Car QTR Panel', 2500)">
-                                    <span id="token9" class="token">QTR Panel - ₱ 2500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token10-checkbox" onclick="toggleToken(10, 'Car Tailgate/Trunk Lid', 4500)">
-                                    <span id="token10" class="token">Tailgate/Trunk Lid - ₱ 4500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token11-checkbox" onclick="toggleToken(11, 'Car Rear Bumper', 3500)">
-                                    <span id="token11" class="token">Rear Bumper - ₱ 3500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token12-checkbox" onclick="toggleToken(12, 'Car Undercoat', 6500)">
-                                    <span id="token12" class="token">Undercoat - ₱ 6500.00</span>
-                                </label>
-                            </div>
-                        
-                            <!-- Car Token Set 3 -->
-                            <div class="toggle-tokens" id="token-set-3" style="display: none;">
-                                <label>
-                                    <input type="checkbox" id="token13-checkbox" onclick="toggleToken(13, 'Car Running Board', 1500)">
-                                    <span id="token13" class="token">Running Board - ₱ 1500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token14-checkbox" onclick="toggleToken(14, 'Car Left Door', 2500)">
-                                    <span id="token14" class="token">Left Door - ₱ 3000.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token15-checkbox" onclick="toggleToken(15, 'Car Right Door', 2500)">
-                                    <span id="token15" class="token">Right Door - ₱ 3000.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token16-checkbox" onclick="toggleToken(16, 'Car Fender', 2500)">
-                                    <span id="token16" class="token">Fender - ₱ 2500.00</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="token17-checkbox" onclick="toggleToken(18, 'Car Front Bumper', 3500)">
-                                    <span id="token17" class="token">Front Bumper - ₱ 3500.00</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-    
-                        <!-- Navigation Buttons for Tokens -->
-                        <div class="controls">
-                            <button onclick="prevTokenSet()">Previous</button>
-                            <button onclick="nextTokenSet()">Next</button>
-                        </div>
-    
-                        <!-- Add to Cart Button -->
-                        <div class="col-12 mt-3">
-                            <button class="btn btn-primary" id="calculate-total" onclick="calculateTotal()">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-<!-- Pickup Truck Body Panels Modal -->
-<div class="modal fade" id="pickupTruckModal" tabindex="-1" aria-labelledby="pickupTruckModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pickupTruckModalLabel">Select Tokens for Pickup Truck Body Panels</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="slider-container col-md-12">
-                    <div class="image-slider">
-                        <img id="pickup-slider-image" src="assets/img/bodypanels/pickup_panel.png" style="width: auto; height: auto;" alt="Pickup Truck Panel Image">
-                        <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
-
-                    </div>
-                    <div class="row">
-                        <!-- Pickup Truck Token Set 1 -->
-                        <div class="toggle-tokens" id="pickup-token-set-1" style="display: block;">
-                            <label>
-                                <input type="checkbox" id="pickup-token1-checkbox" onclick="togglePickupToken(1, 'Pickup FR Grille', 2500)">
-                                <span id="pickup-token1" class="token">FR Grille - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token2-checkbox" onclick="togglePickupToken(2, 'Pickup Engine Bay', 4000)">
-                                <span id="pickup-token2" class="token">Engine Bay - ₱ 4000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token3-checkbox" onclick="togglePickupToken(3, 'Pickup Underhood', 4500)">
-                                <span id="pickup-token3" class="token">Underhood - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token4-checkbox" onclick="togglePickupToken(4, 'Pickup Hood', 4500)">
-                                <span id="pickup-token4" class="token">Hood - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token5-checkbox" onclick="togglePickupToken(5, 'Pickup Roof Rail', 2500)">
-                                <span id="pickup-token5" class="token">Roof Rail - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token6-checkbox" onclick="togglePickupToken(6, 'Pickup Roof', 6500)">
-                                <span id="pickup-token6" class="token">Roof - ₱ 6500.00</span>
-                            </label>
-                        </div>
-
-                        <!-- Pickup Token Set 2 -->
-                        <div class="toggle-tokens" id="pickup-token-set-2" style="display: none;">
-
-                            <label>
-                                <input type="checkbox" id="pickup-token7-checkbox" onclick="togglePickupToken(7, 'Pickup Right Side Mirror', 1500)">
-                                <span id="pickup-token7" class="token">Right Side Mirror - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token8-checkbox" onclick="togglePickupToken(8, 'Pickup Left Side Mirror', 1500)">
-                                <span id="pickup-token8" class="token">Left Side Mirror - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token9-checkbox" onclick="togglePickupToken(9, 'Pickup Side Panel', 5500)">
-                                <span id="pickup-token9" class="token">Side Panel - ₱ 5500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token10-checkbox" onclick="togglePickupToken(10, 'Pickup Tailgate', 4500)">
-                                <span id="pickup-token10" class="token">Tailgate - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token11-checkbox" onclick="togglePickupToken(11, 'Pickup Rear Bumper', 3500)">
-                                <span id="pickup-token11" class="token">Rear Bumper - ₱ 3500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token12-checkbox" onclick="togglePickupToken(12, 'Pickup Undercoat', 8500)">
-                                <span id="pickup-token12" class="token">Undercoat - ₱ 8500.00</span>
-                            </label>
-                        </div>
-
-                        <!-- Pickup Token Set 3 -->
-
-                        <div class="toggle-tokens" id="pickup-token-set-3" style="display: none;">
-                            <label>
-                                <input type="checkbox" id="pickup-token13-checkbox" onclick="togglePickupToken(13, 'Pickup Running Board', 1500)">
-                                <span id="pickup-token13" class="token">Running Board - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token14-checkbox" onclick="togglePickupToken(14, 'Pickup Left Door', 3000)">
-                                <span id="pickup-token14" class="token">Left Door - ₱ 3000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token15-checkbox" onclick="togglePickupToken(15, 'Pickup Right Door', 3000)">
-                                <span id="pickup-token15" class="token">Right Door - ₱ 3000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token16-checkbox" onclick="togglePickupToken(16, 'Pickup Fender', 2500)">
-                                <span id="pickup-token16" class="token">Fender - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token17-checkbox" onclick="togglePickupToken(17, 'Pickup Flarings', 1500)">
-                                <span id="pickup-token17" class="token">Flarings - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="pickup-token18-checkbox" onclick="togglePickupToken(18, 'Pickup Front Bumper', 3500)">
-                                <span id="pickup-token18" class="token">Front Bumper - ₱ 3500.00</span>
-                            </label>
-                        </div>
-
-                    </div>
-
-                    <!-- Navigation Buttons for Pickup Truck Tokens -->
-                    <div class="controls">
-                        <button onclick="prevPickupTokenSet()">Previous</button>
-                        <button onclick="nextPickupTokenSet()">Next</button>
-                    </div>
-
-                    <!-- Add to Cart Button -->
-                    <div class="col-12 mt-3">
-                        <button class="btn btn-primary" id="calculate-pickup-total" onclick="calculatePickupTotal()">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- SUV Body Panels Modal -->
-<div class="modal fade" id="suvModal" tabindex="-1" aria-labelledby="suvModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="suvModalLabel">Select Tokens for SUV Body Panels</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="slider-container col-md-12">
-                    <div class="image-slider">
-                        <img id="suv-slider-image" src="assets/img/bodypanels/suv_panel.png" style="width: auto; height: auto;" alt="SUV Panel Image">
-                        <p class="mt-2 mb-1" style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>You can <span style="color: red; font-weight: bold;">select 1 or more panels </span>from the selection below. <br>Click next to view other panels.</i></p>
-                    </div>
-                    <div class="row">
-                        <!-- SUV Token Set 1 -->
-                        <div class="toggle-tokens" id="suv-token-set-1" style="display: block;">
-                            <label>
-                                <input type="checkbox" id="suv-token1-checkbox" onclick="toggleSuvToken(1, 'SUV FR Grille', 2500)">
-                                <span id="suv-token1" class="token">FR Grille - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token2-checkbox" onclick="toggleSuvToken(2, 'SUV Engine Bay', 4000)">
-                                <span id="suv-token2" class="token">Engine Bay - ₱ 4000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token3-checkbox" onclick="toggleSuvToken(3, 'SUV Underhood', 4500)">
-                                <span id="suv-token3" class="token">Underhood - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token4-checkbox" onclick="toggleSuvToken(4, 'SUV Hood', 4500)">
-                                <span id="suv-token4" class="token">Hood - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token5-checkbox" onclick="toggleSuvToken(5, 'SUV Roof Rail', 2500)">
-                                <span id="suv-token5" class="token">Roof Rail - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token6-checkbox" onclick="toggleSuvToken(6, 'SUV Roof', 6500)">
-                                <span id="suv-token6" class="token">Roof - ₱ 6500.00</span>
-                            </label>
-                        </div>
-
-                        <!-- SUV Token Set 2 -->
-                        <div class="toggle-tokens" id="suv-token-set-2" style="display: none;">
-                            
-                            <label>
-                                <input type="checkbox" id="suv-token7-checkbox" onclick="toggleSuvToken(7, 'SUV Right Side Mirror', 1500)">
-                                <span id="suv-token7" class="token">Right Side Mirror - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token8-checkbox" onclick="toggleSuvToken(8, 'SUV Left Side Mirror', 1500)">
-                                <span id="suv-token8" class="token">Left Side Mirror - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token9-checkbox" onclick="toggleSuvToken(9, 'SUV QTR Panel', 5500)">
-                                <span id="suv-token9" class="token">QTR Panel - ₱ 5500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token10-checkbox" onclick="toggleSuvToken(10, 'SUV Tail Gate Cover', 4500)">
-                                <span id="suv-token10" class="token">Tail Gate Cover - ₱ 4500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token11-checkbox" onclick="toggleSuvToken(11, 'SUV Rear Bumper', 3500)">
-                                <span id="suv-token11" class="token">Rear Bumper - ₱ 3500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token12-checkbox" onclick="toggleSuvToken(12, 'SUV Undercoat', 8500)">
-                                <span id="suv-token12" class="token">Undercoat - ₱ 8500.00</span>
-                            </label>
-                        </div>
-
-                        <!-- SUV Token Set 3 -->
-                        <div class="toggle-tokens" id="suv-token-set-3" style="display: none;">
-                            <label>
-                                <input type="checkbox" id="suv-token13-checkbox" onclick="toggleSuvToken(13, 'SUV Running Board', 1500)">
-                                <span id="suv-token13" class="token">Running Board - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token14-checkbox" onclick="toggleSuvToken(14, 'SUV Left Door', 3000)">
-                                <span id="suv-token14" class="token">Left Door - ₱ 3000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token15-checkbox" onclick="toggleSuvToken(15, 'SUV Right Door', 3000)">
-                                <span id="suv-token15" class="token">Right Door - ₱ 3000.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token16-checkbox" onclick="toggleSuvToken(16, 'SUV Left Door', 2500)">
-                                <span id="suv-token16" class="token">Fender - ₱ 2500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token17-checkbox" onclick="toggleSuvToken(17, 'SUV Flarings', 1500)">
-                                <span id="suv-token17" class="token">Flarings - ₱ 1500.00</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" id="suv-token18-checkbox" onclick="toggleSuvToken(18, 'SUV Front Bumper', 3500)">
-                                <span id="suv-token18" class="token">Front Bumper - ₱ 3500.00</span>
-                            </label>
-
-                        </div>
-                    </div>
-
-                    <!-- Navigation Buttons for SUV Tokens -->
-                    <div class="controls">
-                        <button onclick="prevSuvTokenSet()">Previous</button>
-                        <button onclick="nextSuvTokenSet()">Next</button>
-                    </div>
-
-                    <!-- Add to Cart Button -->
-                    <div class="col-12 mt-3">
-                        <button class="btn btn-primary" id="calculate-suv-total" onclick="calculateSuvTotal()">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
     
 
     <footer class="page-footer dark">
@@ -521,145 +171,285 @@
     <script src="assets/js/vanilla-zoom.js"></script>
     <script src="assets/js/theme.js"></script>
     
-
     
-   <script>
-    let allServices = []; // To hold all services fetched from the backend
-let selectedServices = []; // To track services added to the summary
-const appointmentFee = 500; // Fixed appointment fee
+    <script>
+        let allServices = []; // To hold all services fetched from the backend
+        let selectedServices = []; // To track services added to the summary
+        
+       
 
-function alertLoginRequired(event) {
-            event.preventDefault(); // Prevents navigation to the login page immediately
-            alert("You need to log in first to proceed.");
-            // Optionally, you can redirect after the alert if needed:
-            window.location.href = "login.html"; // Uncomment this line if you want to navigate to the login page after the alert
+        //FILTER BY CATEGORY BUTTONS
+        function filterProducts(category) {   
+
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products first
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
+
+            if (category === 'all') {
+                displayServices(allServices); // Show all services if "all" is selected
+            } else {
+                const filteredServices = allServices.filter(service => service.category === category);
+                displayServices(filteredServices); // Show only filtered services
+            }
+    
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+            document.querySelector(`[onclick="filterProducts('${category}')"]`).style.backgroundColor = 'rgb(169, 11, 11)';
         }
 
-// Fetch Services from Backend (Admin CMS)
-async function fetchServices() {
- try {
-     const response = await fetch('/api/services'); // Replace this with your actual API endpoint
-     allServices = await response.json();
-     displayServices(allServices);
- } catch (error) {
-     console.error('Error fetching services:', error);
-     alert('Unable to load services. Please try again later.');
- }
-}
+        //FILTER BY CATEGORY DROPDOWN (MEDIA QUERY)
+        function filterByCategory(category) {
+            // Hide all products first
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                product.style.display = 'none'; 
+                if (product.classList.contains(category)) {
+                    product.style.display = 'block'; // Show only products in the selected category
+                }
+            });
 
-// Display Services on the Page
+            // Filter services based on selected category
+            if (category === 'all') {
+                displayServices(allServices); // Show all services if "all" is selected
+            } else {
+                const filteredServices = allServices.filter(service => service.category === category);
+                displayServices(filteredServices); // Show only filtered services
+            }
+
+            // Reset background color for category buttons
+            const categoryButtons = document.querySelectorAll('.category-button');
+            categoryButtons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+
+            // If the category is "all", no button is highlighted
+            if (category !== 'all') {
+                // Assuming category buttons have corresponding `onclick` handlers to filter by category
+                const activeButton = document.querySelector(`[onclick="filterProducts('${category}')"]`);
+                if (activeButton) {
+                    activeButton.style.backgroundColor = 'rgb(169, 11, 11)'; // Set active color
+                }
+            }
+        }
+
+
+        
+
+
+        // Fetch Services from Backend (Admin CMS)
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services'); // Replace this with your actual API endpoint
+                allServices = await response.json();
+                displayServices(allServices);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+                alert('Unable to load services. Please try again later.');
+            }
+        }
+
+    
+        // Display Services on the Page
 function displayServices(services) {
- const container = document.querySelector('.product-grid');
- container.innerHTML = '';
+    const container = document.querySelector('.product-grid');
+    container.innerHTML = '';
 
- if (services.length === 0) {
-     container.innerHTML = '<p>No services available at the moment.</p>';
-     return;
- }
+    if (services.length === 0) {
+        container.innerHTML = '<p>No services available at the moment.</p>';
+        return;
+    }
 
- services.forEach(service => {
-     const product = document.createElement('div');
-     product.className = `product ${service.category} product-container`;
-     product.innerHTML = `
-         <div class="product-image">
-             <img class="img-fluid d-block mx-auto image" src="${service.image}" alt="${service.name}">
-         </div>
-         <div class="product-info">
-             <div class="details-column">
-                 <p class="product-name">${service.name}</p>
-                 <div class="price">
-                     <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
-                 </div>
-                 <button class="btn btn-primary add-to-summary btn-sm" 
-                     onclick="addToSummary('${service.id}', '${service.name}', ${service.price})">Add Service</button>
-             </div>
-         </div>`;
-     container.appendChild(product);
- });
+    services.forEach(service => {
+        const product = document.createElement('div');
+        product.className = `product ${service.category} product-container`;
+
+        // Limit for description
+        const charLimit = 70;
+        const shortDesc = service.description.length > charLimit 
+            ? service.description.substring(0, charLimit) + '...' 
+            : service.description;
+
+        product.innerHTML = `
+            <div class="product-image">
+                <img class="img-fluid d-block mx-auto image" style="width: auto; height: 200px;" 
+                     src="${service.image}" alt="${service.name}" />
+            </div>
+            <div class="product-info">
+                <div class="details-column">
+                    <p class="product-name">${service.name}</p>
+                    <p class="desc">
+                        <span class="short-desc">${shortDesc}</span>
+                        <span class="full-desc" style="display: none;">${service.description}</span>
+                        ${service.description.length > charLimit 
+                            ? '<button class="see-more btn btn-link btn-sm">See more</button>' 
+                            : ''}
+                    </p>
+                    <br>
+                    <div class="price">
+                        <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
+                    </div>
+                    <button class="btn btn-primary add-to-summary btn-sm" 
+                        onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.image}')">
+                        Add Service
+                    </button>
+                </div>
+            </div>`;
+
+        container.appendChild(product);
+
+        // Add event listener for "See more" button
+        const seeMoreBtn = product.querySelector('.see-more');
+        if (seeMoreBtn) {
+            seeMoreBtn.addEventListener('click', () => {
+                const fullDesc = product.querySelector('.full-desc');
+                const shortDesc = product.querySelector('.short-desc');
+                if (fullDesc.style.display === 'none') {
+                    fullDesc.style.display = 'inline';
+                    shortDesc.style.display = 'none';
+                    seeMoreBtn.textContent = 'See less';
+                    
+                } else {
+                    fullDesc.style.display = 'none';
+                    shortDesc.style.display = 'inline';
+                    seeMoreBtn.textContent = 'See more';
+                }
+            });
+        }
+    });
 }
 
-// Filter Services by Category
-function filterServices(category) {
- if (category === 'all') {
-     displayServices(allServices);
- } else {
-     const filteredServices = allServices.filter(service => service.category === category);
-     displayServices(filteredServices);
- }
-}
+        // Add Service to Summary
+        function addToSummary(_id, name, price, image) {
+            if (selectedServices.find(service => service._id === _id)) { // Change some() to find()
+                alert(`${name} is already in the summary!`);
+                return;
+            }
+            selectedServices.push({ _id, name, price, image });
+            localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
+            
+            updateSummary();
 
-// Add Service to Summary
-function addToSummary(id, name, price) {
- if (selectedServices.some(service => service.id === id)) {
-     alert(`${name} is already in the summary!`);
-     return;
- }
+            const button = document.querySelector(`button[onclick*="${_id}"]`);
+            if (button) {
+                button.disabled = true;
+                button.textContent = "Added";
+                button.style.backgroundColor = "red";
+                button.style.borderColor = "red";
+            }
+        }
+    
+        // Cancel Service from Summary
+        function cancelFromSummary(_id) {
+            const service = selectedServices.find(service => service._id === _id);
+            if (service) {
+                
+                localStorage.removeItem('selectedServices'); // Clear localStorage
+                selectedServices = selectedServices.filter(service => service._id !== _id);
+                updateSummary();
 
- // Add the service to the summary
- selectedServices.push({ id, name, price });
- localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
- alert(`${name} has been added to the SUMMARY.`);
- updateSummary();
-}
+                const button = document.querySelector(`button[onclick*="${_id}"]`);
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = "Add Service";
+                    button.style.backgroundColor = "#0d6efd";
+                    button.style.borderColor = "#0d6efd";
+                }
+            }
+        }
+    
+        // Clear All Services from Summary
+        function clearCart() {
+            if (selectedServices.length === 0) {
+                alert('No services to clear.');
+                return;
+            }
+    
+            if (confirm('Are you sure you want to clear all selected services?')) {
+                selectedServices = [];
+                alert('All services have been cleared from the SUMMARY.');
 
-// Cancel Service from Summary
-function cancelFromSummary(id) {
- const service = selectedServices.find(service => service.id === id);
- if (service) {
-     alert(`${service.name} has been removed from the SUMMARY.`);
-     selectedServices = selectedServices.filter(service => service.id !== id);
-     updateSummary();
- }
-}
+                const buttons = document.querySelectorAll('button[onclick*="addToSummary"]');
+        buttons.forEach(button => {
+            button.disabled = false;
+            button.textContent = "Add Service";
+            button.style.backgroundColor = "#0d6efd";
+            button.style.borderColor = "#0d6efd";
+        });
 
-// Clear All Services
-function clearCart() {
- if (confirm('Are you sure you want to clear all selected services?')) {
-     selectedServices = [];
-     localStorage.removeItem('selectedServices'); // Clear localStorage
-     updateSummary();
-     alert('All services have been cleared from the SUMMARY.');
- }
-}
+                updateSummary();
+            }
+            
+        }
+    
+        // Update the Summary Section
+        function updateSummary() {
+            const summaryContainer = document.getElementById('cart-details');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            
+            // Clear previous summary
+            summaryContainer.innerHTML = '';
 
-// Update the Summary Section
-function updateSummary() {
- const summaryContainer = document.getElementById('cart-details');
- const subtotalElement = document.getElementById('subtotal');
- const totalElement = document.getElementById('total');
- 
- // Clear previous summary
- summaryContainer.innerHTML = '';
+            if (selectedServices.length === 0) {
+                summaryContainer.innerHTML = '<p>No services selected yet.</p>';
+                subtotalElement.textContent = '₱ 0.00';
+                totalElement.textContent = '₱ 0.00'; 
+                return;
+            }
 
- if (selectedServices.length === 0) {
-     summaryContainer.innerHTML = '<p>No services selected yet.</p>';
-     subtotalElement.textContent = '₱ 0';
-     totalElement.textContent = '₱ 500.00';
-     return;
- }
- let subtotal = 0;
+            let subtotal = 0;
+            document.getElementById('cart-details').style.display = 'block';
+            
+            // Loop through selected services and add them to the summary
+            selectedServices.forEach(service => {
+                subtotal += service.price;
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'cart-item d-flex align-items-center';
+                summaryItem.innerHTML = `
+                    <div class="cart-item-box d-flex align-items-center">
+                        <img src="${service.image}" alt="${service.name}" style="width: 40px; margin-right: 10px; margin-left: 10px; margin-bottom: 1px;">
+                        <span style="flex: 1; margin-right: 10px;">${service.name}</span>
+                        <span style="margin-right: 0px; ">₱ ${service.price.toFixed(2)}</span>
+                        <button class="btn cancel-button" onclick="cancelFromSummary('${service._id}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>`;
+                summaryContainer.appendChild(summaryItem);
+                
+            });
 
- selectedServices.forEach(service => {
-     subtotal += service.price;
-     const summaryItem = document.createElement('div');
-     summaryItem.className = 'summary-item';
-     summaryItem.innerHTML = `
-         <div class="d-flex justify-content-between align-items-center mb-2">
-             <span>${service.name}</span>
-             <span>₱ ${service.price.toFixed(2)}</span>
-             <button class="btn btn-danger btn-sm" onclick="cancelFromSummary('${service.id}')">Cancel</button>
-         </div>`;
-     summaryContainer.appendChild(summaryItem);
- });
+            subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
+            totalElement.textContent = `₱ ${(subtotal).toFixed(2)}`; 
+        }
 
- subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
- totalElement.textContent = `₱ ${(subtotal + appointmentFee).toFixed(2)}`;
-}
+    
+        // Search Services
+        function searchServices() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            const filteredServices = allServices.filter(service =>
+                service.name.toLowerCase().includes(searchTerm)
+            );
+            displayServices(filteredServices);
+        }
 
-// Initial Fetch of Services on Page Load
-fetchServices();
+        document.getElementById('login-link').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default link action
+            alert('You need to login first to continue.'); // Show alert
+            window.location.href = 'login.html'; // Redirect to login page
+        });
 
- </script> 
+        
+    
+        // Event Listener for Search
+        document.querySelector('.search-input').addEventListener('input', searchServices);
+    
+        // Initial Fetch of Services on Page Load
+        fetchServices();
+    </script>
     
     
 </body>
