@@ -217,6 +217,7 @@
             </div>
             <div class="modal-body">
                 <form id="vehicleForm">
+                    <div class="vehicle-entry">
                     <div class="row">
                         <div class="col-md-6">                    
                             <label for="brandModel">Brand Model: <input type="text" placeholder="Example: Toyota Avanza" name="BrandModel" id="brandModel" required></label>
@@ -245,7 +246,7 @@
 
                         <div class="col-md-6">
                             <label for="vehicleImage" class="mb-3">Vehicle Image (optional): 
-                                <input type="file" accept="image/*" name="VehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" name="vehicleImage" id="vehicleImage" class="mt-2" onchange="previewImage(event)">
                             </label>
                             <div id="imagePreview" class="image-preview">
                                 <img id="preview" src="#" alt="Image Preview" style="display: none;">
@@ -258,6 +259,7 @@
                             <br>
                             <p style="opacity: .5; font-size: 14px;"><i>Note: Reynaldo's Car Care Center doesn't accomodate Electric Vehicles.</i></p>
                         </div>
+                    </div>
                     </div>
                 </form>
             </div>
@@ -276,209 +278,195 @@
     let isEditing = false;
     let currentItem = null; // Store the item being edited
 
-    function toggleSidebar() {
-        document.getElementById("sidebar").classList.toggle("minimized");
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("minimized");
+}
+
+$(document).ready(function () {
+    // Function to preview the selected image
+    function previewImage(event) {
+        const fileInput = event.target; // Get the input element
+        const preview = document.getElementById('preview'); // Get the preview element
+        const removeButton = document.getElementById('removeImageButton'); // Get the remove button
+        const file = fileInput.files[0]; // Get the selected file
+
+        if (file) {
+            const reader = new FileReader(); // Create a FileReader to read the file
+            reader.onload = function () {
+                preview.src = reader.result; // Set the preview image's source
+                preview.style.display = 'block'; // Show the preview image
+                removeButton.style.display = 'inline-block'; // Show the remove button
+            };
+            reader.readAsDataURL(file); // Read the file as a Data URL
+        } else {
+            preview.src = ''; // Clear the preview image
+            preview.style.display = 'none'; // Hide the preview image
+            removeButton.style.display = 'none'; // Hide the remove button
+        }
     }
 
-    $(document).ready(function () {
-        // Function to preview the selected image
-        function previewImage(event) {
-            const preview = document.getElementById('preview');
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            const removeButton = document.getElementById('removeImageButton');
+    // Function to remove the selected image
+    function removeImage() {
+        document.getElementById('vehicleImage').value = '';
+        previewImage({ target: { files: [] } }); // Clear file input
+        document.getElementById('preview').src = ''; // Clear preview
+        document.getElementById('preview').style.display = 'none'; // Hide preview
+        document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
+    }
 
-            reader.onload = function() {
-                preview.src = reader.result;
-                preview.style.display = 'block';
-                removeButton.style.display = 'inline-block'; // Show Remove Image button
-            };
+    // Click event for #saveVehicleButton
+    $('#saveVehicleButton').click(function () {
+        const formData = new FormData();
+        const brandModel = $('#vehicleModal').find('#brandModel').val().trim();
+        const color = $('#vehicleModal').find('#color').val().trim();
+        const plateNumber = $('#vehicleModal').find('#platenum').val().trim();
+        const yearModel = $('#vehicleModal').find('#yearmodel').val().trim();
+        const transmission = $('#vehicleModal').find('#transmission').val();
+        const imageFile = $('#vehicleModal').find('#vehicleImage')[0]?.files[0]; // Updated to match `vehicleImage`
 
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = '';
-                preview.style.display = 'none';
-                removeButton.style.display = 'none'; // Hide Remove Image button if no file
-            }
+        // Validate required fields
+        if (!brandModel || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
+            alert('Please fill out all required vehicle fields.');
+            return;
         }
 
-        // Function to remove the selected image
-        function removeImage() {
-            document.getElementById('vehicleImage').value = ''; // Clear file input
-            document.getElementById('preview').src = ''; // Clear preview
-            document.getElementById('preview').style.display = 'none'; // Hide preview
-            document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
-        }
-
-        // Click event for #saveVehicleButton
-        $('#saveVehicleButton').click(function () {
-            // Collect values from vehicle modal fields
-            const brandModel = $('#brandModel').val().trim();
-            const color = $('#color').val().trim();
-            const plateNumber = $('#platenum').val().trim();
-            const yearModel = $('#yearmodel').val().trim();
-            const transmission = $('#transmission').val();
-            const previewSrc = $('#preview').attr('src');  // Get image preview src if it exists
-
-            // Validate required fields
-            if (!brandModel || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
-                alert('Please fill out all required vehicle fields.');
-                return;
-            }
-
-            // Add vehicle data to the global vehicles array
-     let vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
-            vehicles.push({
-                brandModel: brandModel,
-                color: color,
-                plateNumber: plateNumber,
-                yearModel: yearModel,
-                transmission: transmission
-            });
-
-            // Create a new vehicle item and append it to the vehicle list
-            const vehicleItem = document.createElement('div');
-            vehicleItem.className = 'alert alert-info mt-2';
-            vehicleItem.innerHTML = `
-                <div style="background-color: white; padding: 10px; border-radius: 5px;">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <strong>Vehicle ${vehicles.length}:</strong><br><br>
-                            <strong>Brand Model:</strong> ${brandModel} <br>
-                            <strong>Color:</strong> ${color} <br>
-                            <strong>Plate #:</strong> ${plateNumber} <br>
-                            <strong>Year Model:</strong> ${yearModel} <br>
-                            <strong>Transmission:</strong> ${transmission}
-                        </div>
-                        <div class="col-md-6">
-                            <div class="image-preview mt-2">
-                                ${previewSrc && previewSrc !== '#' ? `<img src="${previewSrc}" alt="Vehicle Image" style="max-width:100%; max-height:100%; object-fit: cover;">` : ''}
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                            </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-
-            document.getElementById('vehicleList').appendChild(vehicleItem);
-
-            // Attach edit and delete event listeners to the new item
-            $(vehicleItem).find('.edit-btn').on('click', function () {
-                editVehicle(vehicleItem, brandModel, color, plateNumber, yearModel, transmission, previewSrc);
-            });
-            $(vehicleItem).find('.delete-btn').on('click', function () {
-                deleteVehicle(vehicleItem);
-            });
-
-            // Reset the form fields and image preview in the modal after saving
-            document.getElementById('vehicleForm').reset();
-            removeImage();  // Clears image preview
-            bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+        // Add vehicle data to the global vehicles array
+        vehicles.push({
+            brandModel,
+            color,
+            plateNumber,
+            yearModel,
+            transmission,
+            imageUrl: imageFile ? URL.createObjectURL(imageFile) : null // Temporary URL for preview
         });
 
-        // Function to edit a vehicle entry
-        function editVehicle(item, brandModel, color, plateNumber, yearModel, transmission, previewSrc) {
-            $('#brandModel').val(brandModel);
-            $('#color').val(color);
-            $('#platenum').val(plateNumber);
-            $('#yearmodel').val(yearModel);
-            $('#transmission').val(transmission);
-            $('#preview').attr('src', previewSrc).css('display', previewSrc ? 'block' : 'none');
-            $('#removeImageButton').css('display', previewSrc ? 'inline-block' : 'none');
-            isEditing = true;
-            currentItem = item;
-            bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).show();
+        formData.append('brandModel', brandModel);
+        formData.append('color', color);
+        formData.append('plateNumber', plateNumber);
+        formData.append('yearModel', yearModel);
+        formData.append('transmission', transmission);
+        formData.append('image', imageFile); // Append the image file
+        
+
+        // Log for debugging
+        console.log('Vehicle Added:', vehicles);
+
+        // Create a new vehicle item and append it to the vehicle list
+        const vehicleList = $('#vehicleList');
+        const vehicleItem = $(`
+            <div style="background-color: white; padding: 10px; border-radius: 5px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Vehicle ${vehicles.length}:</strong><br><br>
+                        <strong>Brand Model:</strong> ${brandModel} <br>
+                        <strong>Color:</strong> ${color} <br>
+                        <strong>Plate #:</strong> ${plateNumber} <br>
+                        <strong>Year Model:</strong> ${yearModel} <br>
+                        <strong>Transmission:</strong> ${transmission}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="image-preview mt-2">
+                            ${imageFile ? `<img src="${URL.createObjectURL(imageFile)}" alt="Vehicle Image" style="max-width:100%; max-height:100%; object-fit: cover;">` : ''}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`);
+
+        vehicleList.append(vehicleItem);
+
+        // Attach edit and delete event listeners to the new item
+        $(vehicleItem).find('.edit-btn').on('click', function () {
+            editVehicle(vehicleItem, brandModel, color, plateNumber, yearModel, transmission, imageFile);
+        });
+        $(vehicleItem).find('.delete-btn').on('click', function () {
+            deleteVehicle(vehicleItem);
+        });
+
+        // Reset the form fields and image preview in the modal after saving
+        $('#vehicleForm')[0].reset();
+        $('#preview').attr('src', '').hide();
+        $('#removeImageButton').hide();
+        bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+    });
+
+    // Attach the previewImage function to the file input
+    $('#vehicleImage').on('change', previewImage);
+
+    // Remove image button click handler
+    $('#removeImageButton').on('click', removeImage);
+
+    // Registration form submission
+    $('#registrationForm').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Capture values from customer information fields
+        const name = $('#name').val().trim();
+        const phonenumber = $('#phonenumber').val().trim();
+        const email = $('#email').val().trim();
+        const city = $('#city').val().trim();
+        const password = $('#password').val().trim();
+
+        if (vehicles.length === 0) {
+            alert('Please add at least one vehicle.');
+            return;
         }
 
-        // Function to delete a vehicle entry
-        function deleteVehicle(item) {
-            $(item).remove();
-            const index = $(item).index();
-            vehicles.splice(index, 1);
-            renumberVehicles();
-        }
+        // Prepare user data
+        const userData = {
+            name,
+            phonenumber,
+            email,
+            city,
+            password,
+            vehicles // Attach the global vehicles array
+        };
 
-        // Function to renumber vehicles after deletion
-        function renumberVehicles() {
-            $('#vehicleList .alert').each((index, vehicleItem) => {
-                $(vehicleItem).find('strong').first().text(`Vehicle ${index + 1}:`);
-            });
-        }
+        console.log('Final User Data Sent:', userData);
 
-        // Attach the previewImage function to the file input
-        $('#vehicleImage').on('change', previewImage);
-
-        // Remove image button click handler
-        $('#removeImageButton').on('click', removeImage);
-
-        $('#registrationForm').submit(function (event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Capture values from customer information fields
-    const name = $('#name').val().trim();
-    const phonenumber = $('#phonenumber').val().trim();
-    const email = $('#email').val().trim();
-    const city = $('#city').val().trim();
-    const password = $('#password').val().trim();
-
-
-    // Store user data in local storage 
-    const userData = { name, phonenumber, email, city, password, vehicles };
-    localStorage.setItem('userData', JSON.stringify(userData));
-
-    // Send the captured data to the backend via AJAX
-    $.ajax({
-        type: 'POST',
-        url: '/registration',
-        data: JSON.stringify(userData),
-        contentType: 'application/json',
-        success: function (response) {
-            alert(response.message);
-            if (response.message) {
-                window.location.href = '/homepage.html'; // Redirect on success
+        // Send the data to the backend
+        $.ajax({
+            type: 'POST',
+            url: '/registration',
+            data: JSON.stringify(userData),
+            contentType: 'application/json',
+            success: function (response) {
+                alert(response.message);
+                if (response.message) {
+                    window.location.href = '/homepage.html'; // Redirect on success
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred: ' + (xhr.responseText || status || error));
             }
+        });
+    });
+$.ajax({
+        type: 'POST',
+        url: '/uploadVehicle',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            alert('Vehicle saved successfully!');
+            console.log('Response:', response);
         },
-        error: function (xhr, status, error) {
-            // Display an error message if something goes wrong
-            alert('An error occurred: ' + (xhr.responseText || status || error));
+        error: function (error) {
+            alert('Error saving vehicle.');
+            console.error('Error:', error);
         }
     });
 });
 
-        // Get verification code button
-        // $('#getCodeButton').click(function () {
-        //     const email = $('#email').val();
-            
-        //     if (!email) {
-        //         alert('Please enter your email.');
-        //         return;
-        //     }
-
-        //     // Send code request
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/send-code',
-        //         data: JSON.stringify({ email }),
-        //         contentType: 'application/json',
-        //         success: function (response) {
-        //             alert(response.message);
- 
-        //         },
-        //         error: function (xhr, status, error) {
-        //             alert('An error occurred while sending the code: ' + (xhr.responseText || status || error));
-        //         }
-        //     });
-        // });
-    });
 </script>
-<script
+
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

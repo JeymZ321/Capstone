@@ -156,7 +156,9 @@
                                         <button id="show-slots-btn" type="button">Show Available Slots</button>
                                         </div>
                                     -->
-
+                                    <div class="col-7 mt-3">
+                                        <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Advance your selecting time in 30mins, incase your are attend on exact time. Thankyou!</i></p>
+                                    </div>
                                     <h3 class="mt-4">Additional Information</h3>
                                     <div class="col-5">
                                         <label>Is the car functional?</label>
@@ -444,6 +446,7 @@ $('#show-slots-btn').on('click', function() {
             contentType: 'application/json',
             success: function (response) {
                 console.log('Success:', response);
+                localStorage.setItem('userEmail', $('#email').val());
                 $('#success-message').show().delay(3000).fadeOut(function() {
         // Redirect to payment page using the URL from the response
             if (response.redirectUrl) {

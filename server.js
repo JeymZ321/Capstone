@@ -22,8 +22,6 @@ const UnverifiedAdmin = require('./models/UnverifiedAdmin');
 //const profileRoutes = require('./public/profile');
 const path = require('path');
  
-
-
 const port = 3000;
 
 const app = express();
@@ -43,9 +41,10 @@ app.use(cors({
   origin: 'http://localhost:3000', // Replace with your frontend’s domain
   credentials: true  // Allows cookies and other credentials to be sent
 }));
-app.use(express.json());
+
+app.use(express.json({ limit: '10mb' }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
 //app.use('/profile', profileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the uploads directory
@@ -70,7 +69,28 @@ if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// File filter function to only allow certain types of images (jpeg, png, jpg)
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+  if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true); // Accept the file
+  } else {
+      cb(new Error('Invalid file type. Only JPG, PNG, and JPEG are allowed.'), false); // Reject the file
+  }
+};
+// Multer configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Directory to save uploaded files
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
 
+const upload = multer({ storage:storage, fileFilter:fileFilter,
+  limits: { fileSize: 2 * 1024 * 1024 }
+ });
 
 
             /*------------------------------CUSTOMER ROUTES------------------------------*/
@@ -78,64 +98,89 @@ if (!fs.existsSync(uploadsDir)) {
 /*----------CREATING AN ACCOUNT FOR USERS/ REGISTRATION FORM--------------*/
 
 app.post('/registration', async (req, res) => {
-  const { name, phonenumber, email, city, password, vehicles } = req.body; 
-  
-  if (!email) {
-      return res.status(400).json({ message: 'Email is required' });
-  }
-
-
-  // Hash the password
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
   try {
+      console.log('Request Body:', req.body);
+
+      const { name, phonenumber, email, city, password, vehicles } = req.body;
+
+      if (!email) {
+          return res.status(400).json({ message: 'Email is required' });
+      }
+
+      if (!Array.isArray(vehicles) || vehicles.length === 0) {
+          return res.status(400).json({
+              message: 'At least one vehicle must be added.',
+              errorDetails: 'No vehicle data received.'
+          });
+      }
+
+      // Hash password
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
       // Check if the email is already registered
       const existingCustomer = await customer.findOne({ email });
       if (existingCustomer) {
           return res.status(400).json({ message: 'Email is already registered' });
       }
 
-      // Create a new customer with provided information
-      const newUser = new customer({
-      
+      // Create a new customer with embedded vehicles
+      const newCustomer = new customer({
           name,
           phonenumber,
           email,
           city,
           password: hashedPassword,
-          isVerified: true
+          vehicles // Embed vehicles directly
       });
 
-      await newUser.save();
+      await newCustomer.save();
 
-      // Validate and save each vehicle associated with the new customer, if vehicles are provided
-    
-      for (let vehicle of vehicles) {
-      if (!vehicle.brandModel || !vehicle.color || !vehicle.plateNumber || !vehicle.yearModel || !vehicle.transmission ) {
+      res.status(200).json({
+          message: 'Welcome to Reynaldos Car Care! Thank you for your registration.',
+          customer: newCustomer
+      });
+
+  } catch (error) {
+      console.error('Error occurred during registration:', error);
+      res.status(500).json({ message: 'Account creation failed', error: error.message });
+  }
+});
+
+app.post('/uploadVehicle', upload.single('image'), async (req, res) => {
+  try {
+      const { brandModel, color, plateNumber, yearModel, transmission } = req.body;
+
+      if (!brandModel || !color || !plateNumber || !yearModel || !transmission) {
           return res.status(400).json({ message: 'All vehicle fields are required.' });
       }
 
-      const newVehicle = new Vehicle({
-          customerId: newUser._id,
-          brandModel: vehicle.brandModel,
-          color: vehicle.color,
-          plateNumber: vehicle.plateNumber,
-          yearModel: vehicle.yearModel,
-          transmission: vehicle.transmission    
-      });
-      await newVehicle.save();
-  }
-      // Remove the stored code after successful registration
-      delete verificationCodes[email];
+       // Get the uploaded image path (e.g., '/uploads/123456789-image.jpg')
+       let imageUrl = null;
+       if (req.file) {
+           imageUrl = `/uploads/${req.file.filename}`; // Path to the image in the server
+       }
 
-      // Set the session with the user's email
-      req.session.email = newUser.email;
+      // Add the vehicle to the database
+      const vehicle = {
+          brandModel,
+          color,
+          plateNumber,
+          yearModel,
+          transmission,
+          imageUrl
+      };
 
-      res.status(200).json({ message: 'Welcome to Reynaldos Car Care!, Thankyou for you registration' });
+      // Assuming you have a `Customer` schema with vehicles embedded
+      await customer.updateOne(
+          { email: req.body.email }, // Assuming email is used to find the customer
+          { $push: { vehicles: vehicle } }
+      );
+
+      res.status(200).json({ message: 'Vehicle saved successfully.', vehicle });
   } catch (error) {
-      console.log('Account creation failed:', error);
-      res.status(500).json({ message: 'Account creation failed' });
+      console.error('Error uploading vehicle:', error);
+      res.status(500).json({ message: 'Error saving vehicle.' });
   }
 });
 
@@ -216,7 +261,8 @@ app.post('/loginroute', async (req, res) => {
       // Login successful, return the homepage
       res.status(200).json({ 
         message: 'Login successful', 
-        redirectUrl: 'homepage.html', 
+        redirectUrl: 'homepage.html',
+        customerId: user._id,
         name: user.name, 
         email: user.email});
   } catch (error) {
@@ -224,31 +270,6 @@ app.post('/loginroute', async (req, res) => {
       res.status(500).json({ message: 'Error logging in' });
   }
 });
-
-
-/*------------------------Route to get the user's profile------------------------*/
-// app.get('/api/profile', async (req, res) => {
-//   const { name } = req.query;
-
-//   try {
-//       // Find the user by username
-//       const user = await customer.findOne({ name});
-      
-//       if (!user) {
-//           return res.status(404).json({ message: 'User not found' });
-//       }
-
-//       // Send back both email and picture, along with username if needed
-//       res.status(200).json({
-//           name: user.name,
-//           email: user.email,
-//           //picture: user.picture || 'assets/img/default-user-icon.png'  // Default profile image
-//       });
-//   } catch (error) {
-//       console.error('Error fetching user profile:', error);
-//       res.status(500).json({ message: 'Server error fetching profile' });
-//   }
-// });
 
 
 /*---------------------------------ADMIN LOGIN-------------------------------------*/
@@ -446,8 +467,10 @@ app.post('/loginadmin', async (req, res) => {
     const mailOptions = {
       from: 'Reynaldo\'s Car Care',
       to: email,
-      subject: 'Admin Login Verification Code',
-      text: `Your verification code is: ${verificationCode}`,
+      subject: 'Verify your Admin Account',
+      text: ` Dear Admin,
+
+      Verification code: ${verificationCode} .For your security, please don't share this code with anyone else. If you did not make this request, ignore this message.`
     };
 
     transporter.sendMail(mailOptions, (error) => {
@@ -479,7 +502,7 @@ const isAuthenticated = (req, res, next) => {
   res.status(401).json({ message: "Unauthorized access. Please log in." });
 };
 
-app.post("/admin/update", isAuthenticated, async (req, res) => {
+app.post('/admin/update', isAuthenticated, async (req, res) => {
   try {
     const adminId = new mongoose.Types.ObjectId(req.session.adminId);
     const { username, email, currentPassword, newPassword, fullname, contact } = req.body;
@@ -677,7 +700,7 @@ app.get('/display/approved', async (req, res) => {
 
 
 
-/*----------------------APPOINTMENT FORM---------------*/
+/*---------------------- User dashboard Tracking---------------*/
 // Route to handle appointment form submissions
 app.post('/appointment', async (req, res) => {
   try {
@@ -702,7 +725,7 @@ app.post('/appointment', async (req, res) => {
       const savedAppointment = await newAppointment.save();
 
       // Respond with success message and saved appointment data
-      return res.status(200).json({ message: 'Appointment created successfully!, You can now proceed to the payment', appointment: savedAppointment, redirectUrl: '/payment.html' });
+      return res.status(200).json({ message: 'Appointment created successfully!, You can now proceed to the payment', appointment: savedAppointment, redirectUrl: '/userdashboard-request-tracking.html' });
   } catch (error) {
       console.error('Error creating appointment:', error);
       // Respond with error message if something goes wrong
@@ -710,19 +733,101 @@ app.post('/appointment', async (req, res) => {
   }
 });
 
-// app.get('/getUserData', (req, res) => {
-//   // Assume `req.user` contains user info if authenticated
-//   if (req.user) {
-//       res.json({
-//           name: req.user.name,
-//           phonenumber: req.user.phonenumber,
-//           email: req.user.email,
-//           city: req.user.city,
-//       });
-//   } else {
-//       res.status(401).send('User not authenticated');
-//   }
-// });
+app.get('/appointments', async (req, res) => {
+  try {
+    const { email } = req.query; // Assuming email is sent as a query param
+    const appointments = await Appointment.find({ email }).sort({ createdAt: -1 }); // Fetch user's appointments
+    res.status(200).json({ appointments });
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    res.status(500).json({ message: 'Error fetching appointments' });
+  }
+});
+
+app.delete('/appointments/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Validate the appointment ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.error('Invalid appointment ID:', id);
+      return res.status(400).json({ message: 'Invalid appointment ID format.' });
+    }
+
+    // Attempt to find and delete the appointment
+    const deletedAppointment = await Appointment.findByIdAndDelete(id);
+
+    if (!deletedAppointment) {
+      console.error('Appointment not found:', id);
+      return res.status(404).json({ message: 'Appointment not found.' });
+    }
+
+    console.log('Appointment deleted successfully:', deletedAppointment);
+    res.status(200).json({
+      message: 'Appointment deleted successfully.',
+      appointment: deletedAppointment,
+    });
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+    res.status(500).json({ message: 'Error deleting appointment.', error: error.message });
+  }
+});
+
+/*-------------------- User dashboard Vehicle--------------*/
+
+app.get('/vehicles', async (req, res) => {
+  const { customerId } = req.query;
+  console.log('Received customerId:', customerId);
+
+  if (!mongoose.Types.ObjectId.isValid(customerId)) {
+    console.error('Invalid customer ID format.');
+    return res.status(400).json({ message: 'Invalid customer ID format.' });
+  }
+
+  try {
+    const Customer = await customer.findById(customerId, 'vehicles');
+    if (!Customer) {
+      console.error('Customer not found.');
+      return res.status(404).json({ message: 'Customer not found.' });
+    }
+
+    console.log('Vehicles:', Customer.vehicles);
+    res.status(200).json({ vehicles: Customer.vehicles });
+  } catch (error) {
+    console.error('Error fetching vehicles:', error);
+    res.status(500).json({ message: 'Error fetching vehicles.' });
+  }
+});
+
+
+app.delete('/vehicles/:id', async (req, res) => {
+  const { id } = req.params;
+  const { customerId } = req.query; // Assuming customerId is passed as a query parameter
+
+  // Validate IDs
+  if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(customerId)) {
+    return res.status(400).json({ message: 'Invalid ID format.' });
+  }
+
+  try {
+    // Find the customer and remove the vehicle
+    const Customer = await customer.findByIdAndUpdate(
+      customerId,
+      { $pull: { vehicles: { _id: id } } }, // Remove vehicle with matching _id
+      { new: true } // Return the updated document
+    );
+
+    if (!Customer) {
+      return res.status(404).json({ message: 'Customer not found.' });
+    }
+
+    res.status(200).json({ message: 'Vehicle deleted successfully.', vehicles: Customer.vehicles }); // Corrected to use 'Customer'
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    res.status(500).json({ message: 'Error deleting vehicle.', error: error.message });
+  }
+});
+
 
 
 /*---------------------------CHANGE INTO /create-account---------------*/
@@ -764,8 +869,8 @@ app.post('/send-registration-email', async (req, res) => {
             address: 'caynojames07@gmail.com'
         },
         to: email,
-        subject: 'Complete Your Registration',
-        text: `You received this email because you visited our site. Click the link to proceed with registration: ${registrationLink}`
+        subject: 'Reynaldos Car Care Registration Form', 
+        text: `Welcome our dear new customers of Reynaldos Car Care Center! If you want to proceed to fill up you registration form, click this link: ${registrationLink}. If not just ignore this message`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -815,21 +920,6 @@ try {
     res.status(500).send('Error confirming registration.');
 }
 });
-
-
-// Multer configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // Directory to save images
-  },
-  filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage });
-
-
 
 // POST route for adding a new customer
 app.post('/Newcustomers', upload.single('vehicleImage'), async (req, res) => {
@@ -900,7 +990,7 @@ app.get('/display/archives', async (req, res) => {
 });
 
 
-
+/*-------------------- fetch CMS Services ------------------*/
 // GET: Fetch all services
 app.get('/api/services', async (req, res) => {
   try {

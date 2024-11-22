@@ -12,7 +12,7 @@ const NewCustomersSchema = new mongoose.Schema({
     carFunctionality: { type: String, enum: ['yes', 'no'], required: true },
     services: { type: String },
     vehicleImage: { type: String },
-    status: { type: String, default: 'archived' }
+    status: { type: String, default: 'accept' }
 }, { timestamps: true });
 
 const NewCustomers = mongoose.model('NewCustomers', NewCustomersSchema);

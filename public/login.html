@@ -82,6 +82,7 @@ input:-moz-autofill {
                         contentType: 'application/json',
                         success: function(response) {
                             if (response.message === 'Login successful') { 
+                                localStorage.setItem('customerId', response.customerId);
                                 window.location.href = response.redirectUrl;
                             } else {
                                 $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
