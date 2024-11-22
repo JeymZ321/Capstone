@@ -32,6 +32,11 @@
            
         }
 
+        .ui-datepicker,
+        .ui-timepicker-div {
+            z-index: 9999 !important;  /* Adjust this value if needed */
+        }
+
         .terms-content{
             word-wrap: break-word; 
             width: 500px;
@@ -94,17 +99,34 @@
         input[type="text"],
         input[type="email"],
         input[type="password"]{
-            width: 400px;
+            width: 300px;
         }
 
         #vehicle{
-            width: 400px;
+            width: 300px;
         }
 
         .terms-content{
             width: auto;
         }
-    }
+
+        .container{
+            padding: 0px !important;
+        }
+
+        }
+
+        @media (max-width: 1024px) {
+            input[type="text"],
+        input[type="email"],
+        input[type="password"]{
+            width: 300px;
+        }
+
+        #vehicle{
+            width: 300px;
+        }
+        }
     </style>
 </head>
 
@@ -313,7 +335,7 @@ $(document).ready(function () {
         dateFormat: 'dd/mm/yy',
         timeFormat: 'hh:mm tt', // 12-hour format with AM/PM
         minDate: 0, // Disable past dates
-        controlType: 'select', // Shows dropdowns for hour and minute selection
+        stepMinute: 1,
         oneLine: true // Shows date and time on the same line
     });
 

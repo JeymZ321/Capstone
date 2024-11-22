@@ -7,9 +7,11 @@
     <title>Admin CMS - Manage Services</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/admin-styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/admin.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
+
 </head>
 
 <body id="page-top">
@@ -74,38 +76,77 @@
         </nav>
     <div class="container my-5">
         <h1 class="text-center">Services Management</h1>
-        <form id="serviceForm" class="my-4" enctype="multipart/form-data">
-            <input type="hidden" id="serviceId">
-            <div class="mb-3">
-                <label for="serviceName" class="form-label">Service Name</label>
-                <input type="text" id="serviceName" class="form-control" placeholder="Enter service name" required>
+        <!-- Trigger Button for the Modal -->
+
+    
+
+<!-- Modal Structure -->
+<div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serviceModalLabel">Add New Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-                <label for="servicePrice" class="form-label">Service Price</label>
-                <input type="number" id="servicePrice" class="form-control" placeholder="Enter service price" required>
+            <div class="modal-body">
+                <!-- Service Form -->
+                <form id="serviceForm" enctype="multipart/form-data">
+                    <input type="hidden" id="serviceId">
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">Service Name</label>
+                        <input type="text" id="serviceName" class="form-control" placeholder="Enter service name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicePrice" class="form-label">Service Price</label>
+                        <input type="number" id="servicePrice" class="form-control" placeholder="Enter service price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceImage" class="form-label">Service Image</label>
+                        <img id="imagePreview" src="" alt="Current Service Image" style="display: none; width: 100%; max-height: 200px; margin-bottom: 10px; object-fit: contain;">
+                        <input type="file" id="serviceImage" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceCategory" class="form-label">Category</label>
+                        <select id="serviceCategory" class="form-control">
+                            <option value="mechanical">Mechanical</option>
+                            <option value="ac-services">AC Services</option>
+                            <option value="paint-restoration">Paint Restoration</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="panels">Panel Repairs</option>
+                            <option value="packages-promos">Packages and Promos</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDescription" class="form-label">Description</label>
+                        <textarea id="serviceDescription" class="form-control" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Save Service</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="serviceImage" class="form-label">Service Image</label>
-                <input type="file" id="serviceImage" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="serviceCategory" class="form-label">Category</label>
-                <select id="serviceCategory" class="form-control">
-                    <option value="mechanical">Mechanical</option>
-                    <option value="ac-services">AC Services</option>
-                    <option value="paint-restoration">Paint Restoration</option>
-                    <option value="electrical">Electrical</option>
-                    <option value="panels">Panel Repairs</option>
-                    <option value="packages-promos">Packages and Promos</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="serviceDescription" class="form-label">Description</label>
-                <textarea id="serviceDescription" class="form-control" placeholder="Enter description"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Save Service</button>
-        </form>        
+        </div>
+    </div>
+</div>
+    
         <h2 class="my-4">Existing Services</h2>
+        
+        <div class="search-bar mb-4">
+            <i class="fas fa-search ms-5 me-1" ></i>
+            <input type="text" placeholder="Search service..." class="search-input" id="search-input" style="width: 500px;"/>
+            <select id="category-dropdown" class="mobile-dropdown ms-4" style="height: 30px;" onchange="filterByCategory(this.value)">
+                <option value="all">All Categories</option>
+                <option value="mechanical">Mechanical</option>
+                <option value="ac-services">AC Services</option>
+                <option value="paint-restoration">Paint Restoration</option>
+                <option value="electrical">Electrical</option>
+                <option value="panels">Panel Repaints</option>
+                <option value="packages-promos">Packages and Promos</option>
+            </select>
+            <button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#serviceModal" style="float: right; font-size: 17px; background-color: darkred; border-color: darkred;">
+                Add New Service
+            </button>
+            <hr style="height: 2px;">
+        </div>
+
         <div id="servicesList" class="row"></div>
     </div>
  </div>
@@ -116,33 +157,79 @@
     <script src="assets/js/theme.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> <!-- Popper.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
+   let allServices = []; 
     let selectedServices = []; // Track selected services for the summary
 
     async function fetchServices() {
-        const response = await fetch('/api/services');
-        const services = await response.json();
-        const servicesList = document.getElementById('servicesList');
-        servicesList.innerHTML = '';
+    const response = await fetch('/api/services');
+    const services = await response.json();
+    allServices = services; // Store the fetched services for searching
+    displayServices(services);
+}
 
-        services.forEach(service => {
-            const col = document.createElement('div');
-            col.className = 'col-md-4 mb-3';
-            col.innerHTML = `
-                <div class="card">
-                    <img src="${service.image}" class="card-img-top" alt="${service.name}">
-                    <div class="card-body">
-                        <h5 class="card-title">${service.name}</h5>
-                        <p class="card-text">Price: ₱${service.price}</p>
-                        <p class="card-text">Category: ${service.category}</p>
-                        <p class="card-text">${service.description || 'No description provided.'}</p>
-                        <button class="btn btn-warning btn-md" onclick="editService('${service._id}')">Edit</button>
-                        <button class="btn btn-danger btn-md" onclick="deleteService('${service._id}')">Delete</button>
-                    </div>
-                </div>`;
-            servicesList.appendChild(col);
-        });
+
+function filterByCategory(category) {
+    const filteredServices = category === 'all' 
+        ? allServices 
+        : allServices.filter(service => service.category === category);
+    displayServices(filteredServices);
+}
+function displayServices(services) {
+    const servicesList = document.getElementById('servicesList');
+    servicesList.innerHTML = '';
+
+    services.forEach(service => {
+        const col = document.createElement('div');
+        col.className = 'col-md-2 mb-3';
+
+        // Truncate the description if it exceeds a certain length
+        const fullDescription = service.description || 'No description provided.';
+        const truncatedDescription = fullDescription.length > 100 ? fullDescription.substring(0, 100) + '...' : fullDescription;
+
+        col.innerHTML = `
+            <div class="card">
+                <img src="${service.image}" class="card-img-top" style="width: 150px; margin: 0 auto;" alt="${service.name}">
+                <div class="card-body">
+                    <h5 class="card-title">${service.name}</h5>
+                    <p class="card-text">Price: ₱${service.price}</p>
+                    <p class="card-text">Category: ${service.category}</p>
+                    <p class="card-text" id="description-${service._id}">
+                        ${truncatedDescription}
+                        ${fullDescription.length > 100 ? `
+                            <a href="#" class="see-more" onclick="toggleDescription('${service._id}', '${fullDescription.replace(/'/g, "\\'")}')">See More</a>
+                        ` : ''}
+                    </p>
+                    <button class="btn btn-warning btn-md" onclick="editService('${service._id}')">Edit</button>
+                    <button class="btn btn-danger btn-md" onclick="deleteService('${service._id}')">Delete</button>
+                </div>
+            </div>`;
+        servicesList.appendChild(col);
+    });
+}
+
+function toggleDescription(id, fullDescription) {
+    const descriptionElem = document.getElementById(`description-${id}`);
+    const isExpanded = descriptionElem.dataset.expanded === 'true';
+
+    if (isExpanded) {
+        // Collapse the description
+        descriptionElem.innerHTML = `
+            ${fullDescription.substring(0, 100)}...
+            <a href="#" class="see-more" onclick="toggleDescription('${id}', '${fullDescription.replace(/'/g, "\\'")}')">See More</a>
+        `;
+        descriptionElem.dataset.expanded = 'false';
+    } else {
+        // Expand the description
+        descriptionElem.innerHTML = `
+            ${fullDescription}
+            <a href="#" class="see-more" onclick="toggleDescription('${id}', '${fullDescription.replace(/'/g, "\\'")}')">See Less</a>
+        `;
+        descriptionElem.dataset.expanded = 'true';
     }
+}
 
     // Add to Summary
     function addToSummary(id, name, price) {
@@ -157,17 +244,35 @@
 
 
     // Edit Service
-    async function editService(id) {
-        const response = await fetch(`/api/services/${id}`);
-        const service = await response.json();
+    function editService(serviceId) {
+    const service = allServices.find(s => s._id === serviceId);
+    if (!service) return;
 
-        // Populate form with service data
-        document.getElementById('serviceId').value = service._id;
-        document.getElementById('serviceName').value = service.name;
-        document.getElementById('servicePrice').value = service.price;
-        document.getElementById('serviceCategory').value = service.category;
-        document.getElementById('serviceDescription').value = service.description;
+    document.getElementById('serviceId').value = service._id;
+    document.getElementById('serviceName').value = service.name;
+    document.getElementById('servicePrice').value = service.price;
+    document.getElementById('serviceCategory').value = service.category;
+    document.getElementById('serviceDescription').value = service.description;
+
+     // Show the current image as a preview
+     const imageInput = document.getElementById('serviceImage');
+    const imagePreview = document.getElementById('imagePreview');
+    if (service.image) {
+        imagePreview.src = service.image; // Assuming the `service.image` contains the image URL
+        imagePreview.style.display = 'block';
+    } else {
+        imagePreview.style.display = 'none';
     }
+
+    // Update modal title
+    document.getElementById('serviceModalLabel').textContent = 'Edit Service';
+    document.querySelector('#serviceForm button[type="submit"]').textContent = 'Save Changes';
+
+
+    // Open the modal
+    const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
+    modal.show();
+}
 
     // Delete Service
     async function deleteService(id) {
@@ -179,32 +284,78 @@
 
     // Save Service (Add or Edit)
     document.getElementById('serviceForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const id = document.getElementById('serviceId').value;
-        const name = document.getElementById('serviceName').value;
-        const price = document.getElementById('servicePrice').value;
-        const category = document.getElementById('serviceCategory').value;
-        const description = document.getElementById('serviceDescription').value;
-        const imageInput = document.getElementById('serviceImage');
+    const id = document.getElementById('serviceId').value;
+    const name = document.getElementById('serviceName').value;
+    const price = document.getElementById('servicePrice').value;
+    const category = document.getElementById('serviceCategory').value;
+    const description = document.getElementById('serviceDescription').value;
+    const imageInput = document.getElementById('serviceImage');
 
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('price', price);
-        formData.append('category', category);
-        formData.append('description', description);
-        if (imageInput.files[0]) {
-            formData.append('image', imageInput.files[0]);
-        }
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('category', category);
+    formData.append('description', description);
+    if (imageInput.files[0]) {
+        formData.append('image', imageInput.files[0]);
+    }
 
-        const method = id ? 'PUT' : 'POST';
-        const url = id ? `/api/services/${id}` : '/api/services';
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `/api/services/${id}` : '/api/services';
 
-        await fetch(url, { method, body: formData });
+    await fetch(url, { method, body: formData });
 
-        document.getElementById('serviceForm').reset();
-        fetchServices();
-    });
+    document.getElementById('serviceForm').reset();
+    const modal = bootstrap.Modal.getInstance(document.getElementById('serviceModal'));
+    modal.hide();
+    document.querySelector('.modal-backdrop')?.remove(); // Ensure backdrop is removed
+
+    fetchServices(); // Refresh the services list
+});
+
+// Ensure body scrolls properly after modal is closed
+document.getElementById('serviceModal').addEventListener('hidden.bs.modal', () => {
+    document.body.style.overflow = ''; // Allow scrolling
+    document.body.classList.remove('modal-open'); // Remove modal-open class
+    document.querySelector('.modal-backdrop')?.remove(); // Ensure backdrop is removed
+});
+
+
+// Ensure the backdrop is removed when the modal is fully hidden
+document.getElementById('serviceModal').addEventListener('hidden.bs.modal', () => {
+    document.querySelector('.modal-backdrop')?.remove();
+});
+
+
+    function searchServices() {
+    const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+    const filteredServices = allServices.filter(service =>
+        service.name.toLowerCase().includes(searchTerm)
+    );
+    displayServices(filteredServices);
+}
+
+
+// Add an event listener for search
+document.querySelector('.search-input').addEventListener('input', searchServices);
+
+// Clear form fields when the "Add/Edit Service" button is clicked
+document.querySelector('[data-bs-target="#serviceModal"]').addEventListener('click', () => {
+    document.getElementById('serviceForm').reset(); // Clear all form inputs
+    document.getElementById('serviceId').value = ''; // Reset hidden input for service ID
+
+    // Reset the image preview
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.src = ''; // Clear the image src
+    imagePreview.style.display = 'none'; // Hide the preview image
+
+    // Reset modal title
+    document.getElementById('serviceModalLabel').textContent = 'Add New Service';
+    document.querySelector('#serviceForm button[type="submit"]').textContent = 'Save Service';
+
+});
 
     fetchServices(); // Initial fetch on page load
 </script>
