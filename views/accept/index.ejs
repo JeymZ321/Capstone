@@ -94,11 +94,17 @@
                             <span>Profile</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="cms-item">
-                        <a class="nav-link" href="/admin/cms.html">
-                            <i class="fa fa-book"></i>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#cmsDropdown" aria-expanded="false" aria-controls="cmsDropdown">
+                            <i class="fas fa-book"></i>
                             <span>CMS</span>
                         </a>
+                        <div id="cmsDropdown" class="collapse" aria-labelledby="headingAppointment" data-bs-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner">
+                                <a class="collapse-item" href=" ">Gallery</a>
+                                <a class="collapse-item" href="/admin/service.html">Service Management</a>
+                            </div>
+                        </div>
                     </li>
                 </ul>
                 
@@ -144,16 +150,16 @@
                         <button class="btn btn-primary" style="height: fit-content;" id="addNewCustomerButton" data-bs-toggle="modal" data-bs-target="#customerModal">Add New Customer</button>
                          
                     </div>
-                    <table class="table tabler-bordered">
+                    <table class="table table-bordered">
                         <thead style="color: rgb(0, 0, 0);">
                             <tr>
                                 <th>Email</th>
                                 <th>Phone No.</th>
                                 <th>City</th>
-                                <th>---</th>
+                                <th>Appointment Datetime</th>
                                 <th>Vehicle</th>
-                                <th>Car Functionality</th>
-                                <th>Actions</th> 
+                                
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="approvedBody" style="color: black;">
@@ -162,17 +168,27 @@
                                     <td><%= appointment.email %></td>
                                     <td><%= appointment.phonenumber %></td>
                                     <td><%= appointment.city %></td>
-                                    <td><%= appointment.platenum %></td>
+                                    <td><%= appointment.datetime %></td>
                                     <td><%= appointment.vehicle %></td>
-                                    <td><%= appointment.carfunc %></td>
+                                    
                                     <td>
-                                       <!-- Archive Button -->
-                                       <button class="btn btn-danger archive-btn" data-id="<%= appointment._id %>">Archive</button>	
+                                        <button class="btn btn-info view-btn " style="color: white; " 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-email="<%= appointment.email %>"
+                                            data-phonenumber="<%= appointment.phonenumber %>"
+                                            data-city="<%= appointment.city %>"
+                                            data-datetime="<%= appointment.datetime %>"
+                                            data-vehicle="<%= appointment.vehicle %>"
+                                            data-carfunc="<%= appointment.carfunc %>"
+                                            data-suggestions="<%= appointment.suggestions %>">
+                                            View
+                                        </button>
+                                        <button class="btn btn-warning archive-btn" data-id="<%= appointment._id %>">Archive</button>
                                     </td>
                                 </tr>
                             <% }); %>
                         </tbody>
-                           
                     </table>
                 </div>
 
@@ -184,6 +200,32 @@
 </footer>
 </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
+
+<!--MODAL FOR VIEW BUTTON-->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Email:</strong> <span id="modal-email"></span></p>
+                <p><strong>Phone Number:</strong> <span id="modal-phonenumber"></span></p>
+                <p><strong>City:</strong> <span id="modal-city"></span></p>
+                <p><strong>Datetime:</strong> <span id="modal-datetime"></span></p>
+                <p><strong>Vehicle:</strong> <span id="modal-vehicle"></span></p>
+                <p><strong>Car Functionality:</strong> <span id="modal-carfunc"></span></p>
+                <p><strong>Suggestions:</strong> <span id="modal-suggestions"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -398,6 +440,34 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const viewButtons = document.querySelectorAll('.view-btn');
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Retrieve data attributes
+                const email = this.dataset.email;
+                const phonenumber = this.dataset.phonenumber;
+                const city = this.dataset.city;
+                const datetime = this.dataset.datetime;
+                const vehicle = this.dataset.vehicle;
+                const carfunc = this.dataset.carfunc;
+                const suggestions = this.dataset.suggestions;
+
+                // Populate modal content
+                document.getElementById('modal-email').textContent = email;
+                document.getElementById('modal-phonenumber').textContent = phonenumber;
+                document.getElementById('modal-city').textContent = city;
+                document.getElementById('modal-datetime').textContent = datetime;
+                document.getElementById('modal-vehicle').textContent = vehicle;
+                document.getElementById('modal-carfunc').textContent = carfunc;
+                document.getElementById('modal-suggestions').textContent = suggestions;
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

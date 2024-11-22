@@ -69,6 +69,7 @@
                     <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
                     <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35px; background: rgb(169,11,11);border-style: none;" href="login.html">Login</a></li>
                 </ul>
             </div>
@@ -391,12 +392,12 @@ function displayServices(services) {
                 alert('All services have been cleared from the SUMMARY.');
 
                 const buttons = document.querySelectorAll('button[onclick*="addToSummary"]');
-        buttons.forEach(button => {
-            button.disabled = false;
-            button.textContent = "Add Service";
-            button.style.backgroundColor = "#0d6efd";
-            button.style.borderColor = "#0d6efd";
-        });
+                buttons.forEach(button => {
+                    button.disabled = false;
+                    button.textContent = "Add Service";
+                    button.style.backgroundColor = "#0d6efd";
+                    button.style.borderColor = "#0d6efd";
+                });
 
                 updateSummary();
             }

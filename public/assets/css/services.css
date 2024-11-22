@@ -229,7 +229,15 @@
     display: block;
 }
 
+@media (max-width: 426px){
+    .product-image {
+        width: 200px;
+    }
 
+    .product-container{
+        width: 150px !important;
+    }
+}
 
 /* Media query for mobile devices */
 @media (max-width: 768px) {

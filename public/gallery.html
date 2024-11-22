@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Gallery - Reynaldo's Car Care Center</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/reynaldoslogo.png">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="assets/css/about_us_extra.css">
+    <link rel="stylesheet" href="assets/css/hover_button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="assets/css/vanilla-zoom.min.css">
+    <link rel="stylesheet" href="assets/css/services.css">
+
+    <style>
+      
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product-image {
+      
+            margin: 5px;
+            text-align: center;
+        }
+
+        #cart-items{
+            background-color: black;
+            padding: 20px;
+        }
+        
+
+        /* Mobile layout: 1 image per row */
+        @media (max-width: 768px) {
+            .product-image {
+                flex: 0 1 100%; /* Full width for each image */
+                margin: 5px 0;
+            }
+
+            #cart-items{
+            padding: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background: #051129;">
+        <div class="container">
+            <a class="navbar-brand logo" href="homepage.html"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="100px" style="margin: 0px;padding: 0px;" href="index.html"></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" role="button" style="height: 35;background: rgb(169,11,11);border-style: none; background-size: cover;" href="login.html">Login</a></li>
+
+                </ul>
+            </div>
+            
+            
+        </div>
+    </nav>
+    <main class="page landing-page">
+        <section data-bss-parallax-bg="true" style="background: url(&quot;assets/img/enginecar.jpg&quot;) center / cover;background-image: url(assets/img/enginecar.jpg);background-position: center;background-size: cover;padding-top: 60px;" class="clean-block about-us">
+            <div class="block-heading" style="margin-top: 80px;padding: 20px;filter: blur(0px);">
+                <h2 style="color: rgb(255,255,255);font-weight: bold;">Gallery</h2>
+                <p style="max-width: 600px;text-align: center;color: rgb(253,254,255);font-size: 15px;font-family: Montserrat, sans-serif;">Gawang Reynaldos. Appearance and Safety Guarantee!</p>
+            </div>
+        </section>
+            <main data-bss-parallax-bg="true"  style="background: url(&quot;assets/img/scenery/aboutus_txt_bg.png&quot;) right / 60%;background-image: url(assets/img/scenery/aboutus_txt_bg.png);" class="page shopping-cart-page" >
+                <section class="clean-block clean-cart" >
+                    <div class="container" style="padding-top: 30px;" >
+                        
+                        <div class="content">
+                            <div class="row g-0">
+                                <!-- Service Selection Section -->
+                                <div class="col-md-12 ">
+                                   
+                                    <div class="items" id="cart-items">
+                                        
+                                        <div class="row gallery-grid">
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                <div class="col-12 col-md-4 mb-3">
+                                                    <img class="img-fluid d-block mx-auto image" style="width: auto; height: 300px;" 
+                                                        src="assets/img/bodypanels/car_panel.png" alt="${service.name}" />
+                                                </div>
+                                                
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Summary Section -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="clean-block slider dark" style="background: #051129;">
+                    <div class="container">
+                        <div class="block-heading">
+                            </div>
+                            </div>
+                            </section>
+            </main>
+        </section>
+    </main>
+    <footer class="page-footer dark">
+        <div class="container">
+            <div class="row">
+                <div class="col"><img class="img-fluid" src="assets/img/reynaldoslogo.png" width="200px" style="margin: 0px;padding: 0px;" href="index.html"></div>
+                <div class="col-sm-3">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Sign up</a></li>
+                        <li><a href="services.html">Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="about-us.html">Company Information</a></li>
+                        <li><a href="contact-us.html">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2024 Reynaldo's Car Care Center</p>
+        </div>
+    </footer>
+    
+    <script>
+        $(document).ready(function () {
+            // Retrieve the name from local storage
+            const name = localStorage.getItem('name');
+            console.log("Retrieved name from local storage:", name);  // Log the name
+    
+            if (name) {
+                // Set username placeholder in the dropdown
+                $('#userNameDisplay').text(`Welcome, ${name}`);
+                
+                // Fetch full profile data (like picture and email) if needed
+                $.ajax({
+                    url: `/api/profile?name=${name}`,  // Use the `name` query parameter to fetch profile data
+                    method: 'GET',
+                    success: function (data) {
+                        console.log("Profile data retrieved:", data);  // Log the data received from the server
+                        
+                        if (data.picture) {
+                            $('#profileImage').attr('src', data.picture);
+                        }
+                        $('#userNameDisplay').text(`Welcome, ${data.name}`);
+                        $('#userEmail').text(data.email);  // Display email if needed
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching profile:', error);
+                        alert('Failed to load profile data.');
+                    }
+                });
+            } else {
+                // Redirect to login page if no name is found in local storage
+                console.log("No name found in local storage. Redirecting to login.");
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+      
+    
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>
