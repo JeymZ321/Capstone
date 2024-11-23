@@ -147,6 +147,22 @@ app.post('/registration', async (req, res) => {
   }
 });
 
+app.get('/customer/:email', async (req, res) => {
+  try {
+      const email = req.params.email;
+      const customerData = await customer.findOne({ email });
+
+      if (!customerData) {
+          return res.status(404).json({ message: 'Customer not found' });
+      }
+
+      res.status(200).json(customerData);
+  } catch (error) {
+      console.error('Error fetching customer data:', error);
+      res.status(500).json({ message: 'Failed to fetch customer data', error: error.message });
+  }
+});
+
 app.post('/uploadVehicle', upload.single('image'), async (req, res) => {
   try {
       const { brandModel, color, plateNumber, yearModel, transmission } = req.body;
@@ -724,8 +740,57 @@ app.post('/appointment', async (req, res) => {
       // Save the appointment to the database
       const savedAppointment = await newAppointment.save();
 
-      // Respond with success message and saved appointment data
-      return res.status(200).json({ message: 'Appointment created successfully!, You can now proceed to the payment', appointment: savedAppointment, redirectUrl: '/userdashboard-request-tracking.html' });
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'caynojames07@gmail.com',
+         pass: 'fddz jopx zhia rffr',  
+      },
+     });
+     // Path to the QR code image
+     const qrCodePath = path.join(__dirname, 'public', 'Payment', 'qrcode.png');
+
+
+     // Compose email content with QR code
+     const mailOptions = {
+      from: 'Reynaldos Car Care', // Replace with your email
+      to: email,
+      subject: 'Payment Form for Your Appointment',
+      html: `
+          <p>Hello,</p>
+          <p>Thank you for booking an appointment with us. Please proceed to the payment using the Gcash QR code below:</p>
+          <p><strong>Appointment Details:</strong></p>
+          <ul>
+              <li><strong>Date and Time:</strong> ${datetime}</li>
+              <li><strong>Vehicle:</strong> ${vehicle}</li>
+              <li><strong>Processing Fee:</strong> ₱500</li>
+          </ul>
+          <p>Scan the QR code below to pay:</p>
+          <img src="cid:gcashQR" alt="Gcash QR Code" style="width:200px; height:200px;">
+          <p>After completing the payment, please contact us to confirm your appointment.</p>
+          <p>Thank you!<br>Reynaldo's Car Care Center</p>
+      `,
+      attachments: [
+          {
+              filename: 'qrcode.png', // Name of the file in the email
+              path: qrCodePath, // Path to the QR code file
+              cid: 'gcashQR' // Content ID for embedding in the email
+          }
+      ]
+  };
+
+  // Send the email
+  await transporter.sendMail(mailOptions);
+
+      // Respond with success message
+      return res.status(200).json({ 
+        message: 'Appointment created successfully! A payment form with a Gcash QR code has been sent to your Gmail Account.', 
+        appointment: savedAppointment,
+        redirectUrl: '/userdashboard-request-tracking.html' 
+    });
   } catch (error) {
       console.error('Error creating appointment:', error);
       // Respond with error message if something goes wrong
@@ -773,6 +838,43 @@ app.delete('/appointments/:id', async (req, res) => {
   }
 });
 
+/*----------User dashboard Profile-----------------*/
+// Update Profile
+app.post("/customer/update", async (req, res) => {
+  const { email, name, phonenumber, city, password } = req.body;
+
+  if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+      const updateData = { name, phonenumber, city };
+
+      // Hash the password only if provided
+      if (password) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          updateData.password = hashedPassword;
+      }
+
+      // Find and update the customer record
+      const updatedCustomer = await customer.findOneAndUpdate(
+          { email },
+          { $set: updateData },
+          { new: true }
+      );
+
+      if (!updatedCustomer) {
+          return res.status(404).json({ message: "Customer not found" });
+      }
+
+      res.json({ message: "Profile updated successfully", updatedCustomer });
+  } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Error updating profile" });
+  }
+});
+
+
 /*-------------------- User dashboard Vehicle--------------*/
 
 app.get('/vehicles', async (req, res) => {
@@ -798,7 +900,6 @@ app.get('/vehicles', async (req, res) => {
     res.status(500).json({ message: 'Error fetching vehicles.' });
   }
 });
-
 
 app.delete('/vehicles/:id', async (req, res) => {
   const { id } = req.params;
@@ -860,7 +961,8 @@ app.post('/send-registration-email', async (req, res) => {
     
     // Generate a token for registration confirmation
     const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
-    const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
+    const registrationLink = `/registrationform.html?token=${token}`;
+    //const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
 
     /*---------Sending email------------*/
     const mailOptions = {
@@ -951,7 +1053,7 @@ app.patch('/customer/:id/archive', async (req, res) => {
 
       const arcappointments = await NewCustomers.findByIdAndUpdate(
         customerId, 
-        { status: 'accept' },
+        { status: 'archived' },
         { new: true } // Return the updated document
     );
 

@@ -179,7 +179,7 @@
                                         </div>
                                     -->
                                     <div class="col-7 mt-3">
-                                        <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Advance your selecting time in 30mins, incase your are attend on exact time. Thankyou!</i></p>
+                                        <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Advance your selecting time in 30mins, incase your are not attend on exact time.</i></p>
                                     </div>
                                     <h3 class="mt-4">Additional Information</h3>
                                     <div class="col-5">
@@ -188,7 +188,7 @@
                                         <label for="noBtn"><input type="radio" id="noBtn" name="carfunc" value="no">No</label>
                                     </div>
                                     <div class="col-7 mt-3">
-                                        <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Clicking the "No" button will inform us that you possibly need help for Towing Purposes which will be added to the Estimated Price Breakdown below. Contact us for more details.</i></p>
+                                        <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Clicking the "No" button will inform us that you possibly need help for Towing Purposes which will be added to the Estimated Price Breakdown below. Contact us for more details.</i></p>
                                     </div>
                                 </div>
                                 
@@ -214,13 +214,13 @@
                             -->
                                 <div class="col-md-12"><br>
                                     <div class="card p-3 mb-3" style="background-color: rgb(246, 246, 246);">
-                                        <h5><strong>Estimated Price Breakdown:</strong> </h5>
+                                        <h5><b><strong>Estimated Price Breakdown:</strong></b> </h5>
                                         <div id="service-list"></div>
-                                        <p>Service Estimation: <span id="service-estimation">₱ 0</span></p>
-                                        <p>Towing Fee: Php <span id="towingFee">####</span></p>
-                                        <p>Processing Fee: Php 500.00 (Non-Refundable)</p><br>  
-                                        <p>Grand Total: <span id="grand-total">₱ 0</span></p>
-                                        <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Price varies upon actual inspection of the vehicle. This is simply an estimation.</i></p>
+                                        <p><b>Service Estimation:</b> <span id="service-estimation">₱ 0</span></p>
+                                        <p><b>Towing Fee: ₱</b> <span id="towingFee">####</span></p>
+                                        <p><b>Processing Fee: ₱ 500.00</b><br>  
+                                        <p><b>Grand Total:</b> <span id="grand-total">₱ 0</span></p>
+                                        <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Price varies upon actual inspection of the vehicle. This is simply an estimation.</i></p>
 
                                     </div>
                                     
@@ -229,7 +229,7 @@
                                     <label class="form-check-inline">I have read &amp; accepted the <a href="#" id="terms-link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a></label>
 
                                     <br><br>
-                                    <p style="opacity: .7; font-size: 14px;"><i><strong>Note: </strong>Agreeing to the Terms and Conditions and clicking "Next" will redirect you to the Payment Page. This will require you to pay P500 as Processing Fee.<br><br> See "Terms and Conditions" for more details.</i></p>
+                                    <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Agreeing to the Terms and Conditions and clicking "Next" it will send to your Email Account for the Payment Processing. This will require you to pay P500 as Processing Fee.<br><br> See "Terms and Conditions" for more details.</i></p>
                                     <br>
                                 </div>
                 
@@ -238,10 +238,10 @@
                                 <button type="submit" id="submit-slots-btn">Next</button>
                             </div>
                 
-                            <!-- Success message -->
+                            <!-- Success message 
                             <div id="success-message" style="display:none; margin-top: 20px;" class="alert alert-success">
                                 Your appointment has been submitted successfully! Proceeding to Payment now..
-                            </div>
+                            </div>-->
                             </div>
                         </div>
                     </div>
@@ -286,224 +286,131 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 $(document).ready(function () {
-    // const totalSlots = 26;
-// let selectedSlots = {};  
-// let confirmedSlots = {}; 
-// let currentSelectedDateTime = null;
 
-    const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
-    let serviceTotal = 0;
+const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+let serviceTotal = 0;
 
-    // Populate the service list and calculate the total
-    selectedServices.forEach(service => {
-        serviceTotal += service.price;
-        $('#service-list').append(`<p>${service.name}: ₱${service.price.toFixed(2)}</p>`);
-    });
-
-    // Display the total service estimation
-    $('#service-estimation').text(`₱${serviceTotal.toFixed(2)}`);
-
-    // Add additional fees, such as the appointment fee
-    const appointmentFee = 500;
-    const grandTotal = serviceTotal + appointmentFee;
-    $('#grand-total').text(`₱${grandTotal.toFixed(2)}`);
-
-    //Retrieve user data
-    const userData = JSON.parse(localStorage.getItem('userData'));
-
-    if (userData) {
-        // Populate the appointment form fields with the retrieved data
-        $('#name').val(userData.name || '');
-        $('#phonenumber').val(userData.phonenumber || '');
-        $('#email').val(userData.email || '');
-        $('#city').val(userData.city || '');
-    }
-
-    const vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
-
-    // Populate the dropdown with vehicle options
-    const vehicleDropdown = $('#vehicle');
-    vehicles.forEach(vehicle => {
-        const optionText = `${vehicle.brandModel} (${vehicle.yearModel}) - ${vehicle.color}`;
-        const option = $('<option></option>').text(optionText).val(vehicle.plateNumber); // Use plate number as the value
-        vehicleDropdown.append(option);
-    }); 
-
-
-    // Initialize DateTime Picker
-    $('#datetimepicker').datetimepicker({
-        dateFormat: 'dd/mm/yy',
-        timeFormat: 'hh:mm tt', // 12-hour format with AM/PM
-        minDate: 0, // Disable past dates
-        stepMinute: 1,
-        oneLine: true // Shows date and time on the same line
-    });
-
-     // Set towing fee based on car functionality
-     $('input[name="carfunc"]').change(function () {
-        const towingFeeElement = $('#towingFee');
-        
-        if ($('#noBtn').is(':checked')) {
-            towingFeeElement.text('1000'); // Set towing fee to 1000 if "No" is selected
-        } else if ($('#yesBtn').is(':checked')) {
-            towingFeeElement.text('####'); // Clear towing fee if "Yes" is selected
-        }
-    });
-
-    
-
-    // Function to update available slots display
-   
-/*function updateAvailableSlots() {
-     const selected = selectedSlots[currentSelectedDateTime]?.length || 0;
-     const confirmed = confirmedSlots[currentSelectedDateTime]?.length || 0;
-     const availableSlots = totalSlots - (selected + confirmed);
-     $('#available-slots').text(availableSlots);
-}
-
-// Show the popup with available slots
-$('#show-slots-btn').on('click', function() {
-     currentSelectedDateTime = $('#datetimepicker').val();
-
-     if (currentSelectedDateTime) {
-       selectedSlots[currentSelectedDateTime] ??= [];
-       confirmedSlots[currentSelectedDateTime] ??= [];
-       
-        
-      createSlots();
-       updateAvailableSlots();
-        $('#slots-popup').fadeIn();
-     } else {
-       alert("Please select a date and time .");
-        }
-       });
-
-    // Close the popup
-    $('.close').on('click', function() {
-        $('#slots-popup').fadeOut();
-    });
-
-    // Confirm and lock slots for the current date and time
-    $("#confirm-btn").click(function() {
-        if (!confirmedSlots[currentSelectedDateTime]) {
-            confirmedSlots[currentSelectedDateTime] = [];
-        }
-
-        selectedSlots[currentSelectedDateTime].forEach(slot => {
-            if (!confirmedSlots[currentSelectedDateTime].includes(slot)) {
-                confirmedSlots[currentSelectedDateTime].push(slot);
-            }
-        });
-
-        // Store the first selected slot value in the hidden input
-        if (selectedSlots[currentSelectedDateTime]?.length > 0) {
-            $('#selected-slot').val(selectedSlots[currentSelectedDateTime][0]); // Store only one selected slot if needed
-        }
-
-        // Clear selected slots for the date and time, and refresh slots
-        selectedSlots[currentSelectedDateTime] = [];
-        createSlots();
-        updateAvailableSlots();
-
-        $("#slots-popup").fadeOut();
-        alert("Your slots for " + currentSelectedDateTime + " have been confirmed!");
-    });
-
-    // Close popup when clicking outside the content
-    $(window).on('click', function(event) {
-        if (event.target.id === 'slots-popup') {
-            $('#slots-popup').fadeOut();
-        }
-    });
-
-    // Handle slot selection/deselection
-    $('#slots').on('click', '.slot', function() {
-        const slotNumber = parseInt($(this).data('slot'));
-
-        if ($(this).hasClass('available')) {
-            $(this).removeClass('available').addClass('unavailable');
-            selectedSlots[currentSelectedDateTime].push(slotNumber);
-        } else if ($(this).hasClass('unavailable')) {
-            $(this).removeClass('unavailable').addClass('available');
-            selectedSlots[currentSelectedDateTime] = selectedSlots[currentSelectedDateTime].filter(slot => slot !== slotNumber);
-        }
-
-        updateAvailableSlots();
-    });*/
-
-    // Submit form with DateTime and slot info
-    $('#appointmentForm').on('submit', function (event) {
-        event.preventDefault();
-
-        const datetimepicker = $('#datetimepicker').val();
-        //const selectedSlot = $('#selected-slot').val();
-
-        // Validate date, time, and slot selection
-        /*if (!datetimepicker || !selectedSlot) {
-            alert("Please select both a date and time, and a slot for your appointment.");
-            return;
-        }*/
-
-
-        // Collect other form data
-        const formData = {
-            phonenumber: $('#phonenumber').val(),
-            email: $('#email').val(),
-            city: $('#city').val(),
-            vehicle: $('#vehicle').val(),
-            carfunc: $('input[name="carfunc"]:checked').val(),
-            platenum: $('#platenum').val(),
-            suggestions: $('#suggestions').val(),
-            datetime: datetimepicker,
-            //slot: selectedSlot
-        };
-
-        console.log('Form Data:', formData);
-
-        // AJAX POST request
-        $.ajax({
-            url: '/appointment',
-            type: 'POST',
-            data: JSON.stringify(formData),
-            contentType: 'application/json',
-            success: function (response) {
-                console.log('Success:', response);
-                localStorage.setItem('userEmail', $('#email').val());
-                $('#success-message').show().delay(3000).fadeOut(function() {
-        // Redirect to payment page using the URL from the response
-            if (response.redirectUrl) {
-            window.location.href = response.redirectUrl;
-            }
-        });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-                console.error('Response Text:', jqXHR.responseText);
-                alert('An error occurred. Please try again.');
-            }
-        });
-    });
-    
-
-      // Handle Terms & Conditions Modal
-      $('#terms-link').on('click', function (event) {
-                event.preventDefault();
-                $('#terms-modal').show();
-            });
-
-            $('.close-btn').on('click', function () {
-                $('#terms-modal').hide();
-            });
-    
-        localStorage.removeItem('selectedServices');
-        localStorage.removeItem('userInfo');
+// Populate the service list and calculate the total
+selectedServices.forEach(service => {
+    serviceTotal += service.price;
+    $('#service-list').append(`<p>${service.name}: ₱${service.price.toFixed(2)}</p>`);
 });
 
+// Display the total service estimation
+$('#service-estimation').text(`₱${serviceTotal.toFixed(2)}`);
+
+// Add additional fees, such as the appointment fee
+const appointmentFee = 500;
+const grandTotal = serviceTotal + appointmentFee;
+$('#grand-total').text(`₱${grandTotal.toFixed(2)}`);
+
+// Fetch user and vehicle data from backend
+const email = localStorage.getItem('userEmail');
+if (email) {
+    $.ajax({
+        url: `/customer/${email}`,
+        type: 'GET',
+        success: function (customer) {
+            // Populate form fields
+            $('#name').val(customer.name || '');
+            $('#phonenumber').val(customer.phonenumber || '');
+            $('#email').val(customer.email || '');
+            $('#city').val(customer.city || '');
+
+            // Populate vehicle dropdown
+            const vehicleDropdown = $('#vehicle');
+            customer.vehicles.forEach(vehicle => {
+                const optionText = `${vehicle.brandModel} (${vehicle.yearModel}) - ${vehicle.color}`;
+                const option = $('<option></option>').text(optionText).val(vehicle.plateNumber);
+                vehicleDropdown.append(option);
+            });
+        },
+        error: function (xhr) {
+            console.error('Error fetching customer data:', xhr.responseText);
+            alert('Failed to load customer data. Please try again.');
+        }
+    });
+} else {
+    alert('User email not found. Please log in again.');
+}
+
+// Initialize DateTime Picker
+$('#datetimepicker').datetimepicker({
+    dateFormat: 'dd/mm/yy',
+    timeFormat: 'hh:mm tt', // 12-hour format with AM/PM
+    minDate: 0, // Disable past dates
+    stepMinute: 1,
+    oneLine: true // Shows date and time on the same line
+});
+
+// Set towing fee based on car functionality
+$('input[name="carfunc"]').change(function () {
+    const towingFeeElement = $('#towingFee');
+
+    if ($('#noBtn').is(':checked')) {
+        towingFeeElement.text('1000'); // Set towing fee to 1000 if "No" is selected
+    } else if ($('#yesBtn').is(':checked')) {
+        towingFeeElement.text('####'); // Clear towing fee if "Yes" is selected
+    }
+});
+
+// Submit form with DateTime and slot info
+$('#appointmentForm').on('submit', function (event) {
+    event.preventDefault();
+
+    const datetimepicker = $('#datetimepicker').val();
+
+    // Collect form data
+    const formData = {
+        phonenumber: $('#phonenumber').val(),
+        email: $('#email').val(),
+        city: $('#city').val(),
+        vehicle: $('#vehicle').val(),
+        carfunc: $('input[name="carfunc"]:checked').val(),
+        platenum: $('#platenum').val(),
+        suggestions: $('#suggestions').val(),
+        datetime: datetimepicker,
+    };
+
+    console.log('Form Data:', formData);
+
+    // AJAX POST request
+    $.ajax({
+        url: '/appointment',
+        type: 'POST',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function (response) {
+            alert(response.message);
+            localStorage.setItem('userEmail', $('#email').val());
+            
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', textStatus, errorThrown);
+            console.error('Response Text:', jqXHR.responseText);
+            alert('An error occurred. Please try again.');
+        }
+    });
+});
+
+// Handle Terms & Conditions Modal
+$('#terms-link').on('click', function (event) {
+    event.preventDefault();
+    $('#terms-modal').show();
+});
+
+$('.close-btn').on('click', function () {
+    $('#terms-modal').hide();
+});
+
+// Clear localStorage for selected services after page load
+localStorage.removeItem('selectedServices');
+});
     </script> 
     
-
-    
-        
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
