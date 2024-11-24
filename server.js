@@ -21,7 +21,7 @@ const Archive = require('./models/archives');
 const UnverifiedAdmin = require('./models/UnverifiedAdmin'); 
 //const profileRoutes = require('./public/profile');
 const path = require('path');
- 
+
 const port = 3000;
 
 const app = express();
@@ -770,7 +770,9 @@ app.post('/appointment', async (req, res) => {
           </ul>
           <p>Scan the QR code below to pay:</p>
           <img src="cid:gcashQR" alt="Gcash QR Code" style="width:200px; height:200px;">
-          <p>After completing the payment, please contact us to confirm your appointment.</p>
+          <p>After completing the payment, Please ensure to attach the proof of payment by replying to this email message for verification purposes .</p>
+          <br>
+          <p>Office Hours: 8am - 5pm.</p>
           <p>Thank you!<br>Reynaldo's Car Care Center</p>
       `,
       attachments: [
@@ -961,8 +963,10 @@ app.post('/send-registration-email', async (req, res) => {
     
     // Generate a token for registration confirmation
     const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
-    const registrationLink = `/registrationform.html?token=${token}`;
-    //const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
+    //const registrationLink = `/registrationform.html?token=${token}`;
+    //const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Dynamic base URL
+    //console.log('Base URL:', baseUrl); // Debug log
+    const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
 
     /*---------Sending email------------*/
     const mailOptions = {
