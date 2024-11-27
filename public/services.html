@@ -307,6 +307,8 @@ function displayServices(services) {
                             ? '<button class="see-more btn btn-link btn-sm">See more</button>' 
                             : ''}
                     </p>
+                    <p class="mechanic"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
+            <p class="estimation"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
                     <br>
                     <div class="price">
                         <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
@@ -342,12 +344,12 @@ function displayServices(services) {
 }
 
         // Add Service to Summary
-        function addToSummary(_id, name, price, image) {
+        function addToSummary(_id, name, price, image, mechanic, estimation) {
             if (selectedServices.find(service => service._id === _id)) { // Change some() to find()
                 alert(`${name} is already in the summary!`);
                 return;
             }
-            selectedServices.push({ _id, name, price, image });
+            selectedServices.push({ _id, name, price, image, mechanic, estimation });
             localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
             
             updateSummary();

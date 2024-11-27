@@ -84,7 +84,7 @@
                           
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Admin Name Here</span><img class="border rounded-circle img-profile" src="/assets/img/reynaldoslogo.png"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Reynaldo's Car Care</span><img class="border rounded-circle img-profile" src="/assets/img/reynaldoslogo.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                         <a class="dropdown-item" href="/admin/profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div>
@@ -105,7 +105,7 @@
                     <th>Email</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th></th>
+                    <th>Services</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -116,9 +116,22 @@
                         <% const [date, time] = appointment.datetime.split(' '); %>
                         <td><%= date %></td>
                         <td><%= time %></td>
-                        <td><%= appointment.slot %></td>
                         <td>
-                            <button class="btn btn-info viewDetails" data-id="<%= appointment._id %>">View</button>
+                            <% if (appointment.selectedServices && appointment.selectedServices.length > 0) { %>
+                                <% appointment.selectedServices.forEach(service => { %>
+                                    <div>
+                                        <%= service.name %> - ₱<%= service.price.toFixed(2) %><br>
+                                        <strong>Mechanic:</strong> <%= service.mechanic || 'N/A' %><br>
+                                        <strong>Estimation:</strong> <%= service.estimation || 'N/A' %>
+                                    </div>
+                                <% }) %>
+                            <% } else { %>
+                                <i>No services provided</i>
+                            <% } %>
+                        </td>    
+                        <!-- <td><%= appointment.slot %></td> -->
+                        <td>
+                            <!--<button class="btn btn-info viewDetails" data-id="<%= appointment._id %>">View</button>-->
                             <button class="btn btn-success accept-btn" data-id="<%= appointment._id %>">Accept</button>
                             <button class="btn btn-warning archive" data-id="<%= appointment._id %>">Archive</button>
                         </td>

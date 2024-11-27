@@ -8,7 +8,7 @@ const NewCustomersSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     city: { type: String, required: true },
     vehicle: { type: String, required: true },
-    checkInTime: { type: Date, required: true },
+    checkInTime: { type: String, unique: true },
     carFunctionality: { type: String, enum: ['yes', 'no'], required: true },
     services: { type: String },
     vehicleImage: { type: String },

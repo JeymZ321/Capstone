@@ -220,16 +220,176 @@
                     <div class="vehicle-entry">
                     <div class="row">
                         <div class="col-md-6">                    
-                            <label for="brandModel">Brand Model: <input type="text" placeholder="Example: Toyota Avanza" name="BrandModel" id="brandModel" required></label>
+                            <label for="brand">Brand:
+                                <select name="Brand" id="brand" onchange="updateModels()" required>
+                                    <option disabled selected>Select a Brand</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Ford">Ford</option>
+                                </select>
+                            </label>
                         </div>
                         <div class="col-md-6">                    
-                            <label for="color">Color: <input type="text" placeholder="Example: Candy Red" name="Color" id="color" required></label>
+                            <label for="model">Model:
+                                <select name="Model" id="model" required>
+                                    <option disabled selected>Select a Model</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-md-6">                    
+                            <label for="color">Color: 
+                                <select name="Color" id="color" required onchange="handleColorChange()">
+                                    <option disabled selected>Select a Color</option>
+                                    <option value="Black">Black</option>
+                                    <option value="White">White</option>
+                                    <option value="Silver">Silver</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Yellow">Yellow</option>
+                                    <option value="Gray">Gray</option>
+                                    <option value="Brown">Brown</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </label>
+                            <!-- Textbox for custom color -->
+                            <input type="text" id="customColor" name="CustomColor" placeholder="Specify Color" style="display:none; margin-top:10px;" />
                         </div>
                         <div class="col-md-4">                    
                             <label for="platenum">Plate #: <input type="text" placeholder="ABC 1234" maxlength="8" name="PlateNumber" id="platenum" required></label>
                         </div>
                         <div class="col-md-4">                    
-                            <label for="yearmodel">Year Model: <input type="text" placeholder="2024" minlength="4" maxlength="4" name="YearModel" id="yearmodel" required></label>
+                            <label for="yearmodel">Year Model: <select name="YearModel" id="yearModel" required>
+                                <option disabled selected>Select a Year Model</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                                <option value="2014">2014</option>
+                                <option value="2013">2013</option>
+                                <option value="2012">2012</option>
+                                <option value="2011">2011</option>
+                                <option value="2010">2010</option>
+                                <option value="2009">2009</option>
+                                <option value="2008">2008</option>
+                                <option value="2007">2007</option>
+                                <option value="2006">2006</option>
+                                <option value="2005">2005</option>
+                                <option value="2004">2004</option>
+                                <option value="2003">2003</option>
+                                <option value="2002">2002</option>
+                                <option value="2001">2001</option>
+                                <option value="2000">2000</option>
+                                <option value="1999">1999</option>
+                                <option value="1998">1998</option>
+                                <option value="1997">1997</option>
+                                <option value="1996">1996</option>
+                                <option value="1995">1995</option>
+                                <option value="1994">1994</option>
+                                <option value="1993">1993</option>
+                                <option value="1992">1992</option>
+                                <option value="1991">1991</option>
+                                <option value="1990">1990</option>
+                                <option value="1989">1989</option>
+                                <option value="1988">1988</option>
+                                <option value="1987">1987</option>
+                                <option value="1986">1986</option>
+                                <option value="1985">1985</option>
+                                <option value="1984">1984</option>
+                                <option value="1983">1983</option>
+                                <option value="1982">1982</option>
+                                <option value="1981">1981</option>
+                                <option value="1980">1980</option>
+                                <option value="1979">1979</option>
+                                <option value="1978">1978</option>
+                                <option value="1977">1977</option>
+                                <option value="1976">1976</option>
+                                <option value="1975">1975</option>
+                                <option value="1974">1974</option>
+                                <option value="1973">1973</option>
+                                <option value="1972">1972</option>
+                                <option value="1971">1971</option>
+                                <option value="1970">1970</option>
+                                <option value="1969">1969</option>
+                                <option value="1968">1968</option>
+                                <option value="1967">1967</option>
+                                <option value="1966">1966</option>
+                                <option value="1965">1965</option>
+                                <option value="1964">1964</option>
+                                <option value="1963">1963</option>
+                                <option value="1962">1962</option>
+                                <option value="1961">1961</option>
+                                <option value="1960">1960</option>
+                                <option value="1959">1959</option>
+                                <option value="1958">1958</option>
+                                <option value="1957">1957</option>
+                                <option value="1956">1956</option>
+                                <option value="1955">1955</option>
+                                <option value="1954">1954</option>
+                                <option value="1953">1953</option>
+                                <option value="1952">1952</option>
+                                <option value="1951">1951</option>
+                                <option value="1950">1950</option>
+                                <option value="1949">1949</option>
+                                <option value="1948">1948</option>
+                                <option value="1947">1947</option>
+                                <option value="1946">1946</option>
+                                <option value="1945">1945</option>
+                                <option value="1944">1944</option>
+                                <option value="1943">1943</option>
+                                <option value="1942">1942</option>
+                                <option value="1941">1941</option>
+                                <option value="1940">1940</option>
+                                <option value="1939">1939</option>
+                                <option value="1938">1938</option>
+                                <option value="1937">1937</option>
+                                <option value="1936">1936</option>
+                                <option value="1935">1935</option>
+                                <option value="1934">1934</option>
+                                <option value="1933">1933</option>
+                                <option value="1932">1932</option>
+                                <option value="1931">1931</option>
+                                <option value="1930">1930</option>
+                                <option value="1929">1929</option>
+                                <option value="1928">1928</option>
+                                <option value="1927">1927</option>
+                                <option value="1926">1926</option>
+                                <option value="1925">1925</option>
+                                <option value="1924">1924</option>
+                                <option value="1923">1923</option>
+                                <option value="1922">1922</option>
+                                <option value="1921">1921</option>
+                                <option value="1920">1920</option>
+                                <option value="1919">1919</option>
+                                <option value="1918">1918</option>
+                                <option value="1917">1917</option>
+                                <option value="1916">1916</option>
+                                <option value="1915">1915</option>
+                                <option value="1914">1914</option>
+                                <option value="1913">1913</option>
+                                <option value="1912">1912</option>
+                                <option value="1911">1911</option>
+                                <option value="1910">1910</option>
+                                <option value="1909">1909</option>
+                                <option value="1908">1908</option>
+                                <option value="1907">1907</option>
+                                <option value="1906">1906</option>
+                                <option value="1905">1905</option>
+                                <option value="1904">1904</option>
+                                <option value="1903">1903</option>
+                                <option value="1902">1902</option>
+                                <option value="1901">1901</option>
+                                <option value="1900">1900</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </label>
                         </div>
 
                         <div class="col-md-4"> 
@@ -278,87 +438,127 @@
     let isEditing = false;
     let currentItem = null; // Store the item being edited
 
+    const modelsByBrand = {
+        Toyota: ["Corolla", "Camry", "RAV4", "Highlander"],
+        Honda: ["Civic", "Accord", "CR-V", "Pilot"],
+        Ford: ["F-150", "Mustang", "Explorer", "Focus"]
+    };
+
+    function updateModels() {
+        const brand = document.getElementById("brand").value;
+        const modelDropdown = document.getElementById("model");
+        
+        // Clear existing options
+        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
+        
+        // Populate new options
+        if (modelsByBrand[brand]) {
+            modelsByBrand[brand].forEach(model => {
+                const option = document.createElement("option");
+                option.value = model;
+                option.textContent = model;
+                modelDropdown.appendChild(option);
+            });
+        }
+    }
+
 function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("minimized");
 }
 
-$(document).ready(function () {
-    // Function to preview the selected image
-    function previewImage(event) {
-        const fileInput = event.target; // Get the input element
-        const preview = document.getElementById('preview'); // Get the preview element
-        const removeButton = document.getElementById('removeImageButton'); // Get the remove button
-        const file = fileInput.files[0]; // Get the selected file
-
-        if (file) {
-            const reader = new FileReader(); // Create a FileReader to read the file
-            reader.onload = function () {
-                preview.src = reader.result; // Set the preview image's source
-                preview.style.display = 'block'; // Show the preview image
-                removeButton.style.display = 'inline-block'; // Show the remove button
-            };
-            reader.readAsDataURL(file); // Read the file as a Data URL
+function handleColorChange() {
+        const colorDropdown = document.getElementById("color");
+        const customColorInput = document.getElementById("customColor");
+        
+        // Show the custom color input if "Others" is selected
+        if (colorDropdown.value === "Others") {
+            customColorInput.style.display = "block";
+            customColorInput.required = true;
         } else {
-            preview.src = ''; // Clear the preview image
-            preview.style.display = 'none'; // Hide the preview image
-            removeButton.style.display = 'none'; // Hide the remove button
+            customColorInput.style.display = "none";
+            customColorInput.required = false;
         }
     }
 
-    // Function to remove the selected image
-    function removeImage() {
-        document.getElementById('vehicleImage').value = '';
-        previewImage({ target: { files: [] } }); // Clear file input
-        document.getElementById('preview').src = ''; // Clear preview
-        document.getElementById('preview').style.display = 'none'; // Hide preview
-        document.getElementById('removeImageButton').style.display = 'none'; // Hide Remove Image button
+    function previewImage(event) {
+    const fileInput = event.target; 
+    const preview = document.getElementById('preview'); 
+    const removeButton = document.getElementById('removeImageButton'); 
+    const file = fileInput.files[0]; 
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+            removeButton.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+        removeButton.style.display = 'none';
     }
+}
+// Remove image function
+function removeImage() {
+    document.getElementById('vehicleImage').value = '';
+    previewImage({ target: { files: [] } });
+    document.getElementById('preview').src = '';
+    document.getElementById('preview').style.display = 'none';
+    document.getElementById('removeImageButton').style.display = 'none';
+}
 
-    // Click event for #saveVehicleButton
+$(document).ready(function () {
+    $('#removeImageButton').on('click', removeImage);
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+$(document).ready(function () {
+    const vehicles = []; // Global array to store vehicle data
+
+    // Save Vehicle Button Click
     $('#saveVehicleButton').click(function () {
-        const formData = new FormData();
-        const brandModel = $('#vehicleModal').find('#brandModel').val().trim();
-        const color = $('#vehicleModal').find('#color').val().trim();
-        const plateNumber = $('#vehicleModal').find('#platenum').val().trim();
-        const yearModel = $('#vehicleModal').find('#yearmodel').val().trim();
-        const transmission = $('#vehicleModal').find('#transmission').val();
-        const imageFile = $('#vehicleModal').find('#vehicleImage')[0]?.files[0]; // Updated to match `vehicleImage`
+        const brand = $('#brand').val()?.trim() || '';
+        const model = $('#model').val()?.trim() || '';
+        const color = $('#color').val()?.trim() || '';
+        const customColor = (color === 'Others') ? $('#customColor').val()?.trim() || '' : '';
+        const plateNumber = $('#platenum').val()?.trim() || '';
+        const yearModel = $('#yearModel').val()?.trim() || '';
+        const transmission = $('#transmission').val() || '';
+        const imageFile = $('#vehicleImage')[0]?.files[0];
 
-        // Validate required fields
-        if (!brandModel || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
+        // Validation
+        if (!brand || !model || !color || !plateNumber || !yearModel || transmission === "Select Transmission") {
             alert('Please fill out all required vehicle fields.');
             return;
         }
+        if (color === 'Others' && !customColor) {
+            alert('Please specify the custom color.');
+            return;
+        }
 
-        // Add vehicle data to the global vehicles array
+        // Add the vehicle to the global vehicles array
         vehicles.push({
-            brandModel,
-            color,
+            brand,
+            model,
+            color: color === 'Others' ? customColor : color,
             plateNumber,
             yearModel,
             transmission,
-            imageUrl: imageFile ? URL.createObjectURL(imageFile) : null // Temporary URL for preview
+            imageUrl: imageFile ? URL.createObjectURL(imageFile) : null,
         });
 
-        formData.append('brandModel', brandModel);
-        formData.append('color', color);
-        formData.append('plateNumber', plateNumber);
-        formData.append('yearModel', yearModel);
-        formData.append('transmission', transmission);
-        formData.append('image', imageFile); // Append the image file
-        
-
-        // Log for debugging
-        console.log('Vehicle Added:', vehicles);
-
-        // Create a new vehicle item and append it to the vehicle list
+        // Update Vehicle List in UI
         const vehicleList = $('#vehicleList');
         const vehicleItem = $(`
             <div style="background-color: white; padding: 10px; border-radius: 5px;">
                 <div class="row">
                     <div class="col-md-6">
                         <strong>Vehicle ${vehicles.length}:</strong><br><br>
-                        <strong>Brand Model:</strong> ${brandModel} <br>
+                        <strong>Brand:</strong> ${brand} <br>
+                        <strong>Model:</strong> ${model} <br>
                         <strong>Color:</strong> ${color} <br>
                         <strong>Plate #:</strong> ${plateNumber} <br>
                         <strong>Year Model:</strong> ${yearModel} <br>
@@ -369,64 +569,48 @@ $(document).ready(function () {
                             ${imageFile ? `<img src="${URL.createObjectURL(imageFile)}" alt="Vehicle Image" style="max-width:100%; max-height:100%; object-fit: cover;">` : ''}
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                        </div>
-                    </div>
                 </div>
-            </div>`);
-
+            </div>
+        `);
         vehicleList.append(vehicleItem);
 
-        // Attach edit and delete event listeners to the new item
-        $(vehicleItem).find('.edit-btn').on('click', function () {
-            editVehicle(vehicleItem, brandModel, color, plateNumber, yearModel, transmission, imageFile);
-        });
-        $(vehicleItem).find('.delete-btn').on('click', function () {
-            deleteVehicle(vehicleItem);
-        });
-
-        // Reset the form fields and image preview in the modal after saving
+        // Reset Form
         $('#vehicleForm')[0].reset();
         $('#preview').attr('src', '').hide();
         $('#removeImageButton').hide();
         bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
     });
 
-    // Attach the previewImage function to the file input
-    $('#vehicleImage').on('change', previewImage);
-
-    // Remove image button click handler
-    $('#removeImageButton').on('click', removeImage);
-
-    // Registration form submission
+    // Registration Form Submission
     $('#registrationForm').submit(function (event) {
         event.preventDefault(); // Prevent default form submission
 
-        // Capture values from customer information fields
+        // Capture Customer Data
         const name = $('#name').val().trim();
         const phonenumber = $('#phonenumber').val().trim();
         const email = $('#email').val().trim();
         const city = $('#city').val().trim();
         const password = $('#password').val().trim();
 
+        // Validate Customer Data
+        if (!name || !phonenumber || !email || !password) {
+            alert('Please fill out all required fields.');
+            return;
+        }
+
         if (vehicles.length === 0) {
             alert('Please add at least one vehicle.');
             return;
         }
 
-        // Prepare user data
+        // Prepare User Data
         const userData = {
             name,
             phonenumber,
             email,
             city,
             password,
-            vehicles // Attach the global vehicles array
+            vehicles,
         };
 
         console.log('Final User Data Sent:', userData);
@@ -445,24 +629,40 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 alert('An error occurred: ' + (xhr.responseText || status || error));
-            }
+            },
         });
     });
-$.ajax({
-        type: 'POST',
-        url: '/uploadVehicle',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            alert('Vehicle saved successfully!');
-            console.log('Response:', response);
-        },
-        error: function (error) {
-            alert('Error saving vehicle.');
-            console.error('Error:', error);
+
+    // Image Preview Handlers
+    $('#vehicleImage').on('change', previewImage);
+    $('#removeImageButton').on('click', removeImage);
+
+    function previewImage(event) {
+        const fileInput = event.target;
+        const preview = document.getElementById('preview');
+        const removeButton = document.getElementById('removeImageButton');
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+                removeButton.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+            removeButton.style.display = 'none';
         }
-    });
+    }
+
+    function removeImage() {
+        $('#vehicleImage').val('');
+        $('#preview').attr('src', '').hide();
+        $('#removeImageButton').hide();
+    }
 });
 
 </script>

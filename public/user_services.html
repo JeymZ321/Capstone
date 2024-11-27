@@ -856,171 +856,176 @@ let allServices = []; // Services from backend
 
     // Display Services on the Page
     function displayServices(services) {
-        const container = document.querySelector('.product-grid');
-        container.innerHTML = '';
+    const container = document.querySelector('.product-grid');
+    container.innerHTML = '';
 
-        if (services.length === 0) {
-            container.innerHTML = '<p>No services available at the moment.</p>';
-            return;
-        }
+    if (services.length === 0) {
+        container.innerHTML = '<p>No services available at the moment.</p>';
+        return;
+    }
 
-        services.forEach(service => {
-            const product = document.createElement('div');
-            product.className = `product ${service.category} product-container`;
+    services.forEach(service => {
+        const product = document.createElement('div');
+        product.className = `product ${service.category} product-container`;
 
-            // Limit for description
-            const charLimit = 70;
-            const shortDesc = service.description.length > charLimit ? service.description.substring(0, charLimit) + '...' : service.description;
+        // Limit for description
+        const charLimit = 70;
+        const shortDesc = service.description.length > charLimit 
+            ? service.description.substring(0, charLimit) + '...' 
+            : service.description;
 
-            product.innerHTML = `
-            <div class= "product-container">
-                <div class="product-image">
-                    <img class="img-fluid d-block mx-auto image" src="${service.image}" alt="${service.name}" />
-                </div>
-                <div class="product-info">
-                    <div class="details-column">
-                        <p class="product-name">${service.name}</p>
-                        <p class="desc ">
-                            <span class="short-desc">${shortDesc}</span>
-                            <span class="full-desc" style="display: none;">${service.description}</span>
-                            ${service.description.length > charLimit ? '<button class="see-more btn btn-link btn-sm">See more</button>' : ''}
-                        </p>
-                        <br>
-                        <div class="price">
-                            <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
-                        </div>
-                        <button class="btn btn-primary add-to-summary btn-sm col-md-12" 
-                            onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.image}')">
-                            Add Service
-                        </button>
-                    </div>
-                </div>
+        product.innerHTML = `
+            <div class="product-image">
+                <img class="img-fluid d-block mx-auto image" style="width: auto; height: 200px;" 
+                     src="${service.image}" alt="${service.name}" />
             </div>
-                `;
-
-            container.appendChild(product);
-
-            // Add event listener for "See more" button
-            const seeMoreBtn = product.querySelector('.see-more');
-            if (seeMoreBtn) {
-                seeMoreBtn.addEventListener('click', () => {
-                    const fullDesc = product.querySelector('.full-desc');
-                    const shortDesc = product.querySelector('.short-desc');
-                    if (fullDesc.style.display === 'none') {
-                        fullDesc.style.display = 'inline';
-                        shortDesc.style.display = 'none';
-                        seeMoreBtn.textContent = 'See less';
-                    } else {
-                        fullDesc.style.display = 'none';
-                        shortDesc.style.display = 'inline';
-                        seeMoreBtn.textContent = 'See more';
-                    }
-                });
-            }
-        });
-    }
-
-    // Add Service to Summary
-    function addToSummary(_id, name, price, image) {
-        if (selectedServices.find(service => service._id === _id)) {
-            alert(`${name} is already in the summary!`);
-            return;
-        }
-        selectedServices.push({ _id, name, price, image });
-        localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
-        updateSummary();
-        updateTotal();
-
-        const button = document.querySelector(`button[onclick*="${_id}"]`);
-        if (button) {
-            button.disabled = true;
-            button.textContent = "Added";
-            button.style.backgroundColor = "red";
-            button.style.borderColor = "red";
-        }
-    }
-
-    // Cancel Service from Summary
-    function cancelFromSummary(_id) {
-        selectedServices = selectedServices.filter(service => service._id !== _id);
-        localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Update localStorage
-        updateSummary();
-        updateTotal();
-
-        const button = document.querySelector(`button[onclick*="${_id}"]`);
-        if (button) {
-            button.disabled = false;
-            button.textContent = "Add Service";
-            button.style.backgroundColor = "#0d6efd";
-            button.style.borderColor = "#0d6efd";
-        }
-    }
-
-    // Clear All Services from Summary
-    function clearCart() {
-        if (selectedServices.length === 0 && selectedSuvPanels.length === 0 && selectedCarPanels.length === 0 && selectedPickupPanels.length === 0) {
-            alert('No items to clear.');
-            return;
-        }
-
-        if (confirm('Are you sure you want to clear all selected items?')) {
-            selectedServices = [];
-            selectedSuvPanels = [];
-            selectedCarPanels = [];
-            selectedPickupPanels = [];
-            
-            // Reset all add buttons
-            document.querySelectorAll('button[onclick*="addToSummary"]').forEach(button => {
-                button.disabled = false;
-                button.textContent = "Add Service";
-                button.style.backgroundColor = "#0d6efd";
-                button.style.borderColor = "#0d6efd";
-            });
-
-            // Uncheck all SUV token checkboxes
-            document.querySelectorAll('.toggle-tokens input[type="checkbox"]').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-
-            updateSummary();
-            updateTotal();
-        }
-    }
-
-    // Update the Summary Section
-    function updateSummary() {
-        const summaryContainer = document.getElementById('cart-details');
-        const subtotalElement = document.getElementById('subtotal');
-        const totalElement = document.getElementById('total');
-
-        // Clear previous summary
-        summaryContainer.innerHTML = '';
-        if (selectedServices.length === 0 && selectedSuvPanels.length === 0 && selectedPickupPanels.length === 0 && selectedCarPanels.length === 0) {
-            summaryContainer.innerHTML = '<p>No services selected yet.</p>';
-            subtotalElement.textContent = '₱ 0.00';
-            totalElement.textContent = '₱ 0.00';
-            return;
-        }
-
-        let subtotal = 0;
-        document.getElementById('cart-details').style.display = 'block';
-
-        // Loop through selected services and add them to the summary
-        selectedServices.forEach(service => {
-            subtotal += service.price;
-            const summaryItem = document.createElement('div');
-            summaryItem.className = 'cart-item d-flex align-items-center';
-            summaryItem.innerHTML = `
-                <div class="cart-item-box d-flex align-items-center">
-                    <img src="${service.image}" alt="${service.name}" style="width: 40px; margin-right: 10px; margin-left: 10px; margin-bottom: 1px;">
-                    <span style="flex: 1; margin-right: 10px;">${service.name}</span>
-                    <span style="margin-right: 0px;">₱ ${service.price.toFixed(2)}</span>
-                    <button class="btn cancel-button" onclick="cancelFromSummary('${service._id}')">
-                        <img src="assets/img/x_button.png" alt="Cancel" class="x-icon">
+            <div class="product-info">
+                <div class="details-column">
+                    <p class="product-name">${service.name}</p>
+                    <p class="desc">
+                        <span class="short-desc">${shortDesc}</span>
+                        <span class="full-desc" style="display: none;">${service.description}</span>
+                        ${service.description.length > charLimit 
+                            ? '<button class="see-more btn btn-link btn-sm">See more</button>' 
+                            : ''}
+                    </p>
+                    <p class="mechanic"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
+            <p class="estimation"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
+                    <br>
+                    <div class="price">
+                        <span class="price-per-item" data-price="${service.price}">₱ ${service.price.toFixed(2)}</span>
+                    </div>
+                    <button class="btn btn-primary add-to-summary btn-sm" 
+                        onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.image}')">
+                        Add Service
                     </button>
-                </div>`;
-            summaryContainer.appendChild(summaryItem);
-        });
+                </div>
+            </div>`;
+
+        container.appendChild(product);
+
+        // Add event listener for "See more" button
+        const seeMoreBtn = product.querySelector('.see-more');
+        if (seeMoreBtn) {
+            seeMoreBtn.addEventListener('click', () => {
+                const fullDesc = product.querySelector('.full-desc');
+                const shortDesc = product.querySelector('.short-desc');
+                if (fullDesc.style.display === 'none') {
+                    fullDesc.style.display = 'inline';
+                    shortDesc.style.display = 'none';
+                    seeMoreBtn.textContent = 'See less';
+                    
+                } else {
+                    fullDesc.style.display = 'none';
+                    shortDesc.style.display = 'inline';
+                    seeMoreBtn.textContent = 'See more';
+                }
+            });
+        }
+    });
+}
+
+        // Add Service to Summary
+        function addToSummary(_id, name, price, image, mechanic, estimation) {
+            if (selectedServices.find(service => service._id === _id)) { // Change some() to find()
+                alert(`${name} is already in the summary!`);
+                return;
+            }
+            selectedServices.push({ _id, name, price, image, mechanic, estimation });
+            localStorage.setItem('selectedServices', JSON.stringify(selectedServices)); // Save to localStorage
+            
+            updateSummary();
+
+            const button = document.querySelector(`button[onclick*="${_id}"]`);
+            if (button) {
+                button.disabled = true;
+                button.textContent = "Added";
+                button.style.backgroundColor = "red";
+                button.style.borderColor = "red";
+            }
+        }
+    
+        // Cancel Service from Summary
+        function cancelFromSummary(_id) {
+            const service = selectedServices.find(service => service._id === _id);
+            if (service) {
+                
+                localStorage.removeItem('selectedServices'); // Clear localStorage
+                selectedServices = selectedServices.filter(service => service._id !== _id);
+                updateSummary();
+
+                const button = document.querySelector(`button[onclick*="${_id}"]`);
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = "Add Service";
+                    button.style.backgroundColor = "#0d6efd";
+                    button.style.borderColor = "#0d6efd";
+                }
+            }
+        }
+    
+        // Clear All Services from Summary
+        function clearCart() {
+            if (selectedServices.length === 0) {
+                alert('No services to clear.');
+                return;
+            }
+    
+            if (confirm('Are you sure you want to clear all selected services?')) {
+                selectedServices = [];
+                alert('All services have been cleared from the SUMMARY.');
+
+                const buttons = document.querySelectorAll('button[onclick*="addToSummary"]');
+                buttons.forEach(button => {
+                    button.disabled = false;
+                    button.textContent = "Add Service";
+                    button.style.backgroundColor = "#0d6efd";
+                    button.style.borderColor = "#0d6efd";
+                });
+
+                updateSummary();
+            }
+            
+        }
+    
+        // Update the Summary Section
+        function updateSummary() {
+            const summaryContainer = document.getElementById('cart-details');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            
+            // Clear previous summary
+            summaryContainer.innerHTML = '';
+
+            if (selectedServices.length === 0) {
+                summaryContainer.innerHTML = '<p>No services selected yet.</p>';
+                subtotalElement.textContent = '₱ 0.00';
+                totalElement.textContent = '₱ 0.00'; 
+                return;
+            }
+
+            let subtotal = 0;
+            document.getElementById('cart-details').style.display = 'block';
+            
+            // Loop through selected services and add them to the summary
+            selectedServices.forEach(service => {
+                subtotal += service.price;
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'cart-item d-flex align-items-center';
+                summaryItem.innerHTML = `
+                    <div class="cart-item-box d-flex align-items-center">
+                        <img src="${service.image}" alt="${service.name}" style="width: 40px; margin-right: 10px; margin-left: 10px; margin-bottom: 1px;">
+                        <span style="flex: 1; margin-right: 10px;">${service.name}</span>
+                        <span style="margin-right: 0px; ">₱ ${service.price.toFixed(2)}</span>
+                        <button class="btn cancel-button" onclick="cancelFromSummary('${service._id}')"><img src="assets/img/x_button.png" alt="Cancel" class="x-icon"></button>
+                    </div>`;
+                summaryContainer.appendChild(summaryItem);
+                
+            });
+
+            subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
+            totalElement.textContent = `₱ ${(subtotal).toFixed(2)}`; 
+        
 
         // Loop through selected SUV panels and add them to the summary
         selectedSuvPanels.forEach(panel => {

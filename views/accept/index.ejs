@@ -126,7 +126,7 @@
 
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Admin Name Here</span><img class="border rounded-circle img-profile" src="/assets/img/reynaldoslogo.png"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 small" style="color: rgb(255,255,255);">Reynaldo's Car Care</span><img class="border rounded-circle img-profile" src="/assets/img/reynaldoslogo.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                         <a class="dropdown-item" href="/admin/profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div>
@@ -156,8 +156,8 @@
                                 <th>Email</th>
                                 <th>Phone No.</th>
                                 <th>City</th>
-                                <th>Appointment Datetime</th>
-                                <th>Vehicle</th>
+                                <th>Services</th>
+                                <th>Plate#</th>
                                 
                                 <th>Actions</th>
                             </tr>
@@ -166,9 +166,18 @@
                             <% acceptedAppointments.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
                                     <td><%= appointment.email %></td>
-                                    <td><%= appointment.phonenumber %></td>
+                                    <td><%= appointment.phonenumber ||appointment.phone %></td>
                                     <td><%= appointment.city %></td>
-                                    <td><%= appointment.datetime %></td>
+                                    <td><% if (appointment.selectedServices && appointment.selectedServices.length > 0) { %>
+                                        <% appointment.selectedServices.forEach(service => { %>
+                                            <div>
+                                                <%= service.name %> - ₱<%= service.price.toFixed(2) %> (Mechanic: <%= service.mechanic %>)
+                                            </div>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <i>No services provided</i>
+                                    <% } %>
+                                </td>
                                     <td><%= appointment.vehicle %></td>
                                     
                                     <td>
@@ -189,7 +198,36 @@
                                 </tr>
                             <% }); %>
                         </tbody>
+                        <tbody id="approvedBody" style="color: black;">
+                            <% newCustomers.forEach(appointment => { %>
+                                <tr data-id="<%= appointment._id %>">
+                                    <td><%= appointment.email %></td>
+                                    <td><%= appointment.phonenumber ||appointment.phone %></td>
+                                    <td><%= appointment.city %></td>
+                                    <td><%= appointment.services %></td>
+                                    <td><%= appointment.vehicle %></td>
+                                    
+                                    <td>
+                                        <button class="btn btn-info view-btn " style="color: white; " 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-email="<%= appointment.email %>"
+                                            data-phonenumber="<%= appointment.phone %>"
+                                            data-city="<%= appointment.city %>"
+                                            data-datetime="<%= appointment.datetime || appointment.checkInTime %>"
+                                            data-vehicle="<%= appointment.vehicle %>"
+                                            data-carfunc="<%= appointment.carFunctionality %>"
+                                            data-suggestions="<%= appointment.services %>">
+                                            View
+                                        </button>
+                                        <button class="btn btn-warning archive-btn2" data-id="<%= appointment._id %>">Archive</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
                     </table>
+
+                    
                 </div>
 
                
@@ -214,7 +252,7 @@
                 <p><strong>Phone Number:</strong> <span id="modal-phonenumber"></span></p>
                 <p><strong>City:</strong> <span id="modal-city"></span></p>
                 <p><strong>Datetime:</strong> <span id="modal-datetime"></span></p>
-                <p><strong>Vehicle:</strong> <span id="modal-vehicle"></span></p>
+                <p><strong>Plate#:</strong> <span id="modal-vehicle"></span></p>
                 <p><strong>Car Functionality:</strong> <span id="modal-carfunc"></span></p>
                 <p><strong>Suggestions:</strong> <span id="modal-suggestions"></span></p>
             </div>
@@ -257,7 +295,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="vehicle">Vehicle:</label>
-                            <input type="text" class="form-control" placeholder="Toyota Avanza (2022) -- Black - Automatic - ABC 1234" name="vehicle" id="vehicle" required>
+                            <input type="text" class="form-control" placeholder="Toyota Avanza (2022) - ABC 1234" name="vehicle" id="vehicle" required>
                         </div>
                         <div class="col-md-6">
                             <label for="checkInTime">Check In Time:</label>
@@ -273,7 +311,7 @@
                             </label>
                         </div>
                         <div class="col-md-12">
-                            <label for="services">Services:</label><br>
+                            <label for="services">Services/Suggestions:</label><br>
                             <textarea id="services" name="services" rows="4" class="form-control" placeholder="Enter your suggestions or comments here..."></textarea>
                         </div>
                         <div class="col-md-6">
@@ -301,7 +339,8 @@
 <script src="/admin/assets/js/bs-init.js"></script>
 <script src="/admin/assets/js/theme.js"></script>
     <script>
-        $(document).ready(function () {
+        
+$(document).ready(function () {
     // Archive Button Click Handler for Appointments
     $('.archive-btn').on('click', function () {
         const appointmentId = $(this).data('id');
@@ -321,8 +360,28 @@
             });
         }
     });
-});
 
+    $('.archive-btn2').on('click', function () {
+        const appointmentId = $(this).data('id');
+
+        if (confirm("Are you sure you want to archive this appointment?")) {
+            $.ajax({
+                url: `/appointments/${appointmentId}/archive2`,
+                type: 'PATCH',
+                success: function (response) {
+                    alert(response.message);
+                    location.reload(); // Reload to reflect archived appointments
+                },
+                error: function (error) {
+                    console.error("Error archiving appointment:", error);
+                    alert("Failed to archive the appointment. Please try again.");
+                }
+            });
+        }
+    });
+
+});
+/*
     // Archive Button Click Handler for Customers
 $('#approvedBody').on('click', '.archive-btn', function () {
     const customerId = $(this).data('id');
@@ -344,7 +403,7 @@ $('#approvedBody').on('click', '.archive-btn', function () {
         });
     }
 });
-
+*/
     // Save Vehicle Button Handler
     $('#saveVehicleButton').on('click', function () {
         const formData = new FormData($('#vehicleForm')[0]); // Use FormData for file uploads
@@ -455,6 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const vehicle = this.dataset.vehicle;
                 const carfunc = this.dataset.carfunc;
                 const suggestions = this.dataset.suggestions;
+                const selectedServices = JSON.parse(this.dataset.selectedServices || '[]');
 
                 // Populate modal content
                 document.getElementById('modal-email').textContent = email;
@@ -464,6 +524,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('modal-vehicle').textContent = vehicle;
                 document.getElementById('modal-carfunc').textContent = carfunc;
                 document.getElementById('modal-suggestions').textContent = suggestions;
+
+                // Handle Services/Suggestions field
+                const servicesField = document.getElementById('services');
+                servicesField.value = suggestions || '';
+
+                // Add services and mechanic names to the modal
+                const servicesList = document.getElementById('modal-services-list');
+                servicesList.innerHTML = ''; // Clear existing services in the modal
+
+                selectedServices.forEach(service => {
+                    const serviceItem = document.createElement('div');
+                    serviceItem.textContent = `${service.name} - ₱${service.price.toFixed(2)} (Mechanic: ${service.mechanic})`;
+                    servicesList.appendChild(serviceItem);
+                });
+                
             });
         });
     });

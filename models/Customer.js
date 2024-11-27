@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 
 // Embedded vehicle schema
 const VehicleSchema = new mongoose.Schema({
-    brandModel: { type: String, required: true },
+    brand: { type: String, required: true },
+    model: { type: String, required: true },
     color: { type: String, required: true },
+    customColor: { type: String },
     plateNumber: { type: String, required: true, unique: true },
     yearModel: { type: String, required: true },
     transmission: { type: String, required: true },

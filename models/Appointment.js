@@ -10,7 +10,15 @@ const appointmentSchema = new mongoose.Schema({
     datetime: { type: String, unique: true },
     suggestions: { type: String },
     //slot: { type: String },
-    status: { type: String, default:'pending'}
+    status: { type: String, default:'pending'},
+    selectedServices: [
+        {
+            name: { type: String, required: true },
+            price: { type: Number, required: true },
+            mechanic: { type: String, required: true },
+            estimation: { type: String, required: true },
+        }
+    ]
 }, {
     timestamps: true
 });

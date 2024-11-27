@@ -625,11 +625,32 @@ app.patch('/appointments/:id/archive', async (req, res) => {
       res.status(500).json({ message: 'Failed to archive appointment.' });
   }
 });
+app.patch('/appointments/:id/archive2', async (req, res) => {
+  try {
+      const appointmentId = req.params.id;
+
+      // Update the status to 'archived'
+      const arcappointments = await NewCustomers.findByIdAndUpdate(appointmentId,
+          { status: 'archived' },
+          { new: true }
+      );
+
+      if (arcappointments) {
+          res.json({ message: 'Appointment archived successfully!' });
+      } else {
+          res.status(404).json({ message: 'Appointment not found.' });
+      }
+  } catch (error) {
+      console.error('Error archiving appointment:', error);
+      res.status(500).json({ message: 'Failed to archive appointment.' });
+  }
+});
 app.get('/display/archives', async (req, res) => {
   try {
     const arcappointments = await Appointment.find({status: 'archived'});
-    console.log('Appointments', arcappointments);
-    res.render('archieves/index', { arcappointments });
+    const newCustomers = await NewCustomers.find({status:'archived'});
+    console.log('Appointments', {arcappointments, newCustomers});
+    res.render('archieves/index', {arcappointments, newCustomers});
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -666,6 +687,28 @@ app.patch('/appointments/:id/delete', async (req, res) => {
     }
 });
 
+app.patch('/appointments/:id/delete2', async (req, res) => {
+  try {
+      const appointmentId = req.params.id;
+
+      // Update the status to 'archived'
+      const updatedAppointment = await NewCustomers.findByIdAndUpdate(
+          appointmentId,
+          { status: 'deleted' },
+          { new: true } // Return the updated document
+      );
+
+      if (updatedAppointment) {
+          res.json({ message: 'Appointment delete  successfully!' });
+      } else {
+          res.status(404).json({ message: 'Appointment not found.' });
+      }
+  } catch (error) {
+      console.error('Error deleting appointment:', error);
+      res.status(500).json({ message: 'Failed to adelete  appointment.' });
+  }
+});
+
 // Accept appointment and store it with 'accept' status
 app.patch('/appointments/:id/accept', async (req, res) => {
   try {
@@ -691,11 +734,9 @@ app.patch('/appointments/:id/accept', async (req, res) => {
 app.get('/display/approved', async (req, res) => {
   try {
     const acceptedAppointments = await Appointment.find({ status: 'accept' });
-    const newCustomers = await NewCustomers.find();
+    const newCustomers = await NewCustomers.find({status:'accept'});
 
-    const combinedData = [...acceptedAppointments, ...newCustomers];
-
-    res.render('accept/index', { acceptedAppointments: combinedData });
+    res.render('accept/index', { acceptedAppointments,newCustomers });
   } catch (err) {
     console.error('Error fetching approved data:', err);
     res.status(500).send('Server error');
@@ -718,87 +759,101 @@ app.get('/display/approved', async (req, res) => {
 
 /*---------------------- User dashboard Tracking---------------*/
 // Route to handle appointment form submissions
-app.post('/appointment', async (req, res) => {
-  try {
-      console.log('Received request data:', req.body);
+  app.post('/appointment', async (req, res) => {
+    try {
+        console.log('Received request data:', req.body);
 
-      const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, suggestions } = req.body;
+        const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, suggestions, selectedServices } = req.body;
 
-      // Create a new appointment instance with the provided data
-      const newAppointment = new Appointment({
-          email,
-          phonenumber,
-          city,
-          vehicle,
-          carfunc,
-          platenum,
-          suggestions,
-          datetime 
-         // slot  Selected slot
+        // Validate `selectedServices`
+        const validatedServices = selectedServices.map(service => {
+          return {
+              name: service.name,
+              price: service.price,
+              mechanic: service.mechanic || 'Default Mechanic', // Default value if missing
+              estimation: service.estimation || 'Not Provided'  // Default value if missing
+          };
       });
 
-      // Save the appointment to the database
-      const savedAppointment = await newAppointment.save();
+        // Create a new appointment instance with the provided data
+        const newAppointment = new Appointment({
+            email,
+            phonenumber,
+            city,
+            vehicle,
+            carfunc,
+            platenum,
+            suggestions,
+            datetime,
+            selectedServices: validatedServices
+          // slot  Selected slot
+        });
 
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: 'caynojames07@gmail.com',
-         pass: 'fddz jopx zhia rffr',  
-      },
-     });
-     // Path to the QR code image
-     const qrCodePath = path.join(__dirname, 'public', 'Payment', 'qrcode.png');
+        // Save the appointment to the database
+        const savedAppointment = await newAppointment.save();
+
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: 'caynojames07@gmail.com',
+          pass: 'fddz jopx zhia rffr',  
+        },
+      });
+      // Path to the QR code image
+      const qrCodePath = path.join(__dirname, 'public', 'Payment', 'qrcode.png');
 
 
-     // Compose email content with QR code
-     const mailOptions = {
-      from: 'Reynaldos Car Care', // Replace with your email
-      to: email,
-      subject: 'Payment Form for Your Appointment',
-      html: `
-          <p>Hello,</p>
-          <p>Thank you for booking an appointment with us. Please proceed to the payment using the Gcash QR code below:</p>
-          <p><strong>Appointment Details:</strong></p>
-          <ul>
-              <li><strong>Date and Time:</strong> ${datetime}</li>
-              <li><strong>Vehicle:</strong> ${vehicle}</li>
-              <li><strong>Processing Fee:</strong> ₱500</li>
-          </ul>
-          <p>Scan the QR code below to pay:</p>
-          <img src="cid:gcashQR" alt="Gcash QR Code" style="width:200px; height:200px;">
-          <p>After completing the payment, Please ensure to attach the proof of payment by replying to this email message for verification purposes .</p>
-          <br>
-          <p>Office Hours: 8am - 5pm.</p>
-          <p>Thank you!<br>Reynaldo's Car Care Center</p>
-      `,
-      attachments: [
-          {
-              filename: 'qrcode.png', // Name of the file in the email
-              path: qrCodePath, // Path to the QR code file
-              cid: 'gcashQR' // Content ID for embedding in the email
-          }
-      ]
-  };
+      // Compose email content with QR code
+      const mailOptions = {
+        from: 'Reynaldos Car Care', // Replace with your email
+        to: email,
+        subject: 'Payment Form for Your Appointment',
+        html: `
+            <p>Hello,</p>
+            <p>Thank you for booking an appointment with us. Please proceed to the payment using the Gcash QR code below:</p>
+            <p><strong>Appointment Details:</strong></p>
+            <ul>
+                <li><strong>Date and Time:</strong> ${datetime}</li>
+                <li><strong>Plate#:</strong> ${vehicle}</li>
+                <li><strong>Processing Fee:</strong> ₱500</li>
+            </ul>
+            <p>Scan the QR code below to pay:</p>
+            <img src="cid:gcashQR" alt="Gcash QR Code" style="width:200px; height:200px;">
+            <p>You have 24hrs to pay the processing fee to proceed with your request.</p>
+            <p>Please complete the payment within the given time to avoid delays or cancellation</p>
+            <br>
+            <p>After completing the payment, Please ensure to attach the proof of payment by replying to this email message for verification purposes .</p>
+            <br>
+            <p><strong>Office Hours:</strong> 8am - 5pm.</p>
+            <p>Thank you!<br>Reynaldo's Car Care Center</p>
+        `,
+        attachments: [
+            {
+                filename: 'qrcode.png', // Name of the file in the email
+                path: qrCodePath, // Path to the QR code file
+                cid: 'gcashQR' // Content ID for embedding in the email
+            }
+        ]
+    };
 
-  // Send the email
-  await transporter.sendMail(mailOptions);
+    // Send the email
+    await transporter.sendMail(mailOptions);
 
-      // Respond with success message
-      return res.status(200).json({ 
-        message: 'Appointment created successfully! A payment form with a Gcash QR code has been sent to your Gmail Account.', 
-        appointment: savedAppointment,
-        redirectUrl: '/userdashboard-request-tracking.html' 
-    });
-  } catch (error) {
-      console.error('Error creating appointment:', error);
-      // Respond with error message if something goes wrong
-      return res.status(500).json({ message: 'Error creating appointment', error: error.message });
-  }
-});
+        // Respond with success message
+        return res.status(200).json({ 
+          message: 'Appointment created successfully! A payment form with a Gcash QR code has been sent to your Gmail Account.', 
+          appointment: savedAppointment,
+          redirectUrl: '/userdashboard-request-tracking.html' 
+      });
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        // Respond with error message if something goes wrong
+        return res.status(500).json({ message: 'Error creating appointment', error: error.message });
+    }
+  });
 
 app.get('/appointments', async (req, res) => {
   try {
@@ -1078,7 +1133,7 @@ app.get('/display/archives', async (req, res) => {
       // Retrieve customers from the archive collection
       const arcappointments = await NewCustomers.find({status: 'archived'});
       console.log('Appointments', arcappointments);
-      // Render the archive page with the retrieved customers
+      // Render the archive page with the retrieved customersde
       res.render('archives/index', { arcappointments});
   } catch (err) {
       console.error('Error fetching archived customers:', err);
@@ -1110,7 +1165,7 @@ app.get('/api/services', async (req, res) => {
 // POST: Add a new service
 app.post('/api/services', upload.single('image'), async (req, res) => {
   try {
-      const { name, price, category, description } = req.body;
+      const { name, price, category, description, mechanic, estimation } = req.body;
       const imagePath = req.file ? `/uploads/${req.file.filename}` : ''; // Save file path if an image is uploaded
 
       const service = new Service({
@@ -1118,6 +1173,8 @@ app.post('/api/services', upload.single('image'), async (req, res) => {
           price,
           category,
           description,
+          mechanic,
+          estimation,
           image: imagePath,
       });
 
@@ -1131,7 +1188,7 @@ app.post('/api/services', upload.single('image'), async (req, res) => {
 // PUT: Update an existing service
 app.put('/api/services/:id', upload.single('image'), async (req, res) => {
   try {
-      const { name, price, category, description } = req.body;
+      const { name, price, category, description, mechanic, estimation } = req.body;
       const service = await Service.findById(req.params.id);
 
       if (!service) {
@@ -1143,6 +1200,8 @@ app.put('/api/services/:id', upload.single('image'), async (req, res) => {
       service.price = price || service.price;
       service.category = category || service.category;
       service.description = description || service.description;
+      service.mechanic = mechanic || service.mechanic; // Update mechanic name
+      service.estimation = estimation || service.estimation; 
 
       // Update the image if a new file is uploaded
       if (req.file) {
