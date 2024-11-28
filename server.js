@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt'); 
 const Service = require("./models/Service");
+const Car = require("./models/Car");
 const Appointment = require('./models/Appointment'); 
 const NewCustomers = require('./models/NewCustomers');
 const ArchivedCustomers = require('./models/archives');
@@ -1231,6 +1232,40 @@ app.delete('/api/services/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to delete service' });
   }
 });
+
+// POST: Add a new car brand and model
+app.post('/api/cars', async (req, res) => {
+  try {
+      const { brand, model } = req.body;
+      const car = new Car({ brand, model });
+      await car.save();
+      res.status(201).json(car);
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to save car data' });
+  }
+});
+
+// GET: Fetch all car brands and models
+app.get('/api/cars', async (req, res) => {
+  const { brand } = req.query;
+
+  try {
+      if (brand) {
+          // Get models for a specific brand
+          const cars = await Car.find({ brand });
+          const models = cars.map(car => car.model);
+          return res.json(models);
+      }
+
+      // Get all brands and models
+      const cars = await Car.find();
+      res.json(cars);
+  } catch (error) {
+      console.error('Error fetching car data:', error);
+      res.status(500).json({ error: 'Failed to fetch car data' });
+  }
+});
+
 
 
 

@@ -13,6 +13,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/admin.css">
 
+    <style>
+        .deleteBtn {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.deleteBtn:hover {
+    background-color: darkred;
+}
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -142,6 +156,35 @@
         </div>
     </div>
 </div>
+        <!-- Modal for Managing Car Brands and Models -->
+<div class="modal fade" id="carModal" tabindex="-1" aria-labelledby="carModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="carModalLabel">Add Car Brand and Model</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="carForm">
+                    <div class="mb-3">
+                        <label for="carBrand" class="form-label">Brand:</label>
+                        <input type="text" id="carBrand" class="form-control" placeholder="Enter car brand" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="carModel" class="form-label">Model:</label>
+                        <input type="text" id="carModel" class="form-control" placeholder="Enter car model" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Car</button>
+                </form>            
+                <!-- Display Added Brands/Models -->
+                <div id="addedCars">
+                    <h3>Added Cars:</h3>
+                    <ul id="addedCarsList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     
         <h2 class="my-4">Existing Services</h2>
         
@@ -160,12 +203,16 @@
             <button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#serviceModal" style="float: right; font-size: 17px; background-color: darkred; border-color: darkred;">
                 Add New Service
             </button>
+            <button type="button" class="btn btn-secondary mb-1" data-bs-toggle="modal" data-bs-target="#carModal" style="float: right; font-size: 17px; margin-right: 10px;">
+                Manage Car Brands and Models
+            </button>
             <hr style="height: 2px;">
         </div>
 
         <div id="servicesList" class="row"></div>
     </div>
  </div>
+ 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/chart.min.js"></script>
@@ -176,8 +223,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-   let allServices = [];
-let selectedServices = []; // Track selected services for the summary
+    let allServices = [];
+    let selectedServices = []; 
 
 // Fetch services from the backend
 async function fetchServices() {
@@ -191,6 +238,128 @@ async function fetchServices() {
         alert('Failed to load services. Please try again later.');
     }
 }
+
+async function updateCarDropdowns() {
+    try {
+        const response = await fetch('/api/cars');
+        const cars = await response.json();
+
+        const brandDropdown = document.getElementById('brand');
+        const modelDropdown = document.getElementById('model');
+
+        // Populate unique brands
+        const brands = [...new Set(cars.map(car => car.brand))];
+        brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            brandDropdown.appendChild(option);
+        });
+
+        // Clear model dropdown
+        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
+
+        // Add brand change listener for dynamic model population
+        brandDropdown.addEventListener('change', async () => {
+            const selectedBrand = brandDropdown.value;
+            const response = await fetch(`/api/cars?brand=${encodeURIComponent(selectedBrand)}`);
+            const models = await response.json();
+
+            modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelDropdown.appendChild(option);
+            });
+        });
+    } catch (error) {
+        console.error('Error updating car dropdowns:', error);
+        alert('Failed to update car data.');
+    }
+}
+
+ // Save form handler
+ document.getElementById('carForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const brand = document.getElementById('carBrand').value.trim();
+        const model = document.getElementById('carModel').value.trim();
+
+        if (!brand || !model) {
+            alert('Please fill in both brand and model.');
+            return;
+        }
+
+        try {
+        // Add car to localStorage
+        const cars = JSON.parse(localStorage.getItem('cars')) || [];
+        const newCar = { brand, model };
+        cars.push(newCar);
+        localStorage.setItem('cars', JSON.stringify(cars));
+
+        // Optionally, save to backend
+        await saveCarToBackend(newCar);
+
+        // Reset the form
+        document.getElementById('carForm').reset();
+
+        // Update the UI in service.html
+        loadAddedCars();
+    } catch (error) {
+        console.error('Error saving car data:', error);
+        alert('Failed to save car data.');
+    }
+});
+
+    // Load added cars from localStorage and display
+    function loadAddedCars() {
+        const cars = JSON.parse(localStorage.getItem('cars')) || [];
+        const addedCarsList = document.getElementById('addedCarsList');
+        addedCarsList.innerHTML = '';
+
+        cars.forEach((car, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${car.brand} - ${car.model}`;
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.classList.add('deleteBtn');
+            deleteBtn.addEventListener('click', () => {
+                deleteCar(index);
+            });
+            li.appendChild(deleteBtn);
+            addedCarsList.appendChild(li);
+        });
+    }
+
+    // Delete a car from localStorage and update UI
+    function deleteCar(index) {
+        const cars = JSON.parse(localStorage.getItem('cars')) || [];
+        cars.splice(index, 1); // Remove the car at the given index
+        localStorage.setItem('cars', JSON.stringify(cars)); // Save updated array back to localStorage
+        loadAddedCars(); // Update the displayed list
+    }
+
+    // Save car to the backend API (optional)
+    async function saveCarToBackend(car) {
+        try {
+            const response = await fetch('/api/cars', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(car),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to save car data: ${response.status}`);
+            }
+            console.log('Car saved successfully');
+        } catch (error) {
+            console.error('Error saving car data:', error);
+            alert('Failed to save car data.');
+        }
+    }
+    
+
 
 // Filter services by category
 function filterByCategory(category) {
