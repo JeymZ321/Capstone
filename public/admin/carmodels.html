@@ -213,38 +213,37 @@ async function updateCarDropdowns() {
 }
 
  // Save form handler
- document.getElementById('carForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+// document.getElementById('carForm').addEventListener('submit', async (e) => {
+//     e.preventDefault();
 
-        const brand = document.getElementById('carBrand').value.trim();
-        const model = document.getElementById('carModel').value.trim();
+//     const brand = document.getElementById('carBrand').value.trim();
+//     const model = document.getElementById('carModel').value.trim();
 
-        if (!brand || !model) {
-            alert('Please fill in both brand and model.');
-            return;
-        }
+//     if (!brand || !model) {
+//         alert('Please fill in both brand and model.');
+//         return;
+//     }
 
-        try {
-        // Add car to localStorage
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        const newCar = { brand, model };
-        cars.push(newCar);
-        localStorage.setItem('cars', JSON.stringify(cars));
+//     try {
+//     // Add car to localStorage
+//     const cars = JSON.parse(localStorage.getItem('cars')) || [];
+//     const newCar = { brand, model };
+//     cars.push(newCar);
+//     localStorage.setItem('cars', JSON.stringify(cars));
 
-        // Optionally, save to backend
-        await saveCarToBackend(newCar);
+//     // Optionally, save to backend
+//     await saveCarToBackend(newCar);
 
-        // Reset the form
-        document.getElementById('carForm').reset();
+//     // Reset the form
+//     document.getElementById('carForm').reset();
 
-        // Update the UI in service.html
-        loadAddedCars();
-    } catch (error) {
-        console.error('Error saving car data:', error);
-        alert('Failed to save car data.');
-    }
-});
-
+//     // Update the UI in service.html
+//     loadAddedCars();
+// } catch (error) {
+//     console.error('Error saving car data:', error);
+//     alert('Failed to save car data.');
+// }
+// });
     // Load added cars from localStorage and display
     function loadAddedCars() {
         const cars = JSON.parse(localStorage.getItem('cars')) || [];
@@ -273,6 +272,77 @@ async function updateCarDropdowns() {
         loadAddedCars(); // Update the displayed list
     }
 
+    const carListContainer = document.getElementById("addedCarsList");
+
+    // Function to load cars from localStorage
+    function loadCars() {
+        const cars = JSON.parse(localStorage.getItem("cars")) || [];
+        carListContainer.innerHTML = ""; // Clear the list to prevent duplication
+
+        cars.forEach((car, index) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("col-md-3");
+            listItem.innerHTML = `
+                <div class="card mb-3">
+                    <img src="${car.image}" style="width: 200px; height: auto;" class="card-img-top" alt="${car.brand} ${car.model}">
+                    <div class="card-body">
+                        <h5 class="card-title">${car.brand}</h5>
+                        <p class="card-text"><strong>Model:</strong> ${car.model}</p>
+                        <button class="btn btn-danger btn-sm deleteBtn" data-index="${index}">Delete</button>
+                    </div>
+                </div>
+            `;
+            carListContainer.appendChild(listItem);
+        });
+    }
+
+    // Prevent multiple event listeners
+    const carForm = document.getElementById("carForm");
+    carForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const brand = document.getElementById("carBrand").value.trim();
+        const model = document.getElementById("carModel").value.trim();
+        const defaultImage = "assets/img/newcarmodel.png"; // Default image
+
+        if (!brand || !model) {
+            alert("Please fill in both brand and model.");
+            return;
+        }
+
+        // Retrieve existing cars from localStorage
+        const cars = JSON.parse(localStorage.getItem("cars")) || [];
+        const newCar = {
+            brand,
+            model,
+            image: defaultImage,
+        };
+
+        cars.push(newCar); // Add the new car
+        localStorage.setItem("cars", JSON.stringify(cars)); // Save updated list to localStorage
+
+        // Update the UI and clear the form
+        loadCars();
+        carForm.reset();
+        bootstrap.Modal.getInstance(document.getElementById("carModal")).hide();
+    });
+
+    // Delete a car
+    carListContainer.addEventListener("click", function (e) {
+        if (e.target.classList.contains("deleteBtn")) {
+            const index = e.target.dataset.index;
+            const cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+            cars.splice(index, 1); // Remove the car at the given index
+            localStorage.setItem("cars", JSON.stringify(cars)); // Save updated array back to localStorage
+            loadCars(); // Refresh the displayed list
+        }
+    });
+
+    // Initial load of cars
+    loadCars();
+
+
     // Save car to the backend API (optional)
     async function saveCarToBackend(car) {
         try {
@@ -289,7 +359,7 @@ async function updateCarDropdowns() {
             console.error('Error saving car data:', error);
             alert('Failed to save car data.');
         }
-    }
+    }10
     
 
 
@@ -456,6 +526,7 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
 fetchServices();
 
 </script>
+
 
 </body>
 

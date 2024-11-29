@@ -209,10 +209,6 @@
             <button type="button" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#serviceModal" style="float: right; font-size: 17px; background-color: darkred; border-color: darkred;">
                 Add New Service
             </button>
-            <button type="button" class="btn btn-secondary mb-1" data-bs-toggle="modal" data-bs-target="#carModal" style="float: right; font-size: 17px; margin-right: 10px;">
-                Manage Car Brands and Models
-            </button>
-            <hr style="height: 2px;">
         </div>
 
         <div id="servicesList" class="row"></div>
@@ -394,7 +390,7 @@ function displayServices(services) {
                 <img src="${service.image}" class="card-img-top" alt="${service.name}" style="width: 150px; margin: 0 auto;">
                 <div class="card-body">
                     <h5 class="card-title">${service.name}</h5>
-                    <p class="card-text" style="color: darkred; font-weight: bold;">Price: ₱${service.price}</p>
+                    <p class="card-text" style="color: darkred; font-weight: bold;">⬆️ Price: ₱${service.price}</p>
                     <p class="card-text"><strong>Category:</strong> ${service.category}</p>
                     <p class="card-text"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
                     <p class="card-text"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
@@ -404,7 +400,7 @@ function displayServices(services) {
                             <a href="#" class="see-more" onclick="toggleDescription('${service._id}', '${fullDescription.replace(/'/g, "\\'")}')">See More</a>
                         ` : ''}
                     </p>
-                    <button class="btn btn-primary btn-md" onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.mechanic}', '${service.estimation}')">Add to Summary</button>
+                    
                     <button class="btn btn-warning btn-md" onclick="editService('${service._id}')">Edit</button>
                     <button class="btn btn-danger btn-md" onclick="deleteService('${service._id}')">Delete</button>
                 </div>

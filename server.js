@@ -760,7 +760,7 @@ app.get('/display/approved', async (req, res) => {
 
 /*---------------------- User dashboard Tracking---------------*/
 // Route to handle appointment form submissions
-  app.post('/appointment', async (req, res) => {
+app.post('/appointment', async (req, res) => {
     try {
         console.log('Received request data:', req.body);
 
