@@ -327,6 +327,7 @@ $('#grand-total').text(`₱${grandTotal.toFixed(2)}`);
 // Fetch user and vehicle data from backend
 const email = localStorage.getItem('userEmail');
 if (email) {
+
     $.ajax({
         url: `/customer/${email}`,
         type: 'GET',
@@ -339,6 +340,7 @@ if (email) {
 
             // Populate vehicle dropdown
             const vehicleDropdown = $('#vehicle');
+            vehicleDropdown.empty();
             customer.vehicles.forEach(vehicle => {
                 const optionText = `${vehicle.brand} - ${vehicle.model} - (${vehicle.yearModel}) - ${vehicle.color}`;
                 const option = $('<option></option>').text(optionText).val(vehicle.plateNumber);
@@ -352,6 +354,7 @@ if (email) {
     });
 } else {
     alert('User email not found. Please log in again.');
+    window.location.href = 'login.html';
 }
 
 $('#datetimepicker').datetimepicker({

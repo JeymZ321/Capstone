@@ -540,6 +540,7 @@ function resetData() {
             success: function (response) {
                 alert(response.message);
                 if (response.message) {
+                    localStorage.setItem('userEmail', email);
                     window.location.href = '/homepage.html'; // Redirect on success
                 }
             },

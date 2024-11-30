@@ -288,7 +288,25 @@ app.post('/loginroute', async (req, res) => {
   }
 });
 
+// Fetch User Profile
+app.get('/api/profile', async (req, res) => {
+  const { name } = req.query;
 
+  try {
+      const user = await customer.findOne({ name });
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json({ 
+          name: user.name, 
+          email: user.email
+      });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
 /*---------------------------------ADMIN LOGIN-------------------------------------*/
 
 /*-----CREATING ACCOUNTS FOR ADMINS------*/
