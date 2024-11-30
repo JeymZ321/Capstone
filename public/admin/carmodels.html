@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -131,6 +130,10 @@
             <i class="fas fa-search ms-5 me-1" ></i>
 
             <input type="text" placeholder="Search car model..." class="search-input" id="search-input" style="width: 500px;"/>
+             
+            <select id="categoryDropdown" class="form-select ms-2" style="width: 200px; display: inline-block;">
+                <option value="">All Brands</option>
+            </select>
 
             <button type="button" class="btn btn-secondary mb-1" data-bs-toggle="modal" data-bs-target="#carModal" style="float: right; font-size: 17px; margin-right: 10px;">
                 Manage Car Brands and Models
@@ -138,12 +141,33 @@
             <hr style="height: 2px;">
             <div id="addedCars">
                 <h3>Added Cars:</h3>
-                <ul id="addedCarsList"></ul>
+                <div id="addedCarsList" class="row"></div>
             </div>
         </div>
 
     </div>
  </div>
+
+
+
+ <!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this car model?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
  
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -155,377 +179,128 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    let allServices = [];
-    let selectedServices = []; 
+        const defaultImage = "assets/img/newcarmodel.png";
+        const carListContainer = document.getElementById("addedCarsList");
+        const carForm = document.getElementById("carForm");
+        const searchInput = document.getElementById("search-input");
+        const categoryDropdown = document.getElementById("categoryDropdown");
 
-// Fetch services from the backend
-async function fetchServices() {
-    try {
-        const response = await fetch('/api/services');
-        const services = await response.json();
-        allServices = services; // Store services for filtering
-        displayServices(services); // Render services
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        alert('Failed to load services. Please try again later.');
-    }
-}
+        let carToDeleteIndex = null; // Variable to store the index of the car to delete
 
-async function updateCarDropdowns() {
-    try {
-        const response = await fetch('/api/cars');
-        const cars = await response.json();
-
-        const brandDropdown = document.getElementById('brand');
-        const modelDropdown = document.getElementById('model');
-
-        // Populate unique brands
-        const brands = [...new Set(cars.map(car => car.brand))];
-        brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
-        brands.forEach(brand => {
-            const option = document.createElement('option');
-            option.value = brand;
-            option.textContent = brand;
-            brandDropdown.appendChild(option);
-        });
-
-        // Clear model dropdown
-        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-
-        // Add brand change listener for dynamic model population
-        brandDropdown.addEventListener('change', async () => {
-            const selectedBrand = brandDropdown.value;
-            const response = await fetch(`/api/cars?brand=${encodeURIComponent(selectedBrand)}`);
-            const models = await response.json();
-
-            modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelDropdown.appendChild(option);
-            });
-        });
-    } catch (error) {
-        console.error('Error updating car dropdowns:', error);
-        alert('Failed to update car data.');
-    }
-}
-
- // Save form handler
-// document.getElementById('carForm').addEventListener('submit', async (e) => {
-//     e.preventDefault();
-
-//     const brand = document.getElementById('carBrand').value.trim();
-//     const model = document.getElementById('carModel').value.trim();
-
-//     if (!brand || !model) {
-//         alert('Please fill in both brand and model.');
-//         return;
-//     }
-
-//     try {
-//     // Add car to localStorage
-//     const cars = JSON.parse(localStorage.getItem('cars')) || [];
-//     const newCar = { brand, model };
-//     cars.push(newCar);
-//     localStorage.setItem('cars', JSON.stringify(cars));
-
-//     // Optionally, save to backend
-//     await saveCarToBackend(newCar);
-
-//     // Reset the form
-//     document.getElementById('carForm').reset();
-
-//     // Update the UI in service.html
-//     loadAddedCars();
-// } catch (error) {
-//     console.error('Error saving car data:', error);
-//     alert('Failed to save car data.');
-// }
-// });
-    // Load added cars from localStorage and display
-    function loadAddedCars() {
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        const addedCarsList = document.getElementById('addedCarsList');
-        addedCarsList.innerHTML = '';
-
-        cars.forEach((car, index) => {
-            const li = document.createElement('li');
-            li.textContent = `${car.brand} - ${car.model}`;
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.classList.add('deleteBtn');
-            deleteBtn.addEventListener('click', () => {
-                deleteCar(index);
-            });
-            li.appendChild(deleteBtn);
-            addedCarsList.appendChild(li);
-        });
-    }
-
-    // Delete a car from localStorage and update UI
-    function deleteCar(index) {
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        cars.splice(index, 1); // Remove the car at the given index
-        localStorage.setItem('cars', JSON.stringify(cars)); // Save updated array back to localStorage
-        loadAddedCars(); // Update the displayed list
-    }
-
-    const carListContainer = document.getElementById("addedCarsList");
-
-    // Function to load cars from localStorage
-    function loadCars() {
-        const cars = JSON.parse(localStorage.getItem("cars")) || [];
-        carListContainer.innerHTML = ""; // Clear the list to prevent duplication
-
-        cars.forEach((car, index) => {
-            const listItem = document.createElement("li");
-            listItem.classList.add("col-md-3");
-            listItem.innerHTML = `
-                <div class="card mb-3">
-                    <img src="${car.image}" style="width: 200px; height: auto;" class="card-img-top" alt="${car.brand} ${car.model}">
-                    <div class="card-body">
-                        <h5 class="card-title">${car.brand}</h5>
-                        <p class="card-text"><strong>Model:</strong> ${car.model}</p>
-                        <button class="btn btn-danger btn-sm deleteBtn" data-index="${index}">Delete</button>
-                    </div>
-                </div>
-            `;
-            carListContainer.appendChild(listItem);
-        });
-    }
-
-    // Prevent multiple event listeners
-    const carForm = document.getElementById("carForm");
-    carForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const brand = document.getElementById("carBrand").value.trim();
-        const model = document.getElementById("carModel").value.trim();
-        const defaultImage = "assets/img/newcarmodel.png"; // Default image
-
-        if (!brand || !model) {
-            alert("Please fill in both brand and model.");
-            return;
+        // Function to open the delete confirmation modal
+        function confirmDelete(index) {
+            carToDeleteIndex = index; // Store the index of the car to delete
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            deleteModal.show();
         }
 
-        // Retrieve existing cars from localStorage
-        const cars = JSON.parse(localStorage.getItem("cars")) || [];
-        const newCar = {
-            brand,
-            model,
-            image: defaultImage,
-        };
-
-        cars.push(newCar); // Add the new car
-        localStorage.setItem("cars", JSON.stringify(cars)); // Save updated list to localStorage
-
-        // Update the UI and clear the form
-        loadCars();
-        carForm.reset();
-        bootstrap.Modal.getInstance(document.getElementById("carModal")).hide();
-    });
-
-    // Delete a car
-    carListContainer.addEventListener("click", function (e) {
-        if (e.target.classList.contains("deleteBtn")) {
-            const index = e.target.dataset.index;
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-
-            cars.splice(index, 1); // Remove the car at the given index
-            localStorage.setItem("cars", JSON.stringify(cars)); // Save updated array back to localStorage
-            loadCars(); // Refresh the displayed list
-        }
-    });
-
-    // Initial load of cars
-    loadCars();
-
-
-    // Save car to the backend API (optional)
-    async function saveCarToBackend(car) {
-        try {
-            const response = await fetch('/api/cars', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(car),
-            });
-            if (!response.ok) {
-                throw new Error(`Failed to save car data: ${response.status}`);
+        // Function to handle the deletion once confirmed
+        document.getElementById("confirmDeleteBtn").addEventListener("click", () => {
+            if (carToDeleteIndex !== null) {
+                const cars = JSON.parse(localStorage.getItem("cars")) || [];
+                cars.splice(carToDeleteIndex, 1); // Delete the selected car
+                localStorage.setItem("cars", JSON.stringify(cars));
+                loadCars(); // Refresh the car list
+                carToDeleteIndex = null; // Reset the index
+                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                deleteModal.hide();
+                alert("Car model deleted successfully.");
             }
-            console.log('Car saved successfully');
-        } catch (error) {
-            console.error('Error saving car data:', error);
-            alert('Failed to save car data.');
+        });
+
+        // Load cars from localStorage and display
+        function loadCars() {
+            const cars = JSON.parse(localStorage.getItem("cars")) || [];
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = categoryDropdown.value;
+
+            carListContainer.innerHTML = ""; // Clear the list
+
+            cars
+                .filter(car => {
+                    const matchesSearch = car.brand.toLowerCase().includes(searchTerm) || car.model.toLowerCase().includes(searchTerm);
+                    const matchesCategory = !selectedCategory || car.brand === selectedCategory;
+                    return matchesSearch && matchesCategory;
+                })
+                .forEach((car, index) => {
+                    const carElement = document.createElement("div");
+                    carElement.classList.add("col-md-2", "mb-4");
+                    carElement.innerHTML = `
+                        <div class="card">
+                            <img src="${car.image || defaultImage}" class="card-img-top" alt="${car.brand}">
+                            <div class="card-body">
+                                <h5 class="card-title">${car.brand} - ${car.model}</h5>
+                                <button class="deleteBtn" onclick="confirmDelete(${index})">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    carListContainer.appendChild(carElement);
+                });
         }
-    }10
-    
+
+        // Delete car from localStorage
+        function deleteCar(index) {
+            const cars = JSON.parse(localStorage.getItem("cars")) || [];
+            cars.splice(index, 1);
+            localStorage.setItem("cars", JSON.stringify(cars));
+            loadCars();
+        }
+
+        // Add new car
+        carForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const carBrand = document.getElementById("carBrand").value;
+            const carModel = document.getElementById("carModel").value;
+            const cars = JSON.parse(localStorage.getItem("cars")) || [];
+            cars.push({ brand: carBrand, model: carModel });
+            localStorage.setItem("cars", JSON.stringify(cars));
+            loadCars();
+            carForm.reset();
+            bootstrap.Modal.getInstance(document.getElementById('carModal')).hide();
+            document.querySelector('.modal-backdrop')?.remove();
+        });
+
+        // Populate the category dropdown with unique car brands
+        function populateCategories() {
+            const cars = JSON.parse(localStorage.getItem("cars")) || [];
+            const uniqueBrands = [...new Set(cars.map(car => car.brand))]; // Get unique brands
+
+            categoryDropdown.innerHTML = `<option value="">All Brands</option>`; // Reset dropdown
+            uniqueBrands.forEach(brand => {
+                const option = document.createElement("option");
+                option.value = brand;
+                option.textContent = brand;
+                categoryDropdown.appendChild(option);
+            });
+        }
+
+        // Handle category change
+        categoryDropdown.addEventListener("change", function () {
+            loadCars(); // Simply reload cars based on the selected filter
+        });
+
+        // Add search and category filter event listeners
+        searchInput.addEventListener("input", loadCars);
+      
 
 
-// Filter services by category
-function filterByCategory(category) {
-    const filteredServices = category === 'all'
-        ? allServices
-        : allServices.filter(service => service.category === category);
-    displayServices(filteredServices);
-}
+        // Ensure body scrolls properly after modal is closed
+        document.getElementById('carModal').addEventListener('hidden.bs.modal', () => {
+            document.body.style.overflow = ''; // Allow scrolling
+            document.body.classList.remove('modal-open'); // Remove modal-open class
+            document.querySelector('.modal-backdrop')?.remove(); // Ensure backdrop is removed
+        });
 
-// Display services on the page
-function displayServices(services) {
-    const servicesList = document.getElementById('servicesList');
-    servicesList.innerHTML = '';
 
-    services.forEach(service => {
-        const col = document.createElement('div');
-        col.className = 'col-md-4 mb-3'; // Adjust for better layout
+        // Ensure the backdrop is removed when the modal is fully hidden
+        document.getElementById('carModal').addEventListener('hidden.bs.modal', () => {
+            document.querySelector('.modal-backdrop')?.remove();
+        });
 
-        const fullDescription = service.description || 'No description provided.';
-        const truncatedDescription = fullDescription.length > 100
-            ? fullDescription.substring(0, 100) + '...'
-            : fullDescription;
-
-        col.innerHTML = `
-            <div class="card">
-                <img src="${service.image}" class="card-img-top" alt="${service.name}" style="width: 150px; margin: 0 auto;">
-                <div class="card-body">
-                    <h5 class="card-title">${service.name}</h5>
-                    <p class="card-text" style="color: darkred; font-weight: bold;">Price: ₱${service.price}</p>
-                    <p class="card-text"><strong>Category:</strong> ${service.category}</p>
-                    <p class="card-text"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
-                    <p class="card-text"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
-                    <p class="card-text" id="description-${service._id}">
-                        <strong>Description:</strong> ${truncatedDescription}
-                        ${fullDescription.length > 100 ? `
-                            <a href="#" class="see-more" onclick="toggleDescription('${service._id}', '${fullDescription.replace(/'/g, "\\'")}')">See More</a>
-                        ` : ''}
-                    </p>
-                    <button class="btn btn-primary btn-md" onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.mechanic}', '${service.estimation}')">Add to Summary</button>
-                    <button class="btn btn-warning btn-md" onclick="editService('${service._id}')">Edit</button>
-                    <button class="btn btn-danger btn-md" onclick="deleteService('${service._id}')">Delete</button>
-                </div>
-            </div>`;
-        servicesList.appendChild(col);
-    });
-}
-
-// Toggle description expansion
-function toggleDescription(id, fullDescription) {
-    const descriptionElem = document.getElementById(`description-${id}`);
-    const isExpanded = descriptionElem.dataset.expanded === 'true';
-
-    if (isExpanded) {
-        descriptionElem.innerHTML = `
-            ${fullDescription.substring(0, 100)}...
-            <a href="#" onclick="toggleDescription('${id}', '${fullDescription.replace(/'/g, "\\'")}')">See More</a>
-        `;
-        descriptionElem.dataset.expanded = 'false';
-    } else {
-        descriptionElem.innerHTML = `
-            ${fullDescription}
-            <a href="#" onclick="toggleDescription('${id}', '${fullDescription.replace(/'/g, "\\'")}')">See Less</a>
-        `;
-        descriptionElem.dataset.expanded = 'true';
-    }
-}
-
-// Add service to summary
-function addToSummary(id, name, price, mechanic, estimation) {
-    if (selectedServices.some(service => service.id === id)) {
-        alert('Service already added to summary!');
-        return;
-    }
-
-    selectedServices.push({ id, name, price, mechanic, estimation });
-    updateSummary();
-}
-
-// Update the summary display
-function updateSummary() {
-    const summaryContainer = document.getElementById('summaryContainer');
-    summaryContainer.innerHTML = '';
-
-    selectedServices.forEach(service => {
-        const serviceItem = document.createElement('div');
-        serviceItem.className = 'summary-item';
-        serviceItem.innerHTML = `
-            <p><strong>Name:</strong> ${service.name}</p>
-            <p><strong>Price:</strong> ₱${service.price}</p>
-            <p><strong>Mechanic:</strong> ${service.mechanic}</p>
-            <p><strong>Estimation:</strong> ${service.estimation}</p>
-        `;
-        summaryContainer.appendChild(serviceItem);
-    });
-}
-
-// Edit service
-function editService(serviceId) {
-    const service = allServices.find(s => s._id === serviceId);
-    if (!service) return;
-
-    document.getElementById('serviceId').value = service._id;
-    document.getElementById('serviceName').value = service.name;
-    document.getElementById('servicePrice').value = service.price;
-    document.getElementById('serviceCategory').value = service.category;
-    document.getElementById('serviceDescription').value = service.description;
-    document.getElementById('serviceMechanic').value = service.mechanic;
-    document.getElementById('estimationService').value = service.estimation;
-
-    const imagePreview = document.getElementById('imagePreview');
-    if (service.image) {
-        imagePreview.src = service.image;
-        imagePreview.style.display = 'block';
-    } else {
-        imagePreview.style.display = 'none';
-    }
-
-    const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
-    modal.show();
-}
-
-// Delete service
-async function deleteService(id) {
-    if (confirm('Are you sure you want to delete this service?')) {
-        await fetch(`/api/services/${id}`, { method: 'DELETE' });
-        fetchServices();
-    }
-}
-
-// Save service (add/edit)
-document.getElementById('serviceForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const id = document.getElementById('serviceId').value;
-    const name = document.getElementById('serviceName').value;
-    const price = document.getElementById('servicePrice').value;
-    const category = document.getElementById('serviceCategory').value;
-    const description = document.getElementById('serviceDescription').value;
-    const mechanic = document.getElementById('serviceMechanic').value;
-    const estimation = document.getElementById('estimationService').value;
-
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('category', category);
-    formData.append('description', description);
-    formData.append('mechanic', mechanic);
-    formData.append('estimation', estimation);
-
-    const method = (id !== undefined && id !== null) ? 'PUT' : 'POST';
-    const url = (id !== undefined && id !== null) ? `/api/services/${id}` : '/api/services';
-
-    await fetch(url, { method, body: formData });
-
-    document.getElementById('serviceForm').reset();
-    const modal = bootstrap.Modal.getInstance(document.getElementById('serviceModal'));
-    modal.hide();
-    fetchServices();
-});
-
-// Initialize
-fetchServices();
-
-</script>
+        // Initial setup
+        populateCategories();
+        loadCars();
+    </script>
 
 
 </body>

@@ -241,127 +241,6 @@ async function fetchServices() {
     }
 }
 
-async function updateCarDropdowns() {
-    try {
-        const response = await fetch('/api/cars');
-        const cars = await response.json();
-
-        const brandDropdown = document.getElementById('brand');
-        const modelDropdown = document.getElementById('model');
-
-        // Populate unique brands
-        const brands = [...new Set(cars.map(car => car.brand))];
-        brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
-        brands.forEach(brand => {
-            const option = document.createElement('option');
-            option.value = brand;
-            option.textContent = brand;
-            brandDropdown.appendChild(option);
-        });
-
-        // Clear model dropdown
-        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-
-        // Add brand change listener for dynamic model population
-        brandDropdown.addEventListener('change', async () => {
-            const selectedBrand = brandDropdown.value;
-            const response = await fetch(`/api/cars?brand=${encodeURIComponent(selectedBrand)}`);
-            const models = await response.json();
-
-            modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelDropdown.appendChild(option);
-            });
-        });
-    } catch (error) {
-        console.error('Error updating car dropdowns:', error);
-        alert('Failed to update car data.');
-    }
-}
-
- // Save form handler
- document.getElementById('carForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const brand = document.getElementById('carBrand').value.trim();
-        const model = document.getElementById('carModel').value.trim();
-
-        if (!brand || !model) {
-            alert('Please fill in both brand and model.');
-            return;
-        }
-
-        try {
-        // Add car to localStorage
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        const newCar = { brand, model };
-        cars.push(newCar);
-        localStorage.setItem('cars', JSON.stringify(cars));
-
-        // Optionally, save to backend
-        await saveCarToBackend(newCar);
-
-        // Reset the form
-        document.getElementById('carForm').reset();
-
-        // Update the UI in service.html
-        loadAddedCars();
-    } catch (error) {
-        console.error('Error saving car data:', error);
-        alert('Failed to save car data.');
-    }
-});
-
-    // Load added cars from localStorage and display
-    function loadAddedCars() {
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        const addedCarsList = document.getElementById('addedCarsList');
-        addedCarsList.innerHTML = '';
-
-        cars.forEach((car, index) => {
-            const li = document.createElement('li');
-            li.textContent = `${car.brand} - ${car.model}`;
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.classList.add('deleteBtn');
-            deleteBtn.addEventListener('click', () => {
-                deleteCar(index);
-            });
-            li.appendChild(deleteBtn);
-            addedCarsList.appendChild(li);
-        });
-    }
-
-    // Delete a car from localStorage and update UI
-    function deleteCar(index) {
-        const cars = JSON.parse(localStorage.getItem('cars')) || [];
-        cars.splice(index, 1); // Remove the car at the given index
-        localStorage.setItem('cars', JSON.stringify(cars)); // Save updated array back to localStorage
-        loadAddedCars(); // Update the displayed list
-    }
-
-    // Save car to the backend API (optional)
-    async function saveCarToBackend(car) {
-        try {
-            const response = await fetch('/api/cars', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(car),
-            });
-            if (!response.ok) {
-                throw new Error(`Failed to save car data: ${response.status}`);
-            }
-            console.log('Car saved successfully');
-        } catch (error) {
-            console.error('Error saving car data:', error);
-            alert('Failed to save car data.');
-        }
-    }
-    
-
 
 // Filter services by category
 function filterByCategory(category) {
@@ -378,7 +257,7 @@ function displayServices(services) {
 
     services.forEach(service => {
         const col = document.createElement('div');
-        col.className = 'col-md-4 mb-3'; // Adjust for better layout
+        col.className = 'col-md-3 mb-3'; // Adjust for better layout
 
         const fullDescription = service.description || 'No description provided.';
         const truncatedDescription = fullDescription.length > 100
@@ -390,7 +269,7 @@ function displayServices(services) {
                 <img src="${service.image}" class="card-img-top" alt="${service.name}" style="width: 150px; margin: 0 auto;">
                 <div class="card-body">
                     <h5 class="card-title">${service.name}</h5>
-                    <p class="card-text" style="color: darkred; font-weight: bold;">⬆️ Price: ₱${service.price}</p>
+                    <p class="card-text" style="color: darkred; font-weight: bold;">⬆️ Price: ₱${service.price} <strong>+</strong></p>
                     <p class="card-text"><strong>Category:</strong> ${service.category}</p>
                     <p class="card-text"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
                     <p class="card-text"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
@@ -471,6 +350,7 @@ function editService(serviceId) {
     document.getElementById('serviceMechanic').value = service.mechanic;
     document.getElementById('estimationService').value = service.estimation;
 
+    const imageInput = document.getElementById('serviceImage');
     const imagePreview = document.getElementById('imagePreview');
     if (service.image) {
         imagePreview.src = service.image;
@@ -478,6 +358,11 @@ function editService(serviceId) {
     } else {
         imagePreview.style.display = 'none';
     }
+
+    // Update modal title
+    document.getElementById('serviceModalLabel').textContent = 'Edit Service';
+    document.querySelector('#serviceForm button[type="submit"]').textContent = 'Save Changes';
+
 
     const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
     modal.show();
@@ -502,6 +387,7 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
     const description = document.getElementById('serviceDescription').value;
     const mechanic = document.getElementById('serviceMechanic').value;
     const estimation = document.getElementById('estimationService').value;
+    const imageInput = document.getElementById('serviceImage');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -510,16 +396,72 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
     formData.append('description', description);
     formData.append('mechanic', mechanic);
     formData.append('estimation', estimation);
+    if (imageInput.files[0]) {
+        formData.append('image', imageInput.files[0]);
+    }
 
-    const method = (id !== undefined && id !== null) ? 'PUT' : 'POST';
-    const url = (id !== undefined && id !== null) ? `/api/services/${id}` : '/api/services';
+    console.log('Submitting service:', [...formData.entries()]);
 
-    await fetch(url, { method, body: formData });
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `/api/services/${id}` : '/api/services';
 
-    document.getElementById('serviceForm').reset();
-    const modal = bootstrap.Modal.getInstance(document.getElementById('serviceModal'));
-    modal.hide();
-    fetchServices();
+    try {
+        const response = await fetch(url, { method, body: formData });
+        console.log('Response:', await response.json());
+
+        if (!response.ok) {
+            throw new Error(`Failed to ${method === 'POST' ? 'add' : 'edit'} service`);
+        }
+
+        document.getElementById('serviceForm').reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('serviceModal'));
+        modal.hide();
+        document.querySelector('.modal-backdrop')?.remove();
+        fetchServices();
+    } catch (error) {
+        console.error('Error saving service:', error);
+        alert('An error occurred.');
+    }
+});
+
+// Ensure body scrolls properly after modal is closed
+document.getElementById('serviceModal').addEventListener('hidden.bs.modal', () => {
+    document.body.style.overflow = ''; // Allow scrolling
+    document.body.classList.remove('modal-open'); // Remove modal-open class
+    document.querySelector('.modal-backdrop')?.remove(); // Ensure backdrop is removed
+});
+
+
+// Ensure the backdrop is removed when the modal is fully hidden
+document.getElementById('serviceModal').addEventListener('hidden.bs.modal', () => {
+    document.querySelector('.modal-backdrop')?.remove();
+});
+
+//Search Function
+function searchServices() {
+    const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+    const filteredServices = allServices.filter(service =>
+        service.name.toLowerCase().includes(searchTerm)
+    );
+    displayServices(filteredServices);
+}
+
+document.querySelector('.search-input').addEventListener('input', searchServices);
+
+// Clear form fields when the "Add/Edit Service" button is clicked
+document.querySelector('[data-bs-target="#serviceModal"]').addEventListener('click', () => {
+    document.getElementById('serviceForm').reset(); // Clear all form inputs
+    document.getElementById('serviceId').value = ''; // Reset hidden input for service ID
+
+    // Reset the image preview
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.src = ''; // Clear the image src
+    imagePreview.style.display = 'none'; // Hide the preview image
+
+    // Reset modal title
+    document.getElementById('serviceModalLabel').textContent = 'Add New Service';
+    document.querySelector('#serviceForm button[type="submit"]').textContent = 'Save Service';
+
 });
 
 // Initialize
