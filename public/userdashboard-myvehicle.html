@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="admin/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -56,6 +57,7 @@
             box-sizing: border-box;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
+            color: black;
         }
 
         .modal-body {
@@ -83,6 +85,13 @@
             margin-top: 10px;
             font-weight: bold;
         }
+
+        label{
+            font-family: Montserrat;
+            font-weight: bold;
+            color: black;
+        }
+
 
         @media (max-width: 768px) {
             .parallelogram{
@@ -160,9 +169,13 @@
                 
                 <div class="container" style="margin-top: 55px;">
                     <div class="row justify-content-center">
+                        
                         <!-- Vehicle Table -->
                         <div class="appointment-container" style="margin: 50px;">
-                            <h1>My Vehicles</h1>
+                            
+                            <button type="button" class="btn btn-success text-center mb-3" id="addVehicleButton" data-bs-toggle="modal" data-bs-target="#vehicleModal" style="margin: 0 auto; float: right;color: white;">
+                                Add New Vehicle
+                            </button> 
                             <table class="table table-bordered table-striped shadow-sm" style="background-color: #ffffff; border-radius: 8px;">
                                 <thead>
                                     <tr> <!--SHOULD HAVE A BUTTON NA VIEW para makita ung image?-->
@@ -186,6 +199,111 @@
             </div>
         </div>
 <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+
+<!-- Vehicle Modal -->
+<!-- Add Vehicle Modal -->
+<div class="modal fade" id="vehicleModal" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: darkred; color: white;">
+                <h5 class="modal-title" id="vehicleModalLabel">Add Vehicle Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <div class="row g-3">
+                        <!-- Brand Dropdown -->
+                        <div class="col-md-6">
+                            <label for="brand" class="form-label">Brand:</label>
+                            <select name="Brand" id="brand" class="form-select" required>
+                                <option disabled selected>Select a Brand</option>
+                            </select>
+                        </div>
+
+                        <!-- Model Dropdown -->
+                        <div class="col-md-6">
+                            <label for="model" class="form-label">Model:</label>
+                            <select name="Model" id="model" class="form-select" required>
+                                <option disabled selected>Select a Model</option>
+                            </select>
+                        </div>
+
+                        <!-- Color Dropdown -->
+                        <div class="col-md-6">
+                            <label for="color" class="form-label">Color:</label>
+                            <select name="Color" id="color" class="form-select" onchange="handleColorChange()" required>
+                                <option disabled selected>Select a Color</option>
+                                <option value="Black">Black</option>
+                                <option value="White">White</option>
+                                <option value="Silver">Silver</option>
+                                <option value="Red">Red</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Green">Green</option>
+                                <option value="Yellow">Yellow</option>
+                                <option value="Gray">Gray</option>
+                                <option value="Brown">Brown</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <input type="text" id="customColor" name="CustomColor" class="form-control mt-2" placeholder="Specify Color" style="display: none;">
+                        </div>
+
+                        <!-- Plate Number -->
+                        <div class="col-md-6">
+                            <label for="platenum" class="form-label">Plate Number:</label>
+                            <input type="text" name="PlateNumber" id="platenum" class="form-control" placeholder="ABC 1234" maxlength="8" required>
+                        </div>
+
+                        <!-- Year Model Dropdown -->
+                        <div class="col-md-6">
+                            <label for="yearModel" class="form-label">Year Model:</label>
+                            <select name="YearModel" id="yearModel" class="form-select" required>
+                                <option disabled selected>Select a Year Model</option>
+                                <!-- Generate years dynamically -->
+                                <script>
+                                    const yearDropdown = document.getElementById('yearModel');
+                                    const currentYear = new Date().getFullYear();
+                                    for (let year = currentYear; year >= 1900; year--) {
+                                        const option = document.createElement('option');
+                                        option.value = year;
+                                        option.textContent = year;
+                                        yearDropdown.appendChild(option);
+                                    }
+                                </script>
+                            </select>
+                        </div>
+
+                        <!-- Transmission Dropdown -->
+                        <div class="col-md-6">
+                            <label for="transmission" class="form-label">Transmission:</label>
+                            <select name="Transmission" id="transmission" class="form-select" required>
+                                <option disabled selected>Select Transmission</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="Manual">Manual</option>
+                                <option value="CVT">CVT</option>
+                                <option value="Dual Clutch">Dual Clutch</option>
+                            </select>
+                        </div>
+
+                        <!-- Vehicle Image -->
+                        <div class="col-md-12">
+                            <label for="vehicleImage" class="form-label">Vehicle Image (optional):</label>
+                            <input type="file" accept="image/*" id="vehicleImage" class="form-control" onchange="previewImage(event)">
+                            <div id="imagePreview" class="mt-3 text-center">
+                                <img id="preview" src="#" alt="Image Preview" class="img-fluid" style="display: none; max-width: 100%; height: auto;">
+                            </div>
+                            <button type="button" class="btn btn-danger mt-2" id="removeImageButton" onclick="removeImage()" style="display: none;">Remove Image</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveVehicleButton" style="background-color: #051129;">Save Vehicle</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="admin/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="admin/assets/js/bs-init.js"></script>
@@ -265,6 +383,67 @@ $(document).on('click', '.delete-vehicle-btn', function () {
   }
 });
 
+    </script>
+
+    <script>
+        let vehicles = [];  // Global array to store all vehicle information
+        let vehicleCount = 0;
+        let isEditing = false;
+        let currentItem = null; 
+        //FOR VEHICLE COLOR
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("minimized");
+        }
+
+        function handleColorChange() {
+                const colorDropdown = document.getElementById("color");
+                const customColorInput = document.getElementById("customColor");
+                
+                // Show the custom color input if "Others" is selected
+                if (colorDropdown.value === "Others") {
+                    customColorInput.style.display = "block";
+                    customColorInput.required = true;
+                } else {
+                    customColorInput.style.display = "none";
+                    customColorInput.required = false;
+                }
+            }
+
+        //FOR image-preview
+        function previewImage(event) {
+            const fileInput = event.target; 
+            const preview = document.getElementById('preview'); 
+            const removeButton = document.getElementById('removeImageButton'); 
+            const file = fileInput.files[0]; 
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                    removeButton.style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                removeButton.style.display = 'none';
+            }
+        }
+        // Remove image function
+        function removeImage() {
+            document.getElementById('vehicleImage').value = '';
+            previewImage({ target: { files: [] } });
+            document.getElementById('preview').src = '';
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('removeImageButton').style.display = 'none';
+        }
+
+        $(document).ready(function () {
+            $('#removeImageButton').on('click', removeImage);
+        });
+
+        
     </script>
     
 </body>
