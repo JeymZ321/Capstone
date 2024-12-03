@@ -226,7 +226,7 @@
                                         <h5><b><strong>Estimated Price Breakdown:</strong></b> </h5>
                                         <div id="service-list"></div>
                                         <p><b>Service Estimation:</b> <span id="service-estimation">₱ 0</span></p>
-                                        <p><b>Towing Fee: ₱</b> <span id="towingFee">####</span></p>
+                                        <p><b>Towing Fee:</b> <span id="towingFee">####</span></p>
                                         <p><b>Processing Fee: ₱ 500.00</b><br>  
                                         <p><b>Grand Total:</b> <span id="grand-total">₱ 0</span></p>
                                         <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Price varies upon actual inspection of the vehicle. This is simply an estimation.</i></p>
@@ -305,16 +305,40 @@ selectedServices.forEach(service => {
     $('#service-list').append(`<p>${service.name}: ₱${service.price.toFixed(2)}</p>`);
 });
 
-// Load mechanics from localStorage
-const mechanics = JSON.parse(localStorage.getItem("mechanics")) || [];
+async function populateMechanicsDropdown() {
+    try {
+        const response = await fetch('/api/mechanics');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch mechanics: ${response.statusText}`);
+        }
+        const mechanics = await response.json();
 
-// Populate preferred mechanic dropdown
-const preferredMechanicDropdown = $("#preferredMechanic");
-mechanics.forEach((mechanic) => {
-    const optionText = `${mechanic.name} - Specialization: ${mechanic.specialization}, Availability: ${mechanic.availability}`;
-    const option = $("<option></option>").text(optionText).val(mechanic.id);
-    preferredMechanicDropdown.append(option);
+        if (!mechanics || mechanics.length === 0) {
+            console.warn('No mechanics available');
+            alert('No preferred mechanics available.');
+            return;
+        }
+
+        // Populate dropdown
+        const preferredMechanicDropdown = $("#preferredMechanic");
+        preferredMechanicDropdown.empty(); // Clear previous options
+        preferredMechanicDropdown.append('<option value="" disabled selected>Select Preferred Mechanic</option>');
+        mechanics.forEach((mechanic) => {
+            const optionText = `${mechanic.name} - Specialization: ${mechanic.specialization}, Availability: ${mechanic.availability}`;
+            preferredMechanicDropdown.append($("<option></option>").text(optionText).val(mechanic._id));
+        });
+    } catch (error) {
+        console.error('Error fetching mechanics:', error);
+        alert('Failed to load preferred mechanics.');
+    }
+}
+
+// Ensure function runs after DOM is fully loaded
+$(document).ready(() => {
+    populateMechanicsDropdown();
 });
+
+
 
 // Display the total service estimation
 $('#service-estimation').text(`₱${serviceTotal.toFixed(2)}`);
@@ -357,36 +381,63 @@ if (email) {
     window.location.href = 'login.html';
 }
 
-$('#datetimepicker').datetimepicker({
-    dateFormat: 'dd/mm/yy',
-    timeFormat: 'hh:mm tt', // 12-hour format with AM/PM
-    minDate: 0, // Disable past dates
-    stepMinute: 5, // 5-minute intervals
-    hourMin: 8, // Start time: 8:00 AM
-    hourMax: 16, // End time: 4:59 PM (to allow selection until 5 PM)
-    beforeShowDay: function (date) {
-        // Disable Sundays (0 = Sunday)
-        return [date.getDay() !== 0, ""];
-    },
-    onSelect: function (datetimeText, inst) {
-        // Prevent manual entry of invalid times
-        const selectedTime = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay, inst.selectedHour, inst.selectedMinute);
-        if (selectedTime.getHours() < 8 || selectedTime.getHours() > 16 || (selectedTime.getHours() === 16 && selectedTime.getMinutes() > 59)) {
-            alert("Please select a time between 8:00 AM and 5:00 PM.");
-            $('#datetimepicker').val(''); // Clear invalid input
+    // Function to fetch blocked slots for the selected date
+    function fetchBlockedSlots(selectedDate) {
+        return $.ajax({
+            url: `/appointments/blocked-slots?date=${selectedDate}`,
+            method: 'GET',
+            error: function () {
+                alert('Failed to fetch blocked slots. Please try again.');
+            }
+        });
+    }
+
+    // Initialize datetimepicker
+    $('#datetimepicker').datetimepicker({
+        dateFormat: 'mm/dd/yy',
+        timeFormat: 'hh:mm tt',
+        minDate: 0, // Disable past dates
+        stepMinute: 30, // Time intervals
+        hourMin: 8, // Start time: 8:00 AM
+        hourMax: 16, // End time: 4:00 PM
+        beforeShowDay: function (date) {
+            // Example to disable Sundays
+            return [date.getDay() !== 0, ""];
+        },
+        onSelect: function (datetimeText) {
+            const [selectedDate] = datetimeText.split(" ");
+            fetchBlockedSlots(selectedDate).done((blockedSlots) => {
+                $(".ui-timepicker-list li").each(function () {
+                    const time = $(this).text().trim();
+                    if (blockedSlots.includes(time)) {
+                        $(this).addClass('ui-state-disabled').attr('disabled', true);
+                    }
+                });
+            });
         }
-    },
-    oneLine: true // Shows date and time on the same line
-});
+    });
 
+    // Validate and clear blocked times
+    $('#datetimepicker').on('change', function () {
+        const datetime = $(this).val();
+        const [selectedDate, selectedTime] = datetime.split(" ");
 
+        fetchBlockedSlots(selectedDate).done((blockedSlots) => {
+            if (blockedSlots.includes(selectedTime)) {
+                alert('The selected time is already booked. Please choose another time.');
+                $(this).val(''); // Clear invalid selection
+            }
+        });
+    });
 
 // Set towing fee based on car functionality
 $('input[name="carfunc"]').change(function () {
     const towingFeeElement = $('#towingFee');
 
     if ($('#noBtn').is(':checked')) {
-        towingFeeElement.text('1000'); // Set towing fee to 1000 if "No" is selected
+        towingFeeElement.html('<i><strong>The towing fee would be depends on the distance of your place and will be negotiated with the owner</strong></i>'); 
+        towingFeeElement.css('opacity', '0.7');
+        towingFeeElement.css('fontSize', '14px');
     } else if ($('#yesBtn').is(':checked')) {
         towingFeeElement.text('####'); // Clear towing fee if "Yes" is selected
     }

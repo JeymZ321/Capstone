@@ -8,15 +8,20 @@ const appointmentSchema = new mongoose.Schema({
     vehicle: { type: String },
     carfunc: { type: String },
     datetime: { type: String, unique: true },
+    date: { type: String },                  // Date only (e.g., "2024-12-01")
+    time: { type: String },                  // Time only (e.g., "10:00 AM")
     suggestions: { type: String },
     //slot: { type: String },
-    status: { type: String, default:'pending'},
+    preferredMechanic:{ type: String },
+    status: { 
+        type: String, 
+        default: 'pending',              
+        enum: ['pending', 'accept', 'archived']
+    },
     selectedServices: [
         {
             name: { type: String, required: true },
             price: { type: Number, required: true },
-            mechanic: { type: String, required: true },
-            estimation: { type: String, required: true },
         }
     ]
 }, {

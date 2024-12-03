@@ -379,52 +379,50 @@ $(document).ready(function () {
     const vehicles = []; // Global array to store vehicle data
 
     async function updateCarDropdowns() {
-        try {
-            const cars = JSON.parse(localStorage.getItem('cars')) || [];
-            const brandDropdown = document.getElementById('brand');
-            const modelDropdown = document.getElementById('model');
+    try {
+        // Fetch data from backend
+        const response = await fetch('/api/cars');
+        const cars = await response.json();
 
-            if (!brandDropdown || !modelDropdown) {
-                console.error('Dropdown elements not found in the DOM.');
-                return;
-            }
+        const brandDropdown = document.getElementById('brand');
+        const modelDropdown = document.getElementById('model');
 
-            // Populate unique brands
-            const brands = [...new Set(cars.map(car => car.brand))];
-            brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
-            brands.forEach(brand => {
-                const option = document.createElement('option');
-                option.value = brand;
-                option.textContent = brand;
-                brandDropdown.appendChild(option);
-            });
+        // Populate unique brands
+        const brands = [...new Set(cars.map(car => car.brand))];
+        brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            brandDropdown.appendChild(option);
+        });
 
-            // Reset model dropdown
+        // Reset model dropdown
+        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
+
+        // Add event listener for brand change to dynamically update models
+        brandDropdown.addEventListener('change', () => {
+            const selectedBrand = brandDropdown.value;
+            const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
+
+            // Populate models for the selected brand
             modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-
-            // Add event listener for brand change to dynamically update models
-            brandDropdown.addEventListener('change', async () => {
-                const selectedBrand = brandDropdown.value;
-                const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
-
-                // Populate models for the selected brand
-                modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-                models.forEach(model => {
-                    const option = document.createElement('option');
-                    option.value = model;
-                    option.textContent = model;
-                    modelDropdown.appendChild(option);
-                });
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelDropdown.appendChild(option);
             });
+        });
 
-        } catch (error) {
-            console.error('Error updating car dropdowns:', error);
-            alert('Failed to update car data.');
-        }
+    } catch (error) {
+        console.error('Error updating car dropdowns:', error);
+        alert('Failed to fetch car data.');
     }
+}
 
-    // Initial population of the dropdowns
-    updateCarDropdowns();
+// Call the function on page load
+updateCarDropdowns();
 
     // Clear data and reset dropdowns
 function resetData() {

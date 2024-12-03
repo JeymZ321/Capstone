@@ -166,7 +166,8 @@
                             <table class="table table-bordered table-striped shadow-sm" style="background-color: #ffffff; border-radius: 8px;">
                                 <thead>
                                     <tr> <!--SHOULD HAVE A BUTTON NA VIEW para makita ung image?-->
-                                        <th>Brand Model</th>
+                                        <th>Brand</th>
+                                        <th>Model</th>
                                         <th>Color</th>
                                         <th>Plate#</th>
                                         <th>Year Model</th>
@@ -214,7 +215,8 @@
       vehicles.forEach((vehicle) => {
         tableBody.append(`
           <tr data-id="${vehicle._id}">
-            <td>${vehicle.brandModel}</td>
+            <td>${vehicle.brand}</td>
+            <td>${vehicle.model}</td>
             <td>${vehicle.color}</td>
             <td>${vehicle.plateNumber}</td>
             <td>${vehicle.yearModel}</td>

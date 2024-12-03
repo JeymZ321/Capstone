@@ -120,28 +120,42 @@
                     <table class="table tabler-bordered">
                         <thead style="color: rgb(0, 0, 0);">
                             <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Done Services</th>
-                                <th>Action</th>
-                                <th></th> 
+                                <th>Email</th>
+                                <th>Phone No.</th>
+                                <th>City</th>
+                                <th>Services</th>
+                                <th>Plate#</th>
+                                
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="archiveBody" style="color: black;">
                             <% arcappointments.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
                                     <td><%= appointment.email %></td>
-                                    <% const [date, time] = appointment.datetime.split(' '); %>
-                                    <td><%= date %></td>
-                                    <td><%= time %></td>
+                                    <td><%= appointment.phonenumber ||appointment.phone %></td>
+                                    <td><%= appointment.city %></td>
                                     <td><% appointment.selectedServices.forEach(service => { %>
                                         <div>
                                             <%= service.name %> - ₱<%= service.price.toFixed(2) %>
                                         </div>
                                     <% }) %>
+                                    <td><%= appointment.vehicle %></td>
                                 </td>
+                                    
                                     <td>
+                                        <button class="btn btn-info view-btn " style="color: white; " 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-email="<%= appointment.email %>"
+                                            data-phonenumber="<%= appointment.phonenumber %>"
+                                            data-city="<%= appointment.city %>"
+                                            data-datetime="<%= appointment.datetime %>"
+                                            data-vehicle="<%= appointment.vehicle %>"
+                                            data-carfunc="<%= appointment.carfunc %>"
+                                            data-suggestions="<%= appointment.suggestions %>">
+                                            View
+                                        </button>
                                         <button class="btn btn-danger archive" data-id="<%= appointment._id %>">Delete</button>
                                     </td>
                                 </tr>
@@ -154,22 +168,37 @@
                     <table class="table tabler-bordered">
                         <thead style="color: rgb(0, 0, 0);">
                             <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Done Services</th>
-                                <th>Action</th>
-                                <th></th>
-                                <th></th> 
+                                <th>Email</th>
+                                <th>Phone No.</th>
+                                <th>City</th>
+                                <th>Services</th>
+                                <th>Plate#</th>
+                                
+                                <th>Actions</th> 
                                  
                             </tr>
                         </thead>
                         <tbody id="archiveBody" style="color: black;">
                             <% newCustomers.forEach(appointment => { %>
                                 <tr data-id="<%= appointment._id %>">
-                                    <td><%= appointment.name %></td>
-                                    <td><%= appointment.checkInTime %></td>
+                                    <td><%= appointment.email %></td>
+                                    <td><%= appointment.phonenumber ||appointment.phone %></td>
+                                    <td><%= appointment.city %></td>
                                     <td><%= appointment.services %></td>
+                                    <td><%= appointment.vehicle %></td>
                                     <td>
+                                        <button class="btn btn-info view-btn " style="color: white; " 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-email="<%= appointment.email %>"
+                                            data-phonenumber="<%= appointment.phonenumber %>"
+                                            data-city="<%= appointment.city %>"
+                                            data-datetime="<%= appointment.datetime %>"
+                                            data-vehicle="<%= appointment.vehicle %>"
+                                            data-carfunc="<%= appointment.carfunc %>"
+                                            data-suggestions="<%= appointment.suggestions %>">
+                                            View
+                                        </button>
                                         <button class="btn btn-danger archive2" data-id="<%= appointment._id %>">Delete</button>
                                     </td>
                                 </tr>
@@ -186,6 +215,30 @@
     </div>
 </footer>
 </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+
+<!--MODAL FOR VIEW BUTTON-->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Email:</strong> <span id="modal-email"></span></p>
+                <p><strong>Phone Number:</strong> <span id="modal-phonenumber"></span></p>
+                <p><strong>City:</strong> <span id="modal-city"></span></p>
+                <p><strong>Datetime:</strong> <span id="modal-datetime"></span></p>
+                <p><strong>Plate#:</strong> <span id="modal-vehicle"></span></p>
+                <p><strong>Car Functionality:</strong> <span id="modal-carfunc"></span></p>
+                <p><strong>Suggestions:</strong> <span id="modal-suggestions"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -267,6 +320,50 @@ document.addEventListener("DOMContentLoaded", function() {
     });
       
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const viewButtons = document.querySelectorAll('.view-btn');
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Retrieve data attributes
+                const email = this.dataset.email;
+                const phonenumber = this.dataset.phonenumber;
+                const city = this.dataset.city;
+                const datetime = this.dataset.datetime;
+                const vehicle = this.dataset.vehicle;
+                const carfunc = this.dataset.carfunc;
+                const suggestions = this.dataset.suggestions;
+                const selectedServices = JSON.parse(this.dataset.selectedServices || '[]');
+
+                // Populate modal content
+                document.getElementById('modal-email').textContent = email;
+                document.getElementById('modal-phonenumber').textContent = phonenumber;
+                document.getElementById('modal-city').textContent = city;
+                document.getElementById('modal-datetime').textContent = datetime;
+                document.getElementById('modal-vehicle').textContent = vehicle;
+                document.getElementById('modal-carfunc').textContent = carfunc;
+                document.getElementById('modal-suggestions').textContent = suggestions;
+
+                // Handle Services/Suggestions field
+                const servicesField = document.getElementById('services');
+                servicesField.value = suggestions || '';
+
+                // Add services and mechanic names to the modal
+                const servicesList = document.getElementById('modal-services-list');
+                servicesList.innerHTML = ''; // Clear existing services in the modal
+
+                selectedServices.forEach(service => {
+                    const serviceItem = document.createElement('div');
+                    serviceItem.textContent = `${service.name} - ₱${service.price.toFixed(2)} (Mechanic: ${service.mechanic})`;
+                    servicesList.appendChild(serviceItem);
+                });
+                
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

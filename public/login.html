@@ -80,22 +80,41 @@ input:-moz-autofill {
                         url: '/loginroute',
                         data: JSON.stringify({ email: email, password: password }),
                         contentType: 'application/json',
-                        success: function(response) {
+                        success: async function(response) {
                             if (response.message === 'Login successful') { 
-                                localStorage.setItem('customerId', response.customerId);
-                                window.location.href = response.redirectUrl;
-                            } else {
-                                $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                            // Save customer ID and email in localStorage
+                            localStorage.setItem('customerId', response.customerId);
+                            localStorage.setItem('userEmail', email);
+
+                            // Save selected services to backend
+                            const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+                            if (selectedServices.length > 0) {
+                                try {
+                                    await fetch('/api/saveServices', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ email: email, services: selectedServices }),
+                                    });
+                                    console.log('Selected services synced successfully.');
+                                } catch (error) {
+                                    console.error('Error syncing services:', error);
+                                }
                             }
-                        },
-                        error: function(xhr) {
-                            $('#loginMessage').html('<div class="alert alert-danger">Error: ' + xhr.responseText + '</div>');
+
+                            // Redirect to the target URL
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $('#loginMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
                         }
-                    });
-                } else {
-                    $('#loginMessage').html('<div class="alert alert-danger">Please enter both email and password.</div>');
-                }
-            });
+                    },
+                    error: function(xhr) {
+                        $('#loginMessage').html('<div class="alert alert-danger">Error: ' + xhr.responseText + '</div>');
+                    }
+                });
+            } else {
+                $('#loginMessage').html('<div class="alert alert-danger">Please enter both email and password.</div>');
+            }
+        });
         });
     </script>    
 </body>

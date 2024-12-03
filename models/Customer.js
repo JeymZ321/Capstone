@@ -21,6 +21,7 @@ const CustomerSchema = new mongoose.Schema({
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: true },
     registrationDate: { type: Date, default: Date.now },
+    services: { type: Array, default: [] },
     vehicles: [VehicleSchema] // Embed vehicles here
 });
 

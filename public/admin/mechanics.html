@@ -172,116 +172,141 @@
 
     <script>
         const mechanicList = document.getElementById("mechanicList");
-      
-        // Function to dynamically display a mechanic
-        function addMechanicCard(id, name, specialization, phone, availability) {
-          const mechanicCard = document.createElement("div");
-          mechanicCard.className = "col-md-4";
-          mechanicCard.setAttribute("data-id", id);
-          mechanicCard.innerHTML = `
-            <div class="card mb-4">
-              <img src="assets/img/newmechanic.png" class="card-img-top" alt="${name}">
-              <div class="card-body">
-                <h5 class="card-title">${name}</h5>
-                <p class="card-text"><strong>Specialization:</strong> ${specialization}</p>
-                <p class="card-text"><strong>Phone:</strong> ${phone}</p>
-                <p class="card-text"><strong>Status:</strong> ${availability}</p>
-                <button class="btn btn-warning btn-sm editBtn" data-id="${id}">Edit</button>
-                <button class="btn deleteBtn btn-sm" data-id="${id}">Delete</button>
-              </div>
-            </div>
-          `;
-          mechanicList.appendChild(mechanicCard);
-        }
-      
-        // Save mechanics to localStorage
-        function saveMechanicsToStorage(mechanics) {
-          localStorage.setItem("mechanics", JSON.stringify(mechanics));
-        }
-      
-        // Load mechanics from localStorage
-        function loadMechanicsFromStorage() {
-          const mechanics = JSON.parse(localStorage.getItem("mechanics")) || [];
-          mechanics.forEach((mechanic) => {
-            addMechanicCard(mechanic.id, mechanic.name, mechanic.specialization, mechanic.phone, mechanic.availability);
-          });
-          return mechanics;
-        }
-      
-        // Initialize mechanics list
-        let mechanics = loadMechanicsFromStorage();
-      
-        // Add new mechanic
-        document.getElementById("mechanicForm").addEventListener("submit", function (e) {
-          e.preventDefault();
-      
-          const id = document.getElementById("mechanicId").value || Date.now(); // Generate ID
-          const name = document.getElementById("mechanicName").value;
-          const specialization = document.getElementById("specialization").value;
-          const phone = document.getElementById("mechanicPhoneNum").value;
-          const availability = document.getElementById("serviceMechanic").value;
-      
-          // Check if editing or adding new
-          const existingMechanic = mechanics.find((mechanic) => mechanic.id == id);
-          if (existingMechanic) {
-            // Update existing mechanic
-            existingMechanic.name = name;
-            existingMechanic.specialization = specialization;
-            existingMechanic.phone = phone;
-            existingMechanic.availability = availability;
-      
-            // Update card in DOM
-            const card = document.querySelector(`[data-id='${id}']`);
-            card.querySelector(".card-title").textContent = name;
-            card.querySelector(".card-text:nth-of-type(1)").textContent = `Specialization: ${specialization}`;
-            card.querySelector(".card-text:nth-of-type(2)").textContent = `Phone: ${phone}`;
-            card.querySelector(".card-text:nth-of-type(3)").textContent = `Status: ${availability}`;
-          } else {
-            // Add new mechanic
-            const newMechanic = { id, name, specialization, phone, availability };
-            mechanics.push(newMechanic);
-            addMechanicCard(id, name, specialization, phone, availability);
-          }
-      
-          // Save to storage
-          saveMechanicsToStorage(mechanics);
-      
-          // Clear form and close modal
-          this.reset();
-          const modal = bootstrap.Modal.getInstance(document.getElementById("mechanicModal"));
-          modal.hide();
-        });
-      
-        // Edit mechanic
-        mechanicList.addEventListener("click", function (e) {
-          if (e.target.classList.contains("editBtn")) {
-            const id = e.target.getAttribute("data-id");
-            const mechanic = mechanics.find((mechanic) => mechanic.id == id);
-      
-            // Fill modal with existing details
-            document.getElementById("mechanicId").value = mechanic.id;
-            document.getElementById("mechanicName").value = mechanic.name;
-            document.getElementById("specialization").value = mechanic.specialization;
-            document.getElementById("mechanicPhoneNum").value = mechanic.phone;
-            document.getElementById("serviceMechanic").value = mechanic.availability;
-      
-            // Show modal
-            const modal = new bootstrap.Modal(document.getElementById("mechanicModal"));
-            modal.show();
-          }
-        });
-      
-        // Delete mechanic
-        mechanicList.addEventListener("click", function (e) {
-          if (e.target.classList.contains("deleteBtn")) {
-            const id = e.target.getAttribute("data-id");
-            mechanics = mechanics.filter((mechanic) => mechanic.id != id);
-            saveMechanicsToStorage(mechanics);
-      
-            // Remove card from DOM
-            e.target.closest(".col-md-4").remove();
-          }
-        });
+
+// Function to dynamically display a mechanic
+function addMechanicCard(id, name, specialization, phone, availability) {
+  const mechanicCard = document.createElement("div");
+  mechanicCard.className = "col-md-4";
+  mechanicCard.setAttribute("data-id", id);
+  mechanicCard.innerHTML = `
+    <div class="card mb-4">
+      <img src="assets/img/newmechanic.png" class="card-img-top" alt="${name}">
+      <div class="card-body">
+        <h5 class="card-title">${name}</h5>
+        <p class="card-text"><strong>Specialization:</strong> ${specialization}</p>
+        <p class="card-text"><strong>Phone:</strong> ${phone}</p>
+        <p class="card-text"><strong>Status:</strong> ${availability}</p>
+        <button class="btn btn-warning btn-sm editBtn" data-id="${id}">Edit</button>
+        <button class="btn deleteBtn btn-sm" data-id="${id}">Delete</button>
+      </div>
+    </div>
+  `;
+  mechanicList.appendChild(mechanicCard);
+}
+
+// Fetch mechanics from the backend
+async function fetchMechanics() {
+  try {
+    const response = await fetch('/api/mechanics');
+    const mechanics = await response.json();
+
+    // Clear existing list
+    mechanicList.innerHTML = '';
+    mechanics.forEach((mechanic) => {
+      addMechanicCard(
+        mechanic._id, 
+        mechanic.name, 
+        mechanic.specialization, 
+        mechanic.phone || 'N/A', 
+        mechanic.availability
+      );
+    });
+
+    return mechanics;
+  } catch (error) {
+    console.error('Error fetching mechanics:', error);
+    alert('Failed to load mechanics.');
+  }
+}
+
+// Add or update mechanic
+document.getElementById("mechanicForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const id = document.getElementById("mechanicId").value || null; // Null for new mechanics
+  const name = document.getElementById("mechanicName").value;
+  const specialization = document.getElementById("specialization").value;
+  const phone = document.getElementById("mechanicPhoneNum").value;
+  const availability = document.getElementById("serviceMechanic").value;
+
+  const mechanicData = { name, specialization, phone, availability };
+
+  try {
+    if (id) {
+      // Update existing mechanic
+      await fetch(`/api/mechanics/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mechanicData),
+      });
+    } else {
+      // Add new mechanic
+      await fetch('/api/mechanics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mechanicData),
+      });
+    }
+
+    // Reload mechanics list
+    await fetchMechanics();
+
+    // Clear form and close modal
+    this.reset();
+    const modal = bootstrap.Modal.getInstance(document.getElementById("mechanicModal"));
+    modal.hide();
+  } catch (error) {
+    console.error('Error saving mechanic:', error);
+    alert('Failed to save mechanic.');
+  }
+});
+
+// Edit mechanic
+mechanicList.addEventListener("click", function (e) {
+  if (e.target.classList.contains("editBtn")) {
+    const id = e.target.getAttribute("data-id");
+
+    // Fetch existing mechanic details
+    const mechanic = mechanics.find((mechanic) => mechanic._id === id);
+    if (!mechanic) {
+      alert('Mechanic not found.');
+      return;
+    }
+
+    // Fill modal with existing details
+    document.getElementById("mechanicId").value = mechanic._id;
+    document.getElementById("mechanicName").value = mechanic.name;
+    document.getElementById("specialization").value = mechanic.specialization;
+    document.getElementById("mechanicPhoneNum").value = mechanic.phone;
+    document.getElementById("serviceMechanic").value = mechanic.availability;
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById("mechanicModal"));
+    modal.show();
+  }
+});
+
+// Delete mechanic
+mechanicList.addEventListener("click", async function (e) {
+  if (e.target.classList.contains("deleteBtn")) {
+    const id = e.target.getAttribute("data-id");
+
+    try {
+      await fetch(`/api/mechanics/${id}`, { method: 'DELETE' });
+      // Reload mechanics list
+      await fetchMechanics();
+    } catch (error) {
+      console.error('Error deleting mechanic:', error);
+      alert('Failed to delete mechanic.');
+    }
+  }
+});
+
+// Initialize mechanics list on page load
+let mechanics = [];
+document.addEventListener("DOMContentLoaded", async () => {
+  mechanics = await fetchMechanics();
+});
       </script>
          
 

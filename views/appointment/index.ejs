@@ -109,9 +109,11 @@
             <thead style="color: rgb(0, 0, 0);">
                 <tr>
                     <th>Email</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <th>Phone</th>
+                    <th>City</th>
                     <th>Services</th>
+                    <th>Plate#</th>
+                    <th>Preferred Mechanic</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -119,22 +121,27 @@
                 <% appointments.forEach(appointment => { %>
                     <tr data-id="<%= appointment._id %>">
                         <td><%= appointment.email %></td>
-                        <% const [date, time] = appointment.datetime.split(' '); %>
-                        <td><%= date %></td>
-                        <td><%= time %></td>
+                        <td><%= appointment.phonenumber || appointment.phone %></td>
+                        <td><%= appointment.city %></td>
                         <td>
                             <% if (appointment.selectedServices && appointment.selectedServices.length > 0) { %>
                                 <% appointment.selectedServices.forEach(service => { %>
                                     <div>
                                         <%= service.name %> - ₱<%= service.price.toFixed(2) %><br>
-                                        <strong>Mechanic:</strong> <%= service.mechanic || 'N/A' %><br>
-                                        <strong>Estimation:</strong> <%= service.estimation || 'N/A' %>
                                     </div>
                                 <% }) %>
                             <% } else { %>
                                 <i>No services provided</i>
                             <% } %>
-                        </td>    
+                        </td>
+                        <td><%= appointment.vehicle %></td>
+                        <td>
+                            <% if (appointment.preferredMechanic) { %>
+                                <%= appointment.preferredMechanic.name %> <!-- Display mechanic name -->
+                            <% } else { %>
+                                <i>Not specified</i>
+                            <% } %>
+                        </td>
                         <!-- <td><%= appointment.slot %></td> -->
                         <td>
                             <!--<button class="btn btn-info viewDetails" data-id="<%= appointment._id %>">View</button>-->

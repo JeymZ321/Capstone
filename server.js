@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt'); 
 const Service = require("./models/Service");
+const Mechanic = require("./models/Mechanic");
 const Car = require("./models/Car");
 const Appointment = require('./models/Appointment'); 
 const NewCustomers = require('./models/NewCustomers');
@@ -39,7 +40,7 @@ app.use(session({
   cookie: { secure: false } // Set to true if using HTTPS
 }));
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend’s domain
+  origin: 'https://humorous-precisely-anchovy.ngrok-free.app ', // Replace with your frontend’s domain
   credentials: true  // Allows cookies and other credentials to be sent
 }));
 
@@ -278,7 +279,7 @@ app.post('/loginroute', async (req, res) => {
       // Login successful, return the homepage
       res.status(200).json({ 
         message: 'Login successful', 
-        redirectUrl: 'homepage.html',
+        redirectUrl: 'appointment.html',
         customerId: user._id,
         name: user.name, 
         email: user.email});
@@ -784,15 +785,22 @@ app.post('/appointment', async (req, res) => {
 
         const { email, phonenumber, city, vehicle, carfunc, platenum, datetime, suggestions, selectedServices } = req.body;
 
+        // Parse datetime into separate date and time
+        const [date, time] = datetime.split(' ');
+
+        // Check if the slot is already booked
+        const existingAppointment = await Appointment.findOne({ date, time, status: 'booked' });
+        if (existingAppointment) {
+            return res.status(400).json({ message: 'The selected slot is already booked. Please choose another slot.' });
+        }
+
         // Validate `selectedServices`
-        const validatedServices = selectedServices.map(service => {
-          return {
-              name: service.name,
-              price: service.price,
-              mechanic: service.mechanic || 'Default Mechanic', // Default value if missing
-              estimation: service.estimation || 'Not Provided'  // Default value if missing
-          };
-      });
+        const validatedServices = selectedServices.map(service => ({
+          name: service.name,
+          price: service.price,
+          mechanic: service.mechanic || 'Default Mechanic', // Default value if missing
+          estimation: service.estimation || 'Not Provided'  // Default value if missing
+      }));
 
         // Create a new appointment instance with the provided data
         const newAppointment = new Appointment({
@@ -804,6 +812,9 @@ app.post('/appointment', async (req, res) => {
             platenum,
             suggestions,
             datetime,
+            date, // Add date field
+            time, // Add time field
+            status: 'pending', // Mark as booked
             selectedServices: validatedServices
           // slot  Selected slot
         });
@@ -873,6 +884,58 @@ app.post('/appointment', async (req, res) => {
         return res.status(500).json({ message: 'Error creating appointment', error: error.message });
     }
   });
+
+app.put('/appointments/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        // Validate the status value
+        if (!['pending', 'accept', 'archived'].includes(status)) {
+            return res.status(400).json({ message: 'Invalid status value.' });
+        }
+
+        // Update the appointment's status
+        const updatedAppointment = await Appointment.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedAppointment) {
+            return res.status(404).json({ message: 'Appointment not found.' });
+        }
+
+        res.status(200).json({ message: 'Status updated successfully!', appointment: updatedAppointment });
+    } catch (error) {
+        console.error('Error updating status:', error);
+        res.status(500).json({ message: 'Failed to update status.', error: error.message });
+    }
+});
+
+app.get('/appointments/blocked-slots', async (req, res) => {
+    try {
+        const { date } = req.query;
+        const appointments = await Appointment.find({ date, status: 'pending' });
+        const blockedSlots = appointments.map(appt => appt.time);
+        res.json(blockedSlots);
+    } catch (error) {
+        console.error('Error fetching blocked slots:', error);
+        res.status(500).json({ message: 'Error fetching blocked slots' });
+    }
+});
+
+app.put('/appointments/archive/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      await Appointment.findByIdAndUpdate(id, { status: 'archived' });
+      res.status(200).json({ message: 'Appointment archived and slot unblocked!' });
+  } catch (error) {
+      console.error('Error archiving appointment:', error);
+      res.status(500).json({ message: 'Failed to archive appointment' });
+  }
+});
 
 app.get('/appointments', async (req, res) => {
   try {
@@ -1040,7 +1103,7 @@ app.post('/send-registration-email', async (req, res) => {
     //const registrationLink = `/registrationform.html?token=${token}`;
     //const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Dynamic base URL
     //console.log('Base URL:', baseUrl); // Debug log
-    const registrationLink = `http://localhost:3000/registrationform.html?token=${token}`;
+    const registrationLink = `https://humorous-precisely-anchovy.ngrok-free.app/registrationform.html?token=${token}`;
 
     /*---------Sending email------------*/
     const mailOptions = {
@@ -1169,6 +1232,58 @@ app.get('/display/archives', async (req, res) => {
   }
 });
 
+
+/*-------------------- fetch CMS Mechanics ------------------*/
+  app.post('/api/mechanics', async (req, res) => {
+    try {
+        const { name, specialization, phone, availability } = req.body;
+        const mechanic = new Mechanic({ name, specialization, phone, availability });
+        await mechanic.save();
+        res.status(201).json(mechanic); // Return the saved mechanic
+    } catch (error) {
+        console.error('Error saving mechanic:', error);
+        res.status(500).json({ error: 'Failed to save mechanic' });
+    }
+  });
+
+  app.get('/api/mechanics', async (req, res) => {
+    try {
+        const mechanics = await Mechanic.find(); // Fetch all mechanics from the database
+        res.json(mechanics); // Send the mechanics data as JSON
+    } catch (error) {
+        console.error('Error fetching mechanics:', error);
+        res.status(500).json({ error: 'Failed to fetch mechanics' });
+    }
+  });
+
+  app.put('/api/mechanics/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+        const mechanic = await Mechanic.findByIdAndUpdate(id, updatedData, { new: true });
+        if (!mechanic) {
+            return res.status(404).json({ error: 'Mechanic not found' });
+        }
+        res.json(mechanic);
+    } catch (error) {
+        console.error('Error updating mechanic:', error);
+        res.status(500).json({ error: 'Failed to update mechanic' });
+    }
+  });
+
+  app.delete('/api/mechanics/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const mechanic = await Mechanic.findByIdAndDelete(id);
+        if (!mechanic) {
+            return res.status(404).json({ error: 'Mechanic not found' });
+        }
+        res.json({ message: 'Mechanic deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting mechanic:', error);
+        res.status(500).json({ error: 'Failed to delete mechanic' });
+    }
+  });
 
 /*-------------------- fetch CMS Services ------------------*/
 // GET: Fetch all services
