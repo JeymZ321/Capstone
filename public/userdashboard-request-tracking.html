@@ -218,7 +218,7 @@
         <td>${appointment.vehicle}</td>
         <td>${appointment.datetime}</td>
         <td>${appointment.status}</td>
-        <td><button class="btn btn-danger delete-appointment-btn">Delete</button></td>
+        <td><button class="btn btn-primary view-appointment-btn">View</button></td>
         </tr>
     `);
 });
@@ -240,6 +240,7 @@
   }
 });
 
+/*
 $(document).on('click', '.delete-appointment-btn', function () {
   const row = $(this).closest('tr'); // Get the parent row
   const appointmentId = row.data('id'); // Get the ID from data-id attribute
@@ -266,7 +267,7 @@ $(document).on('click', '.delete-appointment-btn', function () {
       },
     });
   }
-});
+});*/
 
 
 

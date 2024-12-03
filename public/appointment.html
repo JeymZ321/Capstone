@@ -77,7 +77,7 @@
             display: flex;
         }
 
-        #vehicle{
+        #vehicle, #preferredMechanic{
             width: 500px;
             text-align: left; 
             border: 1px solid #ccc;
@@ -102,7 +102,7 @@
             width: 300px;
         }
 
-        #vehicle{
+        #vehicle,  #preferredMechanic{
             width: 300px;
         }
 
@@ -123,7 +123,7 @@
             width: 300px;
         }
 
-        #vehicle{
+        #vehicle,  #preferredMechanic{
             width: 300px;
         }
         }
@@ -154,14 +154,26 @@
                                 <div>
                                     <label for="vehicle">Vehicle:</label>
                                     <select name="Vehicle" id="vehicle" style="height: auto;" required>
-                                        <option value="" disabled selected>Select Vehicle:</option>
+                                        <option value="" disabled selected>Select Existing Vehicle:</option>
                                     </select>
                                 </div>
+                                
+                                    <div class="col-12">
+                                        <p class="mb-0" style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>If you want to add a new vehicle, click the button below</i></p>
+                                        <button 
+                                            class="btn btn-primary me-1" 
+                                            style="background-color: darkred; width: 200px"
+                                            onclick="window.location.href='userdashboard-myvehicle.html';">
+                                            New Vehicle?
+                                        </button>
+                                    </div>
+                               
+                                
                                 <div>
                                     <br>
                                     <p><strong>Optional:</strong></p>
                                     <label for="preferredMechanic">Preferred Mechanic:</label>
-                                    <select name="preferredMechanic" id="preferredMechanic" style="width: 500px; text-align: left; border: 1px solid #ccc; border-radius: 10px; padding: 5px; margin: 5px;" required>
+                                    <select name="preferredMechanic" id="preferredMechanic"required>
                                         <option value="" disabled selected>Select Preferred Mechanic</option>
                                     </select>
                                 </div>
@@ -227,7 +239,7 @@
                                         <div id="service-list"></div>
                                         <p><b>Service Estimation:</b> <span id="service-estimation">₱ 0</span></p>
                                         <p><b>Towing Fee:</b> <span id="towingFee">####</span></p>
-                                        <p><b>Processing Fee: ₱ 500.00</b><br>  
+                                        <p><b>Processing Fee: <span style="color: Red;">₱ 500.00</span></b><br>  
                                         <p><b>Grand Total:</b> <span id="grand-total">₱ 0</span></p>
                                         <p style="opacity: .7; font-size: 14px;"><i><b><strong>Note: </strong></b>Price varies upon actual inspection of the vehicle. This is simply an estimation.</i></p>
 
@@ -324,7 +336,7 @@ async function populateMechanicsDropdown() {
         preferredMechanicDropdown.empty(); // Clear previous options
         preferredMechanicDropdown.append('<option value="" disabled selected>Select Preferred Mechanic</option>');
         mechanics.forEach((mechanic) => {
-            const optionText = `${mechanic.name} - Specialization: ${mechanic.specialization}, Availability: ${mechanic.availability}`;
+            const optionText = `${mechanic.name} - ${mechanic.specialization} - Status: ${mechanic.availability.toUpperCase()}`;
             preferredMechanicDropdown.append($("<option></option>").text(optionText).val(mechanic._id));
         });
     } catch (error) {
@@ -344,7 +356,7 @@ $(document).ready(() => {
 $('#service-estimation').text(`₱${serviceTotal.toFixed(2)}`);
 
 // Add additional fees, such as the appointment fee
-const appointmentFee = 500;
+const appointmentFee = 0;
 const grandTotal = serviceTotal + appointmentFee;
 $('#grand-total').text(`₱${grandTotal.toFixed(2)}`);
 
