@@ -378,10 +378,13 @@ $(document).ready(function () {
 $(document).ready(function () {
     const vehicles = []; // Global array to store vehicle data
 
+    document.addEventListener('DOMContentLoaded', updateCarDropdowns);
+
     async function updateCarDropdowns() {
     try {
-        // Fetch data from backend
-        const response = await fetch('/api/cars');
+        const response = await fetch('/api/carmodels');
+        if (!response.ok) throw new Error('Failed to fetch car models');
+
         const cars = await response.json();
 
         const brandDropdown = document.getElementById('brand');
@@ -405,7 +408,6 @@ $(document).ready(function () {
             const selectedBrand = brandDropdown.value;
             const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
 
-            // Populate models for the selected brand
             modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
             models.forEach(model => {
                 const option = document.createElement('option');
@@ -415,21 +417,12 @@ $(document).ready(function () {
             });
         });
 
+        console.log('Dropdowns updated successfully');
     } catch (error) {
         console.error('Error updating car dropdowns:', error);
         alert('Failed to fetch car data.');
     }
 }
-
-// Call the function on page load
-updateCarDropdowns();
-
-    // Clear data and reset dropdowns
-function resetData() {
-    localStorage.removeItem('cars'); // Clear localStorage
-    updateCarDropdowns(); // Re-populate dropdowns with empty values
-}
-
 
 
     // Save Vehicle Button Click

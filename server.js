@@ -979,7 +979,7 @@ app.delete('/appointments/:id', async (req, res) => {
 
 /*----------User dashboard Profile-----------------*/
 // Update Profile
-app.post("/customer/update", async (req, res) => {
+app.post('/customer/update', async (req, res) => {
   const { email, name, phonenumber, city, password } = req.body;
 
   if (!email) {
@@ -1366,38 +1366,84 @@ app.delete('/api/services/:id', async (req, res) => {
   }
 });
 
-// POST: Add a new car brand and model
-app.post('/api/cars', async (req, res) => {
+// Add a new car model
+app.post('/api/carmodels', async (req, res) => {
   try {
       const { brand, model } = req.body;
-      const car = new Car({ brand, model });
-      await car.save();
-      res.status(201).json(car);
+      if (!brand || !model) {
+          return res.status(400).json({ error: 'Brand and model are required.' });
+      }
+      const newCar = new Car({ brand, model });
+      await newCar.save();
+      res.status(201).json(newCar);
   } catch (error) {
-      res.status(500).json({ error: 'Failed to save car data' });
+      console.error('Error saving car model:', error);
+      res.status(500).json({ error: 'Failed to save car model.' });
   }
 });
 
-// GET: Fetch all car brands and models
-app.get('/api/cars', async (req, res) => {
-  const { brand } = req.query;
-
+// Get all car models
+app.get('/api/carmodels', async (req, res) => {
   try {
-      if (brand) {
-          // Get models for a specific brand
-          const cars = await Car.find({ brand });
-          const models = cars.map(car => car.model);
-          return res.json(models);
-      }
-
-      // Get all brands and models
-      const cars = await Car.find();
+      const cars = await Car.find(); // Fetch all car models
       res.json(cars);
   } catch (error) {
-      console.error('Error fetching car data:', error);
-      res.status(500).json({ error: 'Failed to fetch car data' });
+      console.error('Error fetching car models:', error);
+      res.status(500).json({ error: 'Failed to fetch car models.' });
   }
 });
+
+// Get a specific car model by ID
+app.get('/api/carmodels/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const car = await Car.findById(id);
+      if (!car) {
+          return res.status(404).json({ error: 'Car model not found.' });
+      }
+      res.json(car);
+  } catch (error) {
+      console.error('Error fetching car model:', error);
+      res.status(500).json({ error: 'Failed to fetch car model.' });
+  }
+});
+
+
+// Update a car model
+app.put('/api/carmodels/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { brand, model } = req.body;
+      if (!brand || !model) {
+          return res.status(400).json({ error: 'Brand and model are required.' });
+      }
+      const updatedCar = await Car.findByIdAndUpdate(id, { brand, model }, { new: true });
+      if (!updatedCar) {
+          return res.status(404).json({ error: 'Car model not found.' });
+      }
+      res.json(updatedCar);
+  } catch (error) {
+      console.error('Error updating car model:', error);
+      res.status(500).json({ error: 'Failed to update car model.' });
+  }
+});
+
+
+// Delete a car model
+app.delete('/api/carmodels/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const deletedCar = await Car.findByIdAndDelete(id);
+      if (!deletedCar) {
+          return res.status(404).json({ error: 'Car model not found.' });
+      }
+      res.json({ message: 'Car model deleted successfully.' });
+  } catch (error) {
+      console.error('Error deleting car model:', error);
+      res.status(500).json({ error: 'Failed to delete car model.' });
+  }
+});
+
 
 
 

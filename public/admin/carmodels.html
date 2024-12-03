@@ -207,157 +207,184 @@
     <script>
         const defaultImage = "assets/img/newcarmodel.png";
         const carListContainer = document.getElementById("addedCarsList");
-        const carForm = document.getElementById("carForm");
-        const searchInput = document.getElementById("search-input");
-        const categoryDropdown = document.getElementById("categoryDropdown");
-        let carToEditIndex = null;
+const carForm = document.getElementById("carForm");
+const searchInput = document.getElementById("search-input");
+const categoryDropdown = document.getElementById("categoryDropdown");
 
-        // Function to open the Edit modal with pre-filled values
-        function openEditModal(index) {
-            carToEditIndex = index; // Store the index of the car to edit
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            const car = cars[index];
-            document.getElementById("editCarBrand").value = car.brand;
-            document.getElementById("editCarModel").value = car.model;
 
-            const editModal = new bootstrap.Modal(document.getElementById('editCarModal'));
-            editModal.show();
-        }
+async function loadCars() {
+    try {
+        const response = await fetch('/api/carmodels');
+        if (!response.ok) throw new Error('Failed to fetch car models');
+        const cars = await response.json();
+        displayCars(cars);
+        populateCategories(cars);
+    } catch (error) {
+        console.error(error);
+        alert('Error loading car models.');
+    }
+}
 
-        // Handle form submission for editing a car
-        document.getElementById("editCarForm").addEventListener("submit", (event) => {
-            event.preventDefault();
-            const editedBrand = document.getElementById("editCarBrand").value;
-            const editedModel = document.getElementById("editCarModel").value;
 
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            if (carToEditIndex !== null) {
-                cars[carToEditIndex] = { brand: editedBrand, model: editedModel }; // Update the car
-                localStorage.setItem("cars", JSON.stringify(cars)); // Save changes
-                loadCars(); // Refresh the car list
-                carToEditIndex = null; // Reset the index
-                bootstrap.Modal.getInstance(document.getElementById('editCarModal')).hide();
-                alert("Car model updated successfully.");
-            }
+// Display car models
+function displayCars(cars) {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedCategory = categoryDropdown.value;
+
+    carListContainer.innerHTML = ''; // Clear list
+    cars
+        .filter(car => {
+            const matchesSearch = car.brand.toLowerCase().includes(searchTerm) || car.model.toLowerCase().includes(searchTerm);
+            const matchesCategory = !selectedCategory || car.brand === selectedCategory;
+            return matchesSearch && matchesCategory;
+        })
+        .forEach(car => {
+            const carElement = document.createElement("div");
+            carElement.classList.add("col-md-2", "mb-4");
+            carElement.innerHTML = `
+                <div class="card">
+                    <img src="${defaultImage}" class="card-img-top" alt="${car.brand}">
+                    <div class="card-body">
+                        <h5 class="card-title">${car.brand} - ${car.model}</h5>
+                        <button class="btn btn-warning" onclick="openEditModal('${car._id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+            carListContainer.appendChild(carElement);
+        });
+}
+
+// Add new car
+carForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const brand = document.getElementById('carBrand').value;
+    const model = document.getElementById('carModel').value;
+
+    try {
+        const response = await fetch('/api/carmodels', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brand, model })
+        });
+        if (!response.ok) throw new Error('Failed to add car model');
+        await loadCars(); // Refresh the list
+        carForm.reset();
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('carModal'));
+        modal.hide();
+    } catch (error) {
+        console.error(error);
+        alert('Error adding car model.');
+    }
+});
+
+document.getElementById('editCarForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const carId = event.target.dataset.carId; // Get the car ID from the dataset
+    const brand = document.getElementById('editCarBrand').value;
+    const model = document.getElementById('editCarModel').value;
+
+    try {
+        const response = await fetch(`/api/carmodels/${carId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brand, model }),
         });
 
-        let carToDeleteIndex = null; // Variable to store the index of the car to delete
+        if (!response.ok) throw new Error('Failed to update car model');
+        
+        // Refresh the list of cars
+        await loadCars();
 
-        // Function to open the delete confirmation modal
-        function confirmDelete(index) {
-            carToDeleteIndex = index; // Store the index of the car to delete
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-            deleteModal.show();
-        }
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCarModal'));
+        modal.hide();
 
-        // Function to handle the deletion once confirmed
-        document.getElementById("confirmDeleteBtn").addEventListener("click", () => {
-            if (carToDeleteIndex !== null) {
-                const cars = JSON.parse(localStorage.getItem("cars")) || [];
-                cars.splice(carToDeleteIndex, 1); // Delete the selected car
-                localStorage.setItem("cars", JSON.stringify(cars));
-                loadCars(); // Refresh the car list
-                carToDeleteIndex = null; // Reset the index
-                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
-                deleteModal.hide();
-                alert("Car model deleted successfully.");
-            }
+        alert('Car model updated successfully.');
+    } catch (error) {
+        console.error('Error updating car model:', error);
+        alert('Failed to update car model.');
+    }
+});
+
+
+async function openEditModal(carId) {
+    try {
+        const response = await fetch(`/api/carmodels/${carId}`);
+        if (!response.ok) throw new Error('Failed to fetch car details');
+        const car = await response.json();
+
+        // Prefill the form with car details
+        document.getElementById('editCarBrand').value = car.brand;
+        document.getElementById('editCarModel').value = car.model;
+
+        // Store the car ID for updating
+        document.getElementById('editCarForm').dataset.carId = carId;
+
+        // Show the modal
+        const editModal = new bootstrap.Modal(document.getElementById('editCarModal'));
+        editModal.show();
+    } catch (error) {
+        console.error('Error opening edit modal:', error);
+        alert('Failed to load car details for editing.');
+    }
+}
+
+
+// Delete car
+async function deleteCar(id) {
+    try {
+        const response = await fetch(`/api/carmodels/${id}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete car model');
+        await loadCars(); // Refresh the list
+    } catch (error) {
+        console.error(error);
+        alert('Error deleting car model.');
+    }
+}
+async function updateCarDropdowns() {
+    try {
+        const response = await fetch('/api/carmodels');
+        if (!response.ok) throw new Error('Failed to fetch car models');
+        const cars = await response.json();
+        console.log('Fetched Car Models:', cars); // Debugging output
+
+        // Populate unique brands
+        const brands = [...new Set(cars.map(car => car.brand))];
+        console.log('Brands:', brands); // Debugging output
+
+        brands.forEach(brand => { /* Populate Brand Dropdown */ });
+
+        brandDropdown.addEventListener('change', () => {
+            const selectedBrand = brandDropdown.value;
+            const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
+            console.log('Models for Brand:', selectedBrand, models); // Debugging output
         });
-
-        // Load cars from localStorage and display
-        function loadCars() {
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedCategory = categoryDropdown.value;
-
-            carListContainer.innerHTML = ""; // Clear the list
-
-            cars
-                .filter(car => {
-                    const matchesSearch = car.brand.toLowerCase().includes(searchTerm) || car.model.toLowerCase().includes(searchTerm);
-                    const matchesCategory = !selectedCategory || car.brand === selectedCategory;
-                    return matchesSearch && matchesCategory;
-                })
-                .forEach((car, index) => {
-                    const carElement = document.createElement("div");
-                    carElement.classList.add("col-md-2", "mb-4");
-                    carElement.innerHTML = `
-                        <div class="card">
-                            <img src="${car.image || defaultImage}" class="card-img-top" alt="${car.brand}">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fa fa-car" aria-hidden="true"></i><strong> ${car.brand}</strong> <br><span style="font-size: 17px; font-family: 'Montserrat';">${car.model}</span></h5>
-                                <button class="btn btn-warning editBtn" onclick="openEditModal(${index})">Edit</button>
-
-                                <button class="btn btn-danger deleteBtn" onclick="confirmDelete(${index})">Delete</button>
-                            </div>
-                        </div>
-                    `;
-                    carListContainer.appendChild(carElement);
-                });
-        }
-
-        // Delete car from localStorage
-        function deleteCar(index) {
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            cars.splice(index, 1);
-            localStorage.setItem("cars", JSON.stringify(cars));
-            loadCars();
-        }
-
-        // Add new car
-        carForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const carBrand = document.getElementById("carBrand").value;
-            const carModel = document.getElementById("carModel").value;
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            cars.push({ brand: carBrand, model: carModel });
-            localStorage.setItem("cars", JSON.stringify(cars));
-            loadCars();
-            carForm.reset();
-            bootstrap.Modal.getInstance(document.getElementById('carModal')).hide();
-            document.querySelector('.modal-backdrop')?.remove();
-        });
-
-        // Populate the category dropdown with unique car brands
-        function populateCategories() {
-            const cars = JSON.parse(localStorage.getItem("cars")) || [];
-            const uniqueBrands = [...new Set(cars.map(car => car.brand))]; // Get unique brands
-
-            categoryDropdown.innerHTML = `<option value="">All Brands</option>`; // Reset dropdown
-            uniqueBrands.forEach(brand => {
-                const option = document.createElement("option");
-                option.value = brand;
-                option.textContent = brand;
-                categoryDropdown.appendChild(option);
-            });
-        }
-
-        // Handle category change
-        categoryDropdown.addEventListener("change", function () {
-            loadCars(); // Simply reload cars based on the selected filter
-        });
-
-        // Add search and category filter event listeners
-        searchInput.addEventListener("input", loadCars);
-      
+    } catch (error) {
+        console.error('Error updating car dropdowns:', error);
+        alert('Failed to fetch car data.');
+    }
+}
 
 
-        // Ensure body scrolls properly after modal is closed
-        document.getElementById('carModal').addEventListener('hidden.bs.modal', () => {
-            document.body.style.overflow = ''; // Allow scrolling
-            document.body.classList.remove('modal-open'); // Remove modal-open class
-            document.querySelector('.modal-backdrop')?.remove(); // Ensure backdrop is removed
-        });
 
+// Populate category dropdown
+function populateCategories(cars) {
+    const uniqueBrands = [...new Set(cars.map(car => car.brand))];
+    categoryDropdown.innerHTML = '<option value="">All Brands</option>';
+    uniqueBrands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        categoryDropdown.appendChild(option);
+    });
+}
 
-        // Ensure the backdrop is removed when the modal is fully hidden
-        document.getElementById('carModal').addEventListener('hidden.bs.modal', () => {
-            document.querySelector('.modal-backdrop')?.remove();
-        });
+// Initial Load
+document.addEventListener('DOMContentLoaded', loadCars);
 
-        // Initial setup
-        populateCategories();
-        loadCars();
     </script>
 
 
