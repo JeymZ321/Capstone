@@ -310,11 +310,11 @@ function displayServices(services) {
                     <p class="mechanic"><strong>Mechanic:</strong> ${service.mechanic || 'N/A'}</p>
                     <p class="estimation"><strong>Estimation:</strong> ${service.estimation || 'N/A'}</p>
                     <div class="price" style="text-align: left;">
-                        <span class="price-per-item" data-price="${service.price}"> Price: ₱${service.price.toFixed(2)} ⬆️</span>
+                        <span class="price-per-item mb-3" style="font-size: 15px; float:left;" data-price="${service.price}">Price: <span style="color: red; font-weight: bold;">₱${service.price.toFixed(2)}<strong>+</strong>⬆️  </span></span>
                     </div>
                     <br>
                     
-                    <button class="btn btn-primary add-to-summary btn-sm" 
+                    <button class="btn btn-primary add-to-summary btn-sm float-end" 
                         onclick="addToSummary('${service._id}', '${service.name}', ${service.price}, '${service.image}')">
                         Add Service
                     </button>

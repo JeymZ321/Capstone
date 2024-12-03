@@ -12,6 +12,21 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/admin.css">
+
+    <style>
+        .black{
+            background-color: rgb(72, 5, 5);
+        }
+
+        /* Add padding to the table cells */
+        table.table th, 
+        table.table td {
+            padding: 10px 15px; /* Top/Bottom: 10px, Left/Right: 15px */
+        }
+
+
+        
+    </style>
 </head>
 
 <body id="page-top">
@@ -112,75 +127,110 @@
                         <h3 class="text-dark mb-0" style="font-weight: bold;">Dashboard</h3><!--<a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>-->
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-primary py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Approved Appointments</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>0</span></div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-success py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Registered Customers</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>0</span></div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Archived Appointments
 
-                                            </span></div>
-                                            <div class="row g-0 align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="text-dark fw-bold h5 mb-0 me-3"><span>100%</span></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="visually-hidden">100%</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-warning py-2">
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <div class="card shadow border-start-success py-2 black">
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col me-2">
-                                            <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Pending Requests</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>0</span></div>
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #aeaeff;"><span>Registered Customers</span></div>
+                                            <div class="text-light fw-bold h5 mb-0 value"><span>0</span></div>
                                         </div>
-                                        <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                                        <div class="col-auto"><i class="fas fa-users fa-2x text-light"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <a href="service.html" class="text-decoration-none">
+                            <div class="card shadow border-start-success py-2 black">
+                                <div class="card-body ">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #aeaeff;"><span>Services Offered</span></div>
+                                            <div class="text-light fw-bold h5 mb-0"><span>0</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-shopping-cart fa-2x text-light"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        
+
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <a href="mechanics.html" class="text-decoration-none">
+                            <div class="card shadow border-start-success py-2 black">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #aeaeff;"><span>No. of Mechanics</span></div>
+                                            <div class="text-light fw-bold h5 mb-0"><span>0</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-user fa-2x text-light"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+
+
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <a href="/display/appointment" class="text-decoration-none">
+                            <div class="card shadow border-start-warning py-2 black">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #F3DFA2;"><span>Pending Requests</span></div>
+                                            <div class="text-light fw-bold h5 mb-0"><span>0</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-comments fa-2x text-light"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <a href="/display/approved" class="text-decoration-none">
+                            <div class="card shadow border-start-primary py-2 black">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters ">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #88ff70;"><span>Approved Appointments</span></div>
+                                            <div class="text-light fw-bold h5 mb-0"><span>0</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-light"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-6 col-xl-2 mb-4">
+                            <a href="/display/archives" class="text-decoration-none">
+                            <div class="card shadow border-start-info py-2 black">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase fw-bold text-xs mb-1" style="color: #ff6565;"><span>Archived Appointments</span></div>
+                                            <div class="text-light fw-bold h5 mb-0"><span>0</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-archive fa-2x text-light"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col-lg-7 col-xl-8">
                             <div class="card shadow mb-4">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary fw-bold m-0">Most Acquired Services</h6>
+                                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: darkred;">
+                                    <h6 class="text-light fw-bold m-0">Number of Car Care Center Visitors</h6>
                                     <div class="dropdown no-arrow">
                                         <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
                                             <i class="fas fa-ellipsis-v text-gray-400"></i>
@@ -204,8 +254,8 @@
                                                  "label":"Earnings",
                                                  "fill":true,
                                                  "data":[0,10000,5000,15000,10000,20000,15000,25000],
-                                                 "backgroundColor":"rgba(78, 115, 223, 0.2)",
-                                                 "borderColor":"rgba(78, 115, 223, 1)",
+                                                 "backgroundColor":"#FBABAA",
+                                                 "borderColor":"#000",
                                                  "borderWidth": 1
                                               }]
                                            },
@@ -219,13 +269,14 @@
                                            }
                                         }'></canvas>
                                      </div>
-                                </div>                                     
+                                </div>
                             </div>
                         </div>
+
                         <div class="col-lg-5 col-xl-4">
                             <div class="card shadow mb-4">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary fw-bold m-0">Sales Sources</h6>
+                                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: darkred;">
+                                    <h6 class="text-primary fw-bold m-0 text-light" >Customers Based on Municipality</h6>
                                     <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
                                         <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
                                             <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
@@ -238,12 +289,12 @@
                                         <canvas data-bss-chart='{
                                            "type":"pie",
                                            "data":{
-                                              "labels":["Direct","Social","Referral"],
+                                              "labels":["Marikina","San Mateo","Antipolo", "Cainta", "Pasig", "Others"],
                                               "datasets":[{
                                                  "label":"",
-                                                 "backgroundColor":["#4e73df","#1cc88a","#36b9cc"],
-                                                 "borderColor":["#ffffff","#ffffff","#ffffff"],
-                                                 "data":[50,30,15]
+                                                 "backgroundColor":["#FE5F55","#577399","#BDD5EA", "#BABAFF", "#FBABAA", "#495867"],
+                                                 "borderColor":["#fff","#fff","#fff","#fff","#fff","#fff"],
+                                                 "data":[55,23,16,14,33,16]
                                               }]
                                            },
                                            "options":{
@@ -252,13 +303,107 @@
                                            }
                                         }'></canvas>
                                      </div>                                     
-                                    <div class="text-center small mt-4"><span class="me-2"><i class="fas fa-circle text-primary"></i>&nbsp;Direct</span><span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Social</span><span class="me-2"><i class="fas fa-circle text-info"></i>&nbsp;Refferal</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-xl-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: darkred;">
+                                    <h6 class="text-primary fw-bold m-0 text-light" >Customers Based on Car Models</h6>
+                                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas data-bss-chart='{
+                                           "type":"pie",
+                                           "data":{
+                                              "labels":["Toyota","Honda","Nissan", "Mitsubishi", "Ford", "Others"],
+                                              "datasets":[{
+                                                 "label":"",
+                                                 "backgroundColor":["#FE5F55","#577399","#BDD5EA", "#BABAFF", "#FBABAA", "#495867"],
+                                                 "borderColor":["#fff","#fff","#fff","#fff","#fff","#fff"],
+                                                 "data":[55,23,16,14,33,16]
+                                              }]
+                                           },
+                                           "options":{
+                                              "maintainAspectRatio":false,
+                                              "legend":{"display":true}
+                                           }
+                                        }'></canvas>
+                                     </div>                                     
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-xl-4"> <!--MAX OF Top 8 services-->
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: rgb(0, 0, 0);">
+                                <h6 class="text-primary fw-bold mb-1 mt-1 text-light" >Most Acquired Services</h6>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead style="color: rgb(92, 0, 0); font-weight: bold;">
+                                        <tr>
+                                            <th>Service Name</th>
+                                            <th>Acquisition</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody id="service-table-body" style="background-color: white; color: rgb(45, 45, 45);">
+                                        <!-- Data will be inserted dynamically -->
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+
+                        </div>
+                        
+
+                        <div class="col-lg-5 col-xl-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: darkred;">
+                                    <h6 class="text-primary fw-bold m-0 text-light" >Top Performing Mechanics</h6>
+                                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas data-bss-chart='{
+                                           "type":"pie",
+                                           "data":{
+                                              "labels":["M1","M2","M3", "M4", "M5", "M6"],
+                                              "datasets":[{
+                                                 "label":"",
+                                                 "backgroundColor":["#FE5F55","#577399","#BDD5EA", "#BABAFF", "#FBABAA", "#495867"],
+                                                 "borderColor":["#fff","#fff","#fff","#fff","#fff","#fff"],
+                                                 "data":[55,23,16,14,33,16]
+                                              }]
+                                           },
+                                           "options":{
+                                              "maintainAspectRatio":false,
+                                              "legend":{"display":true}
+                                           }
+                                        }'></canvas>
+                                     </div>                                     
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div> 
             </div>
+
+           
+        
+            
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
@@ -270,6 +415,41 @@
     <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
+
+    <script>
+        // Example service data
+        const services = [
+            { name: "Oil Change", acquisition: 120 },
+            { name: "Brake Repair", acquisition: 95 },
+            { name: "Tire Replacement", acquisition: 75 },
+            { name: "Engine Tune-Up", acquisition: 150 },
+            { name: "Alignment", acquisition: 65 },
+            { name: "Battery Replacement", acquisition: 110 },
+            { name: "Air Conditioning Service", acquisition: 80 },
+            { name: "Transmission Repair", acquisition: 130 },
+            { name: "Car Wash", acquisition: 40 },
+        ];
+    
+        // Sort services by acquisition in descending order
+        services.sort((a, b) => b.acquisition - a.acquisition);
+    
+        // Select only the top 8 services
+        const topServices = services.slice(0, 8);
+    
+        // Populate the table
+        const tableBody = document.getElementById("service-table-body");
+        topServices.forEach(service => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${service.name}</td>
+                <td>${service.acquisition}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    </script>
+    
+
+    
 </body>
 
 </html>
