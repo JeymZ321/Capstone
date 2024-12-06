@@ -314,6 +314,7 @@
     
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script>
     let vehicles = [];  // Global array to store all vehicle information
     let vehicleCount = 0;
@@ -376,53 +377,65 @@ $(document).ready(function () {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 $(document).ready(function () {
-    const vehicles = []; // Global array to store vehicle data
-
-    document.addEventListener('DOMContentLoaded', updateCarDropdowns);
-
+    
+    // Function to update dropdowns with car data
     async function updateCarDropdowns() {
-    try {
-        const response = await fetch('/api/carmodels');
-        if (!response.ok) throw new Error('Failed to fetch car models');
+        try {
+            const response = await fetch('/api/carmodels');
+            if (!response.ok) throw new Error(`Failed to fetch car models. Status: ${response.status}`);
 
-        const cars = await response.json();
+            const cars = await response.json();
+            console.log('Fetched car models:', cars); // Debugging output
 
-        const brandDropdown = document.getElementById('brand');
-        const modelDropdown = document.getElementById('model');
+            const brandDropdown = document.getElementById('brand');
+            const modelDropdown = document.getElementById('model');
 
-        // Populate unique brands
-        const brands = [...new Set(cars.map(car => car.brand))];
-        brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
-        brands.forEach(brand => {
-            const option = document.createElement('option');
-            option.value = brand;
-            option.textContent = brand;
-            brandDropdown.appendChild(option);
-        });
-
-        // Reset model dropdown
-        modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-
-        // Add event listener for brand change to dynamically update models
-        brandDropdown.addEventListener('change', () => {
-            const selectedBrand = brandDropdown.value;
-            const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
-
+            // Reset dropdowns
+            brandDropdown.innerHTML = '<option disabled selected>Select a Brand</option>';
             modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelDropdown.appendChild(option);
-            });
-        });
 
-        console.log('Dropdowns updated successfully');
-    } catch (error) {
-        console.error('Error updating car dropdowns:', error);
-        alert('Failed to fetch car data.');
+            if (cars.length === 0) {
+                console.warn('No car models found in the database.'); // Warning if no cars
+                return;
+            }
+
+            // Populate unique brands
+            const brands = [...new Set(cars.map(car => car.brand))];
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                brandDropdown.appendChild(option);
+            });
+
+            // Event listener to update models based on selected brand
+            brandDropdown.addEventListener('change', () => {
+                const selectedBrand = brandDropdown.value;
+                const models = cars.filter(car => car.brand === selectedBrand).map(car => car.model);
+
+                modelDropdown.innerHTML = '<option disabled selected>Select a Model</option>';
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelDropdown.appendChild(option);
+                });
+
+                console.log(`Models for brand "${selectedBrand}":`, models); // Debugging output
+            });
+
+            console.log('Dropdowns updated successfully');
+        } catch (error) {
+            console.error('Error updating car dropdowns:', error);
+            alert('Failed to load car data. Please try again later.');
+        }
     }
-}
+
+    // Call updateCarDropdowns on page load
+    updateCarDropdowns();
+
+
+
 
 
     // Save Vehicle Button Click
@@ -572,8 +585,35 @@ $(document).ready(function () {
         $('#removeImageButton').hide();
     }
 });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to get query parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
+        // Extract the token from the URL
+        const token = getQueryParam('token');
+        if (token) {
+            try {
+                // Decode the token to get the email
+                const decoded = jwt_decode(token);
+                if (decoded.email) {
+                    // Pre-fill the email field
+                    document.getElementById('email').value = decoded.email;
+                } else {
+                    console.error('Email not found in token.');
+                }
+            } catch (error) {
+                console.error('Invalid token:', error);
+            }
+        } else {
+            console.warn('Token not found in URL.');
+        }
+    });
 </script>
 
 

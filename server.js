@@ -1,4 +1,6 @@
 const express = require('express');
+//const http = require("http");
+//const { Server } = require("socket.io");
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -27,6 +29,8 @@ const path = require('path');
 const port = 3000;
 
 const app = express();
+//const server = http.createServer(app);
+//const io = new Server(server);
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +44,7 @@ app.use(session({
   cookie: { secure: false } // Set to true if using HTTPS
 }));
 app.use(cors({
-  origin: 'https://humorous-precisely-anchovy.ngrok-free.app ', // Replace with your frontend’s domain
+  origin: 'https://humorous-precisely-anchovy.ngrok-free.app', // Replace with your frontend’s domain
   credentials: true  // Allows cookies and other credentials to be sent
 }));
 
@@ -93,7 +97,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage:storage, fileFilter:fileFilter,
   limits: { fileSize: 2 * 1024 * 1024 }
  });
-
 
             /*------------------------------CUSTOMER ROUTES------------------------------*/
 
@@ -504,9 +507,10 @@ app.post('/loginadmin', async (req, res) => {
       from: 'Reynaldo\'s Car Care',
       to: email,
       subject: 'Verify your Admin Account',
-      text: ` Dear Admin,
-
-      Verification code: ${verificationCode} .For your security, please don't share this code with anyone else. If you did not make this request, ignore this message.`
+      html: ` 
+      <p>Dear Admin,</p>
+      <p>Verification code: <strong>${verificationCode}</strong></p>
+      <p>For your security, please don't share this code with anyone else. If you did not make this request, ignore this message.</p>`
     };
 
     transporter.sendMail(mailOptions, (error) => {
@@ -814,7 +818,8 @@ app.post('/appointment', async (req, res) => {
             datetime,
             date, // Add date field
             time, // Add time field
-            status: 'pending', // Mark as booked
+            status: 'pending',
+            mechanic: selectedServices[0]?.mechanic || null, // Mark as booked
             selectedServices: validatedServices
           // slot  Selected slot
         });
@@ -916,7 +921,7 @@ app.put('/appointments/:id/status', async (req, res) => {
 app.get('/appointments/blocked-slots', async (req, res) => {
     try {
         const { date } = req.query;
-        const appointments = await Appointment.find({ date, status: 'pending' });
+        const appointments = await Appointment.find({ date, status: { $in: ['accept'] }  }); //Appointment.find({ date, status: { $in: ['pending', 'accept'] } });
         const blockedSlots = appointments.map(appt => appt.time);
         res.json(blockedSlots);
     } catch (error) {
@@ -976,6 +981,36 @@ app.delete('/appointments/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting appointment.', error: error.message });
   }
 });
+
+app.post('/update-appointment/:id', async (req, res) => {
+  const { id } = req.params;
+  const { endTime, mechanic } = req.body;
+
+  // Validate input
+  if (!id || (!endTime && !mechanic)) {
+    return res.status(400).json({ success: false, message: 'Invalid data.' });
+  }
+
+  try {
+    // Create an object to hold fields to update
+    const updateFields = {};
+    if (endTime) updateFields.endTime = endTime;
+    if (mechanic) updateFields.mechanic = mechanic;
+
+    // Update the document
+    const result = await Appointment.updateOne({ _id: id }, updateFields);
+
+    if (result.modifiedCount > 0) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: 'No changes made.' });
+    }
+  } catch (error) {
+    console.error('Error updating appointment:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
 
 /*----------User dashboard Profile-----------------*/
 // Update Profile
@@ -1444,8 +1479,84 @@ app.delete('/api/carmodels/:id', async (req, res) => {
   }
 });
 
+/*----------------Analytics------------------*/
+// Get total customers
+app.get('/api/analytics/customers', async (req, res) => {
+  try {
+      const totalCustomers = await customer.countDocuments({});
+      res.json({ totalCustomers });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch customer data' });
+  }
+});
 
+// Get pending appointments
+app.get('/api/analytics/appointments/pending', async (req, res) => {
+  try {
+      const pendingCount = await Appointment.countDocuments({ status: 'pending' });
+      res.json({ pendingCount });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch appointment data' });
+  }
+});
 
+// Get approved appointments
+app.get('/api/analytics/appointments/approved', async (req, res) => {
+  try {
+      const approvedCount = await Appointment.countDocuments({ status: 'accept' });
+      res.json({ approvedCount });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch appointment data' });
+  }
+});
+
+// Get archived appointments
+app.get('/api/analytics/appointments/archived', async (req, res) => {
+  try {
+      const archivedCount = await Appointment.countDocuments({ status: 'archived' });
+      res.json({ archivedCount });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch appointment data' });
+  }
+});
+
+// Get customer distribution by city
+app.get('api/analytics/customers/by-city', async (req, res) => {
+  try {
+      const customersByCity = await customer.aggregate([
+          { $group: { _id: '$city', count: { $sum: 1 } } },
+          { $sort: { count: -1 } }
+      ]);
+      res.json({ customersByCity });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch city data' });
+  }
+});
+
+// Get top services
+app.get('/api/analytics/services/top', async (req, res) => {
+  try {
+      const topServices = await Appointment.aggregate([
+          { $unwind: '$selectedServices' },
+          { $group: { _id: '$selectedServices.name', count: { $sum: 1 } } },
+          { $sort: { count: -1 } },
+          { $limit: 8 }
+      ]);
+      res.json({ topServices });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch services data' });
+  }
+});
+
+// Get number of mechanics
+app.get('/api/analytics/mechanics', async (req, res) => {
+  try {
+      const totalMechanics = await Mechanic.countDocuments({});
+      res.json({ totalMechanics });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch mechanic data' });
+  }
+});
 
 
 /*------------------------CONNECTING TO THE PORT----------------------*/

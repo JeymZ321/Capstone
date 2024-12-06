@@ -336,7 +336,7 @@ async function populateMechanicsDropdown() {
         preferredMechanicDropdown.empty(); // Clear previous options
         preferredMechanicDropdown.append('<option value="" disabled selected>Select Preferred Mechanic</option>');
         mechanics.forEach((mechanic) => {
-            const optionText = `${mechanic.name} - ${mechanic.specialization} - Status: ${mechanic.availability.toUpperCase()}`;
+            const optionText = `${mechanic.name} - (${mechanic.specialization}) Status: ${mechanic.availability.toUpperCase()}`;
             preferredMechanicDropdown.append($("<option></option>").text(optionText).val(mechanic._id));
         });
     } catch (error) {
@@ -393,16 +393,24 @@ if (email) {
     window.location.href = 'login.html';
 }
 
-    // Function to fetch blocked slots for the selected date
-    function fetchBlockedSlots(selectedDate) {
-        return $.ajax({
-            url: `/appointments/blocked-slots?date=${selectedDate}`,
-            method: 'GET',
-            error: function () {
-                alert('Failed to fetch blocked slots. Please try again.');
-            }
-        });
-    }
+function fetchBlockedSlots(selectedDate) {
+    return $.ajax({
+        url: `/appointments/blocked-slots?date=${selectedDate}`,
+        method: 'GET',
+        success: function (blockedSlots) {
+            // Block slots for 'pending' and 'accept' appointments
+            $(".ui-timepicker-list li").each(function () {
+                const time = $(this).text().trim();
+                if (blockedSlots.includes(time)) {
+                    $(this).addClass('ui-state-disabled').attr('disabled', true);
+                }
+            });
+        },
+        error: function () {
+            alert('Failed to fetch blocked slots. Please try again.');
+        }
+    });
+}
 
     // Initialize datetimepicker
     $('#datetimepicker').datetimepicker({

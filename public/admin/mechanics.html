@@ -211,8 +211,7 @@ function addMechanicCard(id, name, specialization, phone, availability) {
         <p class="card-text"><strong>Status:</strong> ${availability}</p>
         <button class="btn btn-warning btn-sm editBtn" data-id="${id}">Edit</button>
         <button class="btn deleteBtn btn-sm" data-id="${id}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete</button>
-        <button class="btn btn-success assignBtn btn-sm ms-2" data-id="${id}">Assign</button> 
-        <p>LAGYAN NG FUNCTION ANG ASSIGN. Dapat papasok ang details nian sa lahat ng Appointments Table</p>
+
 
       </div>
     </div>
@@ -405,6 +404,8 @@ let mechanics = [];
 document.addEventListener("DOMContentLoaded", async () => {
   mechanics = await fetchMechanics();
 });
+//<button class="btn btn-success assignBtn btn-sm ms-2" data-id="${id}">Assign</button> 
+//<p>LAGYAN NG FUNCTION ANG ASSIGN. Dapat papasok ang details nian sa lahat ng Appointments Table</p>
       </script>
          
 

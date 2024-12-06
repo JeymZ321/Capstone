@@ -161,10 +161,12 @@
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Vehicle</th>
+                        <th>Plate#</th>
                         <th>Schedule</th>
+                        <th>End Time</th>
+                        <th>Mechanic</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                      
                       </tr>
                     </thead>
                     <tbody id="appointmentTableBody">
@@ -214,11 +216,13 @@
       
         tableBody.append(`
         <tr data-id="${appointment._id}">
-        <td>${appointment.email}</td>
-        <td>${appointment.vehicle}</td>
-        <td>${appointment.datetime}</td>
-        <td>${appointment.status}</td>
-        <td><button class="btn btn-primary view-appointment-btn">View</button></td>
+            <td>${appointment.email}</td>
+            <td>${appointment.vehicle}</td>
+            <td>${appointment.datetime}</td>
+            <td>${appointment.endTime || 'N/A'}</td> 
+            <td>${appointment.mechanic || 'No mechanic assigned'}</td> <!-- Display mechanic name -->
+            <td>${appointment.status}</td>
+            
         </tr>
     `);
 });
@@ -235,7 +239,7 @@
       },
     });
   } else {
-    // Handle case where user's email is not found
+    // Handle case where user's email is not found <td><button class="btn btn-primary view-appointment-btn">View</button></td>
     alert('User email not found. Please log in.');
   }
 });

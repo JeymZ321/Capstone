@@ -113,7 +113,7 @@
                     <th>City</th>
                     <th>Services</th>
                     <th>Plate#</th>
-                    <th>Preferred Mechanic</th>
+                   
                     <th>Action</th>
                 </tr>
             </thead>
@@ -135,13 +135,7 @@
                             <% } %>
                         </td>
                         <td><%= appointment.vehicle %></td>
-                        <td>
-                            <% if (appointment.preferredMechanic) { %>
-                                <%= appointment.preferredMechanic.name %> <!-- Display mechanic name -->
-                            <% } else { %>
-                                <i>Not specified</i>
-                            <% } %>
-                        </td>
+                        
                         <!-- <td><%= appointment.slot %></td> -->
                         <td>
                             <!--<button class="btn btn-info viewDetails" data-id="<%= appointment._id %>">View</button>-->

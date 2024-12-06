@@ -48,8 +48,28 @@
             font-weight: bold;
         }
 
-     
+        .action-buttons {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            justify-content: center; /* Center align buttons horizontally */
+            align-items: center; /* Align buttons vertically */
+        }
 
+        .action-buttons button {
+            height: 40px; /* Ensure all buttons have the same height */
+            padding: 5px 15px; /* Add consistent padding */
+            font-size: 14px; /* Ensure uniform font size */
+        }
+        td[data-placeholder]:empty::before {
+            content: attr(data-placeholder);
+            color: #999;
+            font-style: italic;
+            pointer-events: none; /* Prevent interaction with the placeholder */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 
@@ -166,7 +186,8 @@
                                 <th>City</th>
                                 <th>Services</th>
                                 <th>Plate#</th>
-                                
+                                <th>End Time</th>
+                                <th>mechanic</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -179,17 +200,32 @@
                                     <td><% if (appointment.selectedServices && appointment.selectedServices.length > 0) { %>
                                         <% appointment.selectedServices.forEach(service => { %>
                                             <div>
-                                                <%= service.name %> - ₱<%= service.price.toFixed(2) %> (Mechanic: <%= service.mechanic %>)
+                                                <%= service.name %> - ₱<%= service.price.toFixed(2) %> 
                                             </div>
                                         <% }) %>
                                     <% } else { %>
                                         <i>No services provided</i>
                                     <% } %>
-                                </td>
+                                    </td>
                                     <td><%= appointment.vehicle %></td>
-                                    
+                                    <td 
+                                        contenteditable="true" 
+                                        data-field="endTime" 
+                                        data-placeholder="MM/DD/YYYY HH:MM AM/PM"
+                                        style="position: relative;">
+                                        <%= appointment.endTime || "" %>
+                                    </td>
+                                    <td 
+                                    contenteditable="true" 
+                                    data-field="mechanic" 
+                                    style="position: relative;">
+                                    <%= appointment.mechanic || "" %>
+                                </td>
+
                                     <td>
-                                        <button class="btn btn-info view-btn " style="color: white; " 
+                                        <div class="action-buttons">
+                                        <button class="btn btn-info view-btn" 
+                                            style="color: white;"
                                             data-bs-toggle="modal" 
                                             data-bs-target="#detailsModal"
                                             data-email="<%= appointment.email %>"
@@ -201,38 +237,14 @@
                                             data-suggestions="<%= appointment.suggestions %>">
                                             View
                                         </button>
+                                        <button class="btn btn-success save-btn" data-id="<%= appointment._id %>">Save</button>
                                         <button class="btn btn-warning archive-btn" data-id="<%= appointment._id %>">Archive</button>
+                                        </div>
                                     </td>
                                 </tr>
                             <% }); %>
                         </tbody>
-                        <tbody id="approvedBody" style="color: black;">
-                            <% newCustomers.forEach(appointment => { %>
-                                <tr data-id="<%= appointment._id %>">
-                                    <td><%= appointment.email %></td>
-                                    <td><%= appointment.phonenumber ||appointment.phone %></td>
-                                    <td><%= appointment.city %></td>
-                                    <td><%= appointment.services %></td>
-                                    <td><%= appointment.vehicle %></td>
-                                    
-                                    <td>
-                                        <button class="btn btn-info view-btn " style="color: white; " 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#detailsModal"
-                                            data-email="<%= appointment.email %>"
-                                            data-phonenumber="<%= appointment.phone %>"
-                                            data-city="<%= appointment.city %>"
-                                            data-datetime="<%= appointment.datetime || appointment.checkInTime %>"
-                                            data-vehicle="<%= appointment.vehicle %>"
-                                            data-carfunc="<%= appointment.carFunctionality %>"
-                                            data-suggestions="<%= appointment.services %>">
-                                            View
-                                        </button>
-                                        <button class="btn btn-warning archive-btn2" data-id="<%= appointment._id %>">Archive</button>
-                                    </td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
+                        
                     </table>
 
                     
@@ -346,8 +358,8 @@
 <script src="/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/admin/assets/js/bs-init.js"></script>
 <script src="/admin/assets/js/theme.js"></script>
-    <script>
-        
+
+<script>      
 $(document).ready(function () {
     // Archive Button Click Handler for Appointments
     $('.archive-btn').on('click', function () {
@@ -389,29 +401,7 @@ $(document).ready(function () {
     });
 
 });
-/*
-    // Archive Button Click Handler for Customers
-$('#approvedBody').on('click', '.archive-btn', function () {
-    const customerId = $(this).data('id');
 
-    if (confirm("Are you sure you want to archive this customer?")) {
-        $.ajax({
-            url: `/customer/${customerId}/archive`,
-            type: 'PATCH',
-            success: function (response) {
-                alert(response.message);
-
-                // Remove the archived customer row dynamically
-                $(`tr[data-id="${customerId}"]`).remove();
-            },
-            error: function (error) {
-                console.error("Error archiving customer:", error);
-                alert("Failed to archive the customer. Please try again.");
-            }
-        });
-    }
-});
-*/
     // Save Vehicle Button Handler
     $('#saveVehicleButton').on('click', function () {
         const formData = new FormData($('#vehicleForm')[0]); // Use FormData for file uploads
@@ -550,6 +540,61 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+</script>
+
+<script>
+    document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('save-btn')) {
+        const row = e.target.closest('tr'); // Find the table row
+        const id = row.getAttribute('data-id'); // Get the appointment ID
+
+        const endTimeCell = row.querySelector('[data-field="endTime"]');
+        const mechanicCell = row.querySelector('[data-field="mechanic"]');
+
+        const endTime = endTimeCell.innerText.trim();
+        const mechanic = mechanicCell.innerText.trim();
+
+        // Validate End Time format
+        const dateTimeRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4} (0[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/;
+        if (!dateTimeRegex.test(endTime)) {
+            alert('Invalid End Time format. Please use "MM/DD/YYYY HH:MM AM/PM".');
+            return;
+        }
+
+        // Ensure Mechanic is not empty
+        if (!mechanic) {
+            alert('Mechanic name cannot be empty.');
+            return;
+        }
+
+        // Call the function to save both fields to the server
+        saveAppointmentDetails(id, { endTime, mechanic });
+    }
+});
+
+async function saveAppointmentDetails(id, details) {
+    try {
+        const response = await fetch(`/update-appointment/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(details),
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Appointment updated successfully!');
+        } else {
+            alert(data.message || 'Error updating appointment. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('An unexpected error occurred. Please try again.');
+    }
+}
+
+
 </script>
 </body>
 

@@ -9,10 +9,11 @@ const appointmentSchema = new mongoose.Schema({
     carfunc: { type: String },
     datetime: { type: String, unique: true },
     date: { type: String },                  // Date only (e.g., "2024-12-01")
-    time: { type: String },                  // Time only (e.g., "10:00 AM")
+    time: { type: String },
+    endTime: { type: String },                  
     suggestions: { type: String },
     //slot: { type: String },
-    preferredMechanic:{ type: String },
+    mechanic: { type: String, default: null },
     status: { 
         type: String, 
         default: 'pending',              

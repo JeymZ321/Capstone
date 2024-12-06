@@ -24,6 +24,44 @@
             padding: 10px 15px; /* Top/Bottom: 10px, Left/Right: 15px */
         }
 
+        /* 
+#chatbot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+#chatbotToggle {
+  background-color: #051129;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#chatbox {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+}
+
+#chatHeader {
+  background-color: #051129;
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+*/
 
         
     </style>
@@ -409,7 +447,25 @@
                     <div class="text-center my-auto copyright"><span>Copyright © Logo 2024</span></div>
                 </div>
             </footer>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div>
+        <!-- 
+<div id="chatbot">
+    <button id="chatbotToggle">
+      <img src="assets/img/chat-icon.png" alt="Chat" style="width: 30px; height: 30px;">
+    </button>
+    <div id="chatbox" class="hidden">
+      <div id="chatHeader">
+        <span>Chat with Us!</span>
+        <button id="closeChat">X</button>
+      </div>
+      <div id="chatMessages" style="overflow-y: auto;"></div>
+      <input id="chatInput" type="text" placeholder="Type a message..." />
+      <button id="sendMessage">Send</button>
+    </div>
+</div>
+-->
+          
+        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/chart.min.js"></script>
@@ -417,39 +473,145 @@
     <script src="assets/js/theme.js"></script>
 
     <script>
-        // Example service data
-        const services = [
-            { name: "Oil Change", acquisition: 120 },
-            { name: "Brake Repair", acquisition: 95 },
-            { name: "Tire Replacement", acquisition: 75 },
-            { name: "Engine Tune-Up", acquisition: 150 },
-            { name: "Alignment", acquisition: 65 },
-            { name: "Battery Replacement", acquisition: 110 },
-            { name: "Air Conditioning Service", acquisition: 80 },
-            { name: "Transmission Repair", acquisition: 130 },
-            { name: "Car Wash", acquisition: 40 },
-        ];
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Fetch data from the backend API
+            const fetchData = async (url) => {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error(`Error fetching data from ${url}:`, error);
+                    return null;
+                }
+            };
     
-        // Sort services by acquisition in descending order
-        services.sort((a, b) => b.acquisition - a.acquisition);
+            // Update dashboard dynamically
+            const updateDashboard = async () => {
+                // Fetch and update total registered customers
+                const customerData = await fetchData('/api/analytics/customers');
+                if (customerData) {
+                    document.querySelector('.value span').textContent = customerData.totalCustomers || 0;
+                }
     
-        // Select only the top 8 services
-        const topServices = services.slice(0, 8);
+                // Fetch and update pending appointments
+                const pendingData = await fetchData('/api/analytics/appointments/pending');
+                if (pendingData) {
+                    document.querySelector('.value-pending span').textContent = pendingData.pendingCount || 0;
+                }
     
-        // Populate the table
-        const tableBody = document.getElementById("service-table-body");
-        topServices.forEach(service => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${service.name}</td>
-                <td>${service.acquisition}</td>
-            `;
-            tableBody.appendChild(row);
+                // Fetch and update approved appointments
+                const approvedData = await fetchData('/api/analytics/appointments/approved');
+                if (approvedData) {
+                    document.querySelector('.value-approved span').textContent = approvedData.approvedCount || 0;
+                }
+    
+                // Fetch and update archived appointments
+                const archivedData = await fetchData('/api/analytics/appointments/archived');
+                if (archivedData) {
+                    document.querySelector('.value-archived span').textContent = archivedData.archivedCount || 0;
+                }
+    
+                // Fetch and populate the most acquired services table
+                const servicesData = await fetchData('/api/analytics/services/top');
+                const tableBody = document.getElementById('service-table-body');
+                tableBody.innerHTML = ''; // Clear the existing data
+                if (servicesData && servicesData.topServices) {
+                    servicesData.topServices.forEach(service => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${service._id}</td> <!-- Assuming '_id' contains the service name -->
+                            <td>${service.count}</td> <!-- Assuming 'count' contains the acquisition count -->
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td colspan="2">No data available</td>`;
+                    tableBody.appendChild(row);
+                }
+            };
+    
+            // Call the function to update the dashboard
+            updateDashboard();
         });
-    </script>
-    
 
-    
+    </script>
+
+    <script>
+        const socket = io.connect("https://humorous-precisely-anchovy.ngrok-free.app", { query: { role: "admin" } });
+
+document.getElementById("chatbotToggle").addEventListener("click", async () => {
+  const chatbox = document.getElementById("chatbox");
+  chatbox.classList.toggle("hidden");
+
+  if (!chatbox.classList.contains("hidden")) {
+    const messages = await fetchChatHistory(); // Fetch chat history
+    messages.forEach((msg) => {
+      displayMessage(msg.sender === "admin" ? "You" : "User", msg.content);
+    });
+  }
+});
+
+// Send message
+document.getElementById("sendMessage").addEventListener("click", async () => {
+  const chatInput = document.getElementById("chatInput");
+  const message = chatInput.value.trim();
+
+  if (message) {
+    const sent = await sendMessage({ sender: "admin", content: message });
+    if (sent) {
+      displayMessage("You", message);
+      chatInput.value = '';
+    }
+  }
+});
+
+// Listen for incoming messages
+socket.on("newMessage", (message) => {
+  displayMessage("User", message.content);
+});
+
+// Fetch chat history from backend
+async function fetchChatHistory() {
+  try {
+    const response = await fetch("/api/chat/history?role=admin");
+    if (!response.ok) throw new Error("Failed to fetch chat history");
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+// Send message to backend
+async function sendMessage(message) {
+  try {
+    const response = await fetch("/api/chat/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message),
+    });
+    if (!response.ok) throw new Error("Failed to send message");
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+// Display a message in the chatbox
+function displayMessage(sender, content) {
+  const chatMessages = document.getElementById("chatMessages");
+  const newMessage = document.createElement("div");
+  newMessage.textContent = `${sender}: ${content}`;
+  chatMessages.appendChild(newMessage);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+    </script>
+        
 </body>
 
 </html>
