@@ -420,7 +420,6 @@ function fetchBlockedSlots(selectedDate) {
         stepMinute: 30, // Time intervals
         hourMin: 8, // Start time: 8:00 AM
         hourMax: 16, // End time: 4:00 PM
-        controlType: 'select',
         beforeShowDay: function (date) {
             // Example to disable Sundays
             return [date.getDay() !== 0, ""];
